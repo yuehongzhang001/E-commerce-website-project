@@ -67,5 +67,11 @@ public class BaseTrademarkController {
         return  Result.ok(baseTrademark);
     }
 
+    //  http://api.gmall.com/admin/product/baseTrademark/getTrademarkList
+    @GetMapping("getTrademarkList")
+    public Result getTrademarkList(){
+
+        return Result.ok(baseTrademarkService.list(null));
+    }
 
 }
