@@ -1,7 +1,10 @@
 package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
+import com.atguigu.gmall.model.product.BaseSaleAttr;
+import com.atguigu.gmall.model.product.SpuImage;
 import com.atguigu.gmall.model.product.SpuInfo;
+import com.atguigu.gmall.model.product.SpuSaleAttr;
 import com.atguigu.gmall.product.service.ManageSerivce;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author mqx
@@ -35,4 +39,39 @@ public class SpuManageController {
 
         return Result.ok(iPage);
     }
+
+    //  http://api.gmall.com/admin/product/baseSaleAttrList
+    @GetMapping("baseSaleAttrList")
+    public Result baseSaleAttrList(){
+        //  调用服务层方法获取所有的销售属性列表
+        List<BaseSaleAttr> baseSaleAttrList = manageSerivce.getBaseSaleAttrList();
+        return Result.ok(baseSaleAttrList);
+    }
+
+    //  http://api.gmall.com/admin/product/saveSpuInfo
+    //  获取到前端传递过来的数据 Json ---> JavaObject
+    @PostMapping("saveSpuInfo")
+    public Result saveSpuInfo(@RequestBody SpuInfo spuInfo){
+        //  调用服务层方法
+        manageSerivce.saveSpuInfo(spuInfo);
+        //  返回
+        return Result.ok();
+    }
+
+    //  http://api.gmall.com/admin/product/spuImageList/29
+    @GetMapping("spuImageList/{spuId}")
+    public Result getSpuImageList(@PathVariable Long spuId){
+        //  调用服务层方法
+        List<SpuImage> spuImageList = manageSerivce.getSpuImageList(spuId);
+        return Result.ok(spuImageList);
+    }
+
+    //  http://api.gmall.com/admin/product/spuSaleAttrList/29
+    @GetMapping("spuSaleAttrList/{spuId}")
+    public Result getSpuSaleAttrList(@PathVariable Long spuId){
+        //  调用服务层方法
+        List<SpuSaleAttr> spuSaleAttrList = manageSerivce.getSpuSaleAttrList(spuId);
+        return Result.ok(spuSaleAttrList);
+    }
+
 }
