@@ -74,4 +74,5 @@ public class SpuManageController {
         return Result.ok(spuSaleAttrList);
     }
 
+
 }

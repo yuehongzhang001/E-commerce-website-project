@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -61,6 +62,10 @@ public class ManageServiceImpl implements ManageSerivce {
 
     @Autowired
     private SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private BaseCategoryViewMapper baseCategoryViewMapper;
+
 
 
     @Override
@@ -291,6 +296,51 @@ public class ManageServiceImpl implements ManageSerivce {
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
+    }
+
+    /**
+     * 根据skuId 查询skuInfo 以及 skuImageList
+     * @param skuId
+     * @return
+     */
+    @Override
+    public SkuInfo getSkuInfo(Long skuId) {
+        //  select * from sku_info where id = skuId;
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+
+        //  select * from sku_image where sku_id = skuId;
+        //  构造查询条件
+        QueryWrapper<SkuImage> skuImageQueryWrapper = new QueryWrapper<>();
+        skuImageQueryWrapper.eq("sku_id",skuId);
+        List<SkuImage> skuImageList = skuImageMapper.selectList(skuImageQueryWrapper);
+        //  将skuImageList 集合赋值给skuInfo对象；
+        skuInfo.setSkuImageList(skuImageList);
+
+        return skuInfo;
+    }
+
+    @Override
+    public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
+
+        //  select * from base_category_view where id = 61;
+        return baseCategoryViewMapper.selectById(category3Id);
+    }
+
+    @Override
+    public BigDecimal getSkuPrice(Long skuId) {
+        //  select price from sku_info where id = skuId;
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        if (skuInfo!=null){
+            return skuInfo.getPrice();
+        }
+        //  给默认值
+        return new BigDecimal(0);
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
+        //  多表关联查询
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
     }
 
 }
