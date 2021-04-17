@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mqx
@@ -161,4 +162,13 @@ public interface ManageSerivce {
      */
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
 
+    //  返回值可以自定义一个实体类 {skuId, valueIds } 还可以使用map数据结构接收数据 map(key,value);
+    //  skuId = 46  valueIds = 124|126;  map(skuId,"46")  map.put("valueIds","124|126")
+
+    /**
+     * 根据spuId 获取销售属性值Id与skuId 的组合数据
+     * @param spuId
+     * @return
+     */
+    Map getSkuValueIdsMap(Long spuId);
 }

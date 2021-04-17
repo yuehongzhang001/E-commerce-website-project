@@ -7,12 +7,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mqx
@@ -65,6 +68,9 @@ public class ManageServiceImpl implements ManageSerivce {
 
     @Autowired
     private BaseCategoryViewMapper baseCategoryViewMapper;
+
+//    @Autowired
+//    private RedisTemplate redisTemplate;
 
 
 
@@ -341,6 +347,26 @@ public class ManageServiceImpl implements ManageSerivce {
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
         //  多表关联查询
         return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
+    }
+
+    @Override
+    public Map getSkuValueIdsMap(Long spuId) {
+        //  声明一个返回值对象
+        Map map = new HashMap();
+        //  执行 sql 语句获取数据结果集： 编写xml ? 应该写在哪个mapper.xml 中?
+        List<Map> mapList = skuSaleAttrValueMapper.selectSaleAttrValuesBySpu(spuId);
+        //  判断当前集合不为空
+        if (!CollectionUtils.isEmpty(mapList)){
+            //  循环遍历当前sql 的执行结果
+            for (Map maps : mapList) {
+                //  将循环获取到的数据放入外层map中
+                //  通过 Map 转换为Json {"126|124":"46","126|125":"47"}  value_ids = 126|124  skuId = 46;
+                //  map.put("126|124","46") ;  map.put("126|125","47") ;
+                map.put(maps.get("value_ids"),maps.get("sku_id"));
+            }
+        }
+        //  返回
+        return map;
     }
 
 }
