@@ -8,7 +8,17 @@ public interface TestService {
     /**
      * 测试本地锁
      */
-    void testLock();
+    void testLock() throws InterruptedException;
 
+    /**
+     * 读锁
+     * @return
+     */
+    String readLock();
 
+    /**
+     * 写锁
+     * @return
+     */
+    String writeLock();
 }

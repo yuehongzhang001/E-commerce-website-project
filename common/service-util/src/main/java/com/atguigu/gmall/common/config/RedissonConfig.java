@@ -38,18 +38,21 @@ public class RedissonConfig {
      */
     @Bean
     RedissonClient redissonSingle() {
+        //  创建一个对象
         Config config = new Config();
-
+        //  判断地址是否为空
         if(StringUtils.isEmpty(host)){
             throw new RuntimeException("host is  empty");
         }
+        //  配置服务
         SingleServerConfig serverConfig = config.useSingleServer()
-                //redis://127.0.0.1:7181
+                // redis://127.0.0.1:7181
                 .setAddress(ADDRESS_PREFIX + this.host + ":" + port)
                 .setTimeout(this.timeout)
                 .setPingConnectionInterval(pingConnectionInterval)
                 .setConnectionPoolSize(this.connectionPoolSize)
                 .setConnectionMinimumIdleSize(this.connectionMinimumIdleSize);
+        //  是否需要密码 redis.conf
         if(!StringUtils.isEmpty(this.password)) {
             serverConfig.setPassword(this.password);
         }

@@ -1,5 +1,6 @@
 package com.atguigu.gmall.product.controller;
 
+import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.product.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,24 @@ public class TestController {
     //  控制器对应的方法
     @GetMapping("testLock")
     public void testLock(){
-        testService.testLock();
+        try {
+            testService.testLock();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    //  读锁
+    @GetMapping("read")
+    public Result read(){
+        String msg = testService.readLock();
+        return Result.ok(msg);
+    }
+
+    //  写锁
+    @GetMapping("write")
+    public Result write(){
+        String msg = testService.writeLock();
+        return Result.ok(msg);
+    }
 }
