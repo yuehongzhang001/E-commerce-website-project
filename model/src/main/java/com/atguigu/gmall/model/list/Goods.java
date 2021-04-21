@@ -10,10 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 // Index = goods , Type = info
+//  7.0 以后就没有type！
 @Data
 @Document(indexName = "goods" ,type = "info",shards = 3,replicas = 2)
 public class Goods {
-    // 商品Id
+
+    // skuId
     @Id
     private Long id;
 

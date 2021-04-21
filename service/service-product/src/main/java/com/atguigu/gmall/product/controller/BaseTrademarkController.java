@@ -74,4 +74,10 @@ public class BaseTrademarkController {
         return Result.ok(baseTrademarkService.list(null));
     }
 
+    //  根据品牌Id 获取到对应品牌数据
+    //    @GetMapping("inner/getTrademark/{tmId}")
+    //    public BaseTrademark getTrademark(@PathVariable Long tmId){
+    //        return baseTrademarkService.getById(tmId);
+    //    }
+
 }

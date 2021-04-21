@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -28,6 +29,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ProductFeignClient productFeignClient;
 
+    @Autowired
+    private ThreadPoolExecutor threadPoolExecutor;
+
     @Override
     public Map<String, Object> getItemBySkuId(Long skuId) {
         //  声明对象
@@ -41,20 +45,20 @@ public class ItemServiceImpl implements ItemService {
             result.put("skuInfo",skuInfo);
             //  返回数据
             return skuInfo;
-        });
+        },threadPoolExecutor);
 
         //  Consumer  void accept(T t);
         CompletableFuture<Void> categoryViewCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo -> {
             //  获取分类数据
             BaseCategoryView categoryView = productFeignClient.getCategoryView(skuInfo.getCategory3Id());
             result.put("categoryView", categoryView);
-        }));
+        }),threadPoolExecutor);
 
         CompletableFuture<Void> spuSaleAttrCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo -> {
             //  获取销售属性+销售属性值
             List<SpuSaleAttr> spuSaleAttrListCheckBySku = productFeignClient.getSpuSaleAttrListCheckBySku(skuId, skuInfo.getSpuId());
             result.put("spuSaleAttrList", spuSaleAttrListCheckBySku);
-        }));
+        }),threadPoolExecutor);
 
         CompletableFuture<Void> mapCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo -> {
 
@@ -63,14 +67,14 @@ public class ItemServiceImpl implements ItemService {
             //  将这个map 转换为页面需要的Json 对象
             String valueJson = JSON.toJSONString(skuValueIdsMap);
             result.put("valuesSkuJson", valueJson);
-        }));
+        }),threadPoolExecutor);
 
         CompletableFuture<Void> priceCompletableFuture = CompletableFuture.runAsync(() -> {
             //  获取价格
             BigDecimal skuPrice = productFeignClient.getSkuPrice(skuId);
             //  保存数据
             result.put("price", skuPrice);
-        });
+        },threadPoolExecutor);
 
         //  使用多任务进行组合
         CompletableFuture.allOf(

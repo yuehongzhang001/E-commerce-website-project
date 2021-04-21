@@ -13,7 +13,7 @@ import java.util.Map;
  * @author mqx
  * @date 2021-4-10 10:24:49
  */
-public interface ManageSerivce {
+public interface ManageService {
 
    /*
         3.1	先加载所有的一级分类数据！
@@ -178,6 +178,21 @@ public interface ManageSerivce {
      * @return
      */
     List<JSONObject> getBaseCategoryList();
+
+    /**
+     * 通过品牌Id 来查询数据
+     * @param tmId
+     * @return
+     */
+    BaseTrademark getTrademarkByTmId(Long tmId);
+
+    /**
+     * 通过skuId 集合来查询数据
+     * @param skuId
+     * @return
+     */
+    List<BaseAttrInfo> getAttrList(Long skuId);
+
 
 
 

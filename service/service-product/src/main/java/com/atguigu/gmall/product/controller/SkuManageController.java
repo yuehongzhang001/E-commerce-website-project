@@ -2,7 +2,7 @@ package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.product.SkuInfo;
-import com.atguigu.gmall.product.service.ManageSerivce;
+import com.atguigu.gmall.product.service.ManageService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class SkuManageController {
     //  注入服务层
     @Autowired
-    private ManageSerivce manageSerivce;
+    private ManageService manageService;
 
     //  http://api.gmall.com/admin/product/saveSkuInfo
     //  获取到前端传递过来的数据！   Json --> JavaObject
     @PostMapping("saveSkuInfo")
     public Result saveSkuInfo(@RequestBody SkuInfo skuInfo){
         //  调用服务层方法
-        manageSerivce.saveSkuInfo(skuInfo);
+        manageService.saveSkuInfo(skuInfo);
         //  返回
         return Result.ok();
     }
@@ -37,7 +37,7 @@ public class SkuManageController {
         Page<SkuInfo> skuInfoPage = new Page<>(page,limit);
 
         //  调用服务层方法
-        IPage iPage = manageSerivce.getSkuInfoList(skuInfoPage);
+        IPage iPage = manageService.getSkuInfoList(skuInfoPage);
 
         return Result.ok(iPage);
     }
@@ -46,7 +46,7 @@ public class SkuManageController {
     @GetMapping("onSale/{skuId}")
     public Result onSale(@PathVariable Long skuId){
         //  调用服务层方法
-        manageSerivce.onSale(skuId);
+        manageService.onSale(skuId);
         //  返回数据
         return Result.ok();
     }
@@ -55,7 +55,7 @@ public class SkuManageController {
     @GetMapping("cancelSale/{skuId}")
     public Result cancelSale(@PathVariable Long skuId){
         //  调用服务层方法
-        manageSerivce.cancelSale(skuId);
+        manageService.cancelSale(skuId);
         //  返回数据
         return Result.ok();
     }

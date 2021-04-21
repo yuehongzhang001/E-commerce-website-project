@@ -2,7 +2,7 @@ package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.product.*;
-import com.atguigu.gmall.product.service.ManageSerivce;
+import com.atguigu.gmall.product.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +17,14 @@ import java.util.List;
 public class BaseManageController {
     //  控制器：注入服务层
     @Autowired
-    private ManageSerivce manageSerivce;
+    private ManageService manageService;
 
     //  查询所有的一级分类数据
     //  http://api.gmall.com/admin/product/getCategory1
     @GetMapping("getCategory1")
     public Result getCategory1(){
         //  返回数据
-        List<BaseCategory1> baseCategory1List = manageSerivce.getBaseCategory1();
+        List<BaseCategory1> baseCategory1List = manageService.getBaseCategory1();
         return Result.ok(baseCategory1List);
     }
 
@@ -33,7 +33,7 @@ public class BaseManageController {
     @GetMapping("getCategory2/{category1Id}")
     public Result getCategory2(@PathVariable Long category1Id){
         //  返回数据
-        List<BaseCategory2> baseCategory2List = manageSerivce.getBaseCategory2(category1Id);
+        List<BaseCategory2> baseCategory2List = manageService.getBaseCategory2(category1Id);
         return Result.ok(baseCategory2List);
     }
 
@@ -42,7 +42,7 @@ public class BaseManageController {
     @GetMapping("getCategory3/{category2Id}")
     public Result getCategory3(@PathVariable Long category2Id){
         //  返回数据
-        List<BaseCategory3> baseCategory3List = manageSerivce.getBaseCategory3(category2Id);
+        List<BaseCategory3> baseCategory3List = manageService.getBaseCategory3(category2Id);
         return Result.ok(baseCategory3List);
     }
 
@@ -53,7 +53,7 @@ public class BaseManageController {
                                @PathVariable Long category2Id ,
                                @PathVariable Long category3Id ){
         //  返回数据
-        return Result.ok(manageSerivce.getBaseAttrInfoList(category1Id,category2Id,category3Id));
+        return Result.ok(manageService.getBaseAttrInfoList(category1Id,category2Id,category3Id));
     }
 
     //  保存平台属性：http://api.gmall.com/admin/product/saveAttrInfo
@@ -62,7 +62,7 @@ public class BaseManageController {
     @PostMapping("saveAttrInfo")
     public Result saveAttrInfo(@RequestBody BaseAttrInfo baseAttrInfo){
         //  调用服务层方法
-        manageSerivce.saveAttrInfo(baseAttrInfo);
+        manageService.saveAttrInfo(baseAttrInfo);
         return Result.ok();
     }
 
@@ -72,7 +72,7 @@ public class BaseManageController {
         //  select * from base_attr_value where attr_id = attrId;
         //  select * from base_attr_info where id  =  attrId; if(baseAttrInfo ! =null )
         //  先判断一下当前是否存在该属性：如果有属性，则调用属性对象的属性值集合
-        BaseAttrInfo baseAttrInfo =  manageSerivce.getBaseAttrInfo(attrId);
+        BaseAttrInfo baseAttrInfo =  manageService.getBaseAttrInfo(attrId);
         if (baseAttrInfo != null){
             return Result.ok(baseAttrInfo.getAttrValueList());
         }
