@@ -3,12 +3,12 @@ package com.atguigu.gmall.list.controller;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.list.service.SearchService;
 import com.atguigu.gmall.model.list.Goods;
+import com.atguigu.gmall.model.list.SearchParam;
+import com.atguigu.gmall.model.list.SearchResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * @author mqx
@@ -46,6 +46,24 @@ public class ListApiController {
     public Result lowerGoods(@PathVariable Long skuId){
         searchService.lowerGoods(skuId);
         return Result.ok();
+    }
+
+    @GetMapping("inner/incrHotScore/{skuId}")
+    public Result incrHotScore(@PathVariable("skuId") Long skuId) {
+        // 调用服务层
+        searchService.incrHotScore(skuId);
+        return Result.ok();
+    }
+
+    //  定义检索结果的URL
+    //  @RequestBody：将Json 数据转换为Java 对象！
+    //  用户在访问检索的url: http://list.gmall.com/list.html?category3Id=61
+    //  web-all 如何接收用户传递的数据
+    @PostMapping
+    public Result list(@RequestBody SearchParam searchParam){
+        //  调用服务层方法
+        SearchResponseVo responseVo = searchService.search(searchParam);
+        return Result.ok(responseVo);
     }
 
 }

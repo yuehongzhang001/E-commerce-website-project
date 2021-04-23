@@ -100,9 +100,11 @@
             </div>
 
             <div class="type-wrap" th:each="baseAttrInfo:${attrsList}" th:unless="${#strings.contains(urlParam, 'props='+baseAttrInfo.attrId)}">
+                <!--平台属性名称-->
                 <div class="fl key" th:text="${baseAttrInfo.attrName}">网络制式</div>
                 <div class="fl value">
                     <ul class="type-list">
+                        <!--获取到平台属性值集合-->
                         <li th:each="attrValue:${baseAttrInfo.attrValueList}">
                             <!--list.html?category3Id=61&props=-->
                             <a th:href="${urlParam}+'&props='+${baseAttrInfo.attrId}+':'+${attrValue}+':'+${baseAttrInfo.attrName}+'&order='+${searchParam.order}" th:text="${attrValue}" >属性值111</a>
@@ -119,6 +121,9 @@
             <div class="sui-navbar">
                 <div class="navbar-inner filter">
                     <ul class="sui-nav">
+                        <!--skuInfo ${skuInfo.skuName}}
+                            map 与 实体类对象 功能一样！ type sort
+                        -->
                         <li th:class="${orderMap.type == '1' ? 'active': ''}">
                             <a th:href="${urlParam}+'&order=1:'+${orderMap.sort == 'asc' ? 'desc' : 'asc'}">
                                 综合<span th:if="${orderMap.type == '1'}" th:text="${orderMap.sort == 'asc' ? '↑' : '↓'}"></span>
