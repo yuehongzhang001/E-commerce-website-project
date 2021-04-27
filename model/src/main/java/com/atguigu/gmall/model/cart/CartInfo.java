@@ -2,6 +2,7 @@ package com.atguigu.gmall.model.cart;
 
 import com.atguigu.gmall.model.activity.CouponInfo;
 import com.atguigu.gmall.model.base.BaseEntity;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -44,11 +45,9 @@ public class CartInfo extends BaseEntity {
     @TableField("is_checked")
     private Integer isChecked = 1;
 
-    //  ,fill = FieldFill.INSERT
     @TableField(value = "create_time")
     private Timestamp createTime;
 
-    //  ,fill = FieldFill.INSERT_UPDATE)
     @TableField(value = "update_time")
     private Timestamp updateTime;
 

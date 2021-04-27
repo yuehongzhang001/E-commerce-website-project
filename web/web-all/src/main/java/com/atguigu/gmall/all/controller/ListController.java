@@ -34,6 +34,7 @@ public class ListController {
         //  远程调用如果传递多个参数，Long category3Id  String trademark; 不能！只能使用Json 传输
 
         Result<Map> result = listFeignClient.list(searchParam);
+        //        SearchResponseVo lists = listFeignClient.lists(searchParam);
         //  ${urlParam} 后台应该存储一个变量！
         String urlParam = makeUrlParam(searchParam);
         //  将用户传递的品牌数据传递到方法中
