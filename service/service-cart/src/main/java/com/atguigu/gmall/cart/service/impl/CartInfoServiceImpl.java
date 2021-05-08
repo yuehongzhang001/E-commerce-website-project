@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +42,7 @@ public class CartInfoServiceImpl implements CartInfoService {
     private RedisTemplate redisTemplate;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public void addToCart(Long skuId, String userId, Integer skuNum) {
 
         //  添加数据之前：
@@ -191,7 +190,6 @@ public class CartInfoServiceImpl implements CartInfoService {
         //            this.setCartKeyExpire(cartKey);
         //
         //        }
-
     }
 
     @Override
@@ -224,9 +222,9 @@ public class CartInfoServiceImpl implements CartInfoService {
         //                return cartInfo.getIsChecked().intValue()==1;
         //            }
         //        });
-        cartInfoList.stream().filter((cartInfo)->{
-            return cartInfo.getIsChecked().intValue()==1;
-        });
+        List<CartInfo> cartInfos = cartInfoList.stream().filter((cartInfo) -> {
+            return cartInfo.getIsChecked().intValue() == 1;
+        }).collect(Collectors.toList());
         //  声明一个集合 List<CartInfo>
         //        List<CartInfo> cartInfos = new ArrayList<>();
         //        for (CartInfo cartInfo : cartInfoList) {
@@ -234,9 +232,8 @@ public class CartInfoServiceImpl implements CartInfoService {
         //                cartInfos.add(cartInfo);
         //            }
         //        }
-        //
         //        return cartInfos;
-        return cartInfoList;
+        return cartInfos;
     }
 
     /**
@@ -244,8 +241,8 @@ public class CartInfoServiceImpl implements CartInfoService {
      * @param userTempId
      */
     private void deleteCartList(String userTempId) {
-        // 删除数据库，redis
-        //  delete from cart_info where user_id = userTempId
+        //        删除数据库，redis
+        //        delete from cart_info where user_id = userTempId
         //        QueryWrapper<CartInfo> queryWrapper = new QueryWrapper<>();
         //        queryWrapper.eq("user_id",userTempId);
         //        cartInfoMapper.delete(queryWrapper);
@@ -364,7 +361,7 @@ public class CartInfoServiceImpl implements CartInfoService {
      * @param userId
      * @return
      */
-    private List<CartInfo> loadCartCache(String userId) {
+    public List<CartInfo> loadCartCache(String userId) {
         //  当缓存中的购物车数据为空的时候，当前购物车的价格可能会发生变动！所以要查询一下实时价格！
         // List<CartInfo> = select * from cart_info where user_id = 2;
         QueryWrapper queryWrapper = new QueryWrapper<CartInfo>();
@@ -437,7 +434,7 @@ public class CartInfoServiceImpl implements CartInfoService {
 
                 //  int i = 1/0;
                 //  cartInfoMapper.insert(cartInfo)
-                cartAsyncService.saveCartInfo(cartInfo);// 异步操作此时还没有执行insert，所以没有Id
+                 cartAsyncService.saveCartInfo(cartInfo);// 异步操作此时还没有执行insert，所以没有Id
                 //  执行insert into 的时候出错，则redis 会继续执行！
                 cartInfoExist = cartInfo;
                 //  添加的时候，直接将数据添加到缓存！

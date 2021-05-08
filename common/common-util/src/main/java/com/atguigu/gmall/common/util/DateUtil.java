@@ -54,7 +54,6 @@ public class DateUtil {
 
     /**
      * 比对时间大小
-     *
      * @param beginDate
      * @param endDate
      * @return

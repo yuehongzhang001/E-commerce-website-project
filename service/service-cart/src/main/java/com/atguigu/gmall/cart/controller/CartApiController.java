@@ -83,5 +83,11 @@ public class CartApiController {
     public List<CartInfo> getCartCheckedList(@PathVariable(value = "userId") String userId) {
         return cartInfoService.getCartCheckedList(userId);
     }
+    //  根据userId 查询最新价格
+    @GetMapping("loadCartCache/{userId}")
+    public Result loadCartCache(@PathVariable("userId") String userId) {
+        cartInfoService.loadCartCache(userId);
+        return Result.ok();
+    }
 
 }

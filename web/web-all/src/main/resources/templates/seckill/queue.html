@@ -158,7 +158,6 @@
             saveOrder() {
                 seckill.seckillOrder(this.skuId, this.skuIdStr).then(response => {
                     //debugger
-                    console.log(JSON.stringify(response))
                     if(response.data.code == 200) {
                         this.isCheckOrder = true
                     } else {
