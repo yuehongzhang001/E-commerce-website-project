@@ -24,20 +24,19 @@
         <module>service-task</module>
     </modules>
     <dependencies>
-        <!--依赖服务的工具类-->
+
         <dependency>
             <groupId>com.atguigu.gmall</groupId>
             <artifactId>service-util</artifactId>
             <version>1.0</version>
         </dependency>
-        <!--数据载体-->
+
         <dependency>
             <groupId>com.atguigu.gmall</groupId>
             <artifactId>model</artifactId>
             <version>1.0</version>
         </dependency>
 
-        <!--web 需要启动项目-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -55,20 +54,19 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- 服务注册 -->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
-        <!-- 服务调用feign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
 
-        <!--开发者工具-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
