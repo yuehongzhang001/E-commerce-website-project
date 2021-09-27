@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Controller
 public class IndexController {
@@ -18,12 +18,11 @@ public class IndexController {
     @Autowired
     private ProductFeignClient productFeignClient;
 
-    //  http://www.gmall.com
-    //  http://www.gmall.com/index.html
+
     @GetMapping({"/","index.html"})
     public String index(HttpServletRequest request){
         Result result = productFeignClient.getBaseCategoryList();
-        //  存储一个list
+        // store a list
         request.setAttribute("list",result.getData());
         return "index/index";
     }

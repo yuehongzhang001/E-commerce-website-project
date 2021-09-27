@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum ActivityType {
-    FULL_REDUCTION("满减"),
-    FULL_DISCOUNT("满量打折" );
+    FULL_REDUCTION("full reduction"),
+    FULL_DISCOUNT("Full amount discount" );
 
-    private String comment ;
+    private String comment;
 
     ActivityType(String comment ){
         this.comment=comment;
@@ -15,7 +15,7 @@ public enum ActivityType {
 
     public static String getNameByType(String type) {
         ActivityType arrObj[] = ActivityType.values();
-        for (ActivityType obj : arrObj) {
+        for (ActivityType obj: arrObj) {
             if (obj.name().equals(type)) {
                 return obj.getComment();
             }

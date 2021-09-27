@@ -6,18 +6,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 14:10:48
  */
 public interface BaseTrademarkService extends IService<BaseTrademark> {
 
     /**
-     * 查询所有品牌数据
+     * Query all brand data
      * @param baseTrademarkPage
      * @return
      */
     IPage getBaseTradeMarkList(Page<BaseTrademark> baseTrademarkPage);
 
 
-    //  void save(BaseTrademark baseTrademark);
+    // void save(BaseTrademark baseTrademark);
 }

@@ -10,25 +10,25 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "订单活动关联表")
+@ApiModel(description = "Order Activity Association Table")
 @TableName("order_detail_activity")
 public class OrderDetailActivity extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "订单id")
+
+   @ApiModelProperty(value = "Order id")
    @TableField("order_id")
    private Long orderId;
 
-   @ApiModelProperty(value = "订单明细id")
+   @ApiModelProperty(value = "Order details id")
    @TableField("order_detail_id")
    private Long orderDetailId;
 
-   @ApiModelProperty(value = "活动ID")
+   @ApiModelProperty(value = "Activity ID")
    @TableField("activity_id")
    private Long activityId;
 
-   @ApiModelProperty(value = "活动规则")
+   @ApiModelProperty(value = "Activity Rule")
    @TableField("activity_rule")
    private Long activityRule;
 
@@ -36,7 +36,7 @@ public class OrderDetailActivity extends BaseEntity {
    @TableField("sku_id")
    private Long skuId;
 
-   @ApiModelProperty(value = "创建时间")
+   @ApiModelProperty(value = "Creation Time")
    @TableField("create_time")
    private Date createTime;
 

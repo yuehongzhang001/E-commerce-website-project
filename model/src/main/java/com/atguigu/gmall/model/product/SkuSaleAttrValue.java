@@ -14,23 +14,22 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "Sku销售属性值")
+@ApiModel(description = "Sku sales attribute value")
 @TableName("sku_sale_attr_value")
 public class SkuSaleAttrValue extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "库存单元id")
+
+	@ApiModelProperty(value = "stock unit id")
 	@TableField("sku_id")
 	private Long skuId;
 
-	@ApiModelProperty(value = "spu_id(冗余)")
+	@ApiModelProperty(value = "spu_id(redundancy)")
 	@TableField("spu_id")
 	private Long spuId;
 
-	@ApiModelProperty(value = "销售属性值id")
+	@ApiModelProperty(value = "Sales property value id")
 	@TableField("sale_attr_value_id")
 	private Long saleAttrValueId;
 
 }
-

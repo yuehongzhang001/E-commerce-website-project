@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-activity",fallback = ActivityDegradeFeignClient.class)
 public interface ActivityFeignClient {
 
     /**
-     * 返回全部列表
+     * Return to the full list
      * @return
      */
     @GetMapping("/api/activity/seckill/findAll")
     Result findAll();
 
     /**
-     * 获取实体
+     * Get entity
      *
      * @param skuId
      * @return

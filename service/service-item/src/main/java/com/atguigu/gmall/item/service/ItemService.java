@@ -3,7 +3,7 @@ package com.atguigu.gmall.item.service;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-14 14:08:38
  */
 public interface ItemService {

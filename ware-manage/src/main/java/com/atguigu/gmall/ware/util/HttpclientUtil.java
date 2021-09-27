@@ -22,19 +22,19 @@ import java.util.Map;
  */
 public class HttpclientUtil {
 
-    public static String doGet(String url)   {
+    public static String doGet(String url) {
 
-        // 创建Httpclient对象
+        // Create Httpclient object
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        // 创建http GET请求
+        // Create http GET request
         HttpGet httpGet = new HttpGet(url);
 
         CloseableHttpResponse response = null;
         try {
-            // 执行请求
+            // execute request
             response = httpclient.execute(httpGet);
-            // 判断返回状态是否为200
+            // Determine whether the return status is 200
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
@@ -48,31 +48,31 @@ public class HttpclientUtil {
             return null;
         }
 
-        return  null;
+        return null;
     }
 
 
-    public static String doPost(String url, Map<String,String> paramMap)   {
+    public static String doPost(String url, Map<String,String> paramMap) {
 
-        // 创建Httpclient对象
+        // Create Httpclient object
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        // 创建http Post请求
+        // Create http Post request
         HttpPost httpPost = new HttpPost(url);
 
         CloseableHttpResponse response = null;
         try {
             List<BasicNameValuePair> list=new ArrayList<>();
-            for (Map.Entry<String, String> entry : paramMap.entrySet()) {
-                list.add(new BasicNameValuePair(entry.getKey(),entry.getValue())) ;
+            for (Map.Entry<String, String> entry: paramMap.entrySet()) {
+                list.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
             }
             HttpEntity httpEntity=new UrlEncodedFormEntity(list,"utf-8");
 
             httpPost.setEntity(httpEntity);
-            // 执行请求
+            // execute request
             response = httpclient.execute(httpPost);
 
-            // 判断返回状态是否为200
+            // Determine whether the return status is 200
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
@@ -86,6 +86,6 @@ public class HttpclientUtil {
             return null;
         }
 
-        return  null;
+        return null;
     }
 }

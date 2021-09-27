@@ -6,13 +6,13 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 public class SearchAttr {
-    // 平台属性Id
+    // Platform attribute Id
     @Field(type = FieldType.Long)
     private Long attrId;
-    // 平台属性值名称
+    // Platform attribute value name
     @Field(type = FieldType.Keyword)
     private String attrValue;
-    // 平台属性名
+    // Platform attribute name
     @Field(type = FieldType.Keyword)
     private String attrName;
 

@@ -13,22 +13,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * HttpClient类 微信：
+ * HttpClient class WeChat:
  *
  */
 public class HttpClientUtil {
 
-    public static String doGet(String url)   {
+    public static String doGet(String url) {
 
-        // 创建Httpclient对象
+        // Create Httpclient object
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        // 创建http GET请求
+        // Create http GET request
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
         try {
-            // 执行请求
+            // execute request
             response = httpclient.execute(httpGet);
-            // 判断返回状态是否为200
+            // Determine whether the return status is 200
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity, "UTF-8");
@@ -42,28 +42,28 @@ public class HttpClientUtil {
             return null;
         }
 
-        return  null;
+        return null;
     }
 
 
-    public static void download(String url,String fileName)   {
+    public static void download(String url,String fileName) {
 
-        // 创建Httpclient对象
+        // Create Httpclient object
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        // 创建http GET请求
+        // Create http GET request
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;
         try {
-            // 执行请求
+            // execute request
             response = httpclient.execute(httpGet);
-            // 判断返回状态是否为200
+            // Determine whether the return status is 200
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
 
-               // String result = EntityUtils.toString(entity, "UTF-8");
+                // String result = EntityUtils.toString(entity, "UTF-8");
                 byte[] bytes = EntityUtils.toByteArray(entity);
                 File file =new File(fileName);
-               //  InputStream in = entity.getContent();
+                // InputStream in = entity.getContent();
                 FileOutputStream fout = new FileOutputStream(file);
                 fout.write(bytes);
 
@@ -72,14 +72,14 @@ public class HttpClientUtil {
                 httpclient.close();
                 fout.flush();
                 fout.close();
-                return  ;
+                return;
             }
             httpclient.close();
         }catch (IOException e){
             e.printStackTrace();
-            return  ;
+            return;
         }
 
-        return   ;
+        return;
     }
 }

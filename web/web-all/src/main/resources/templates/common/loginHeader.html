@@ -6,12 +6,12 @@
 <body>
 
 <div id="nav-bottom" th:fragment="loginHeader">
-    <!--顶部-->
+    <!--Top-->
     <div class="nav-top" id="header">
         <div class="top">
         </div>
 
-        <!--头部-->
+        <!--Head-->
         <div class="header">
             <div class="py-container">
                 <div class="yui3-g Logo">
@@ -24,7 +24,7 @@
                                 <!--searchAutoComplete-->
                                 <div class="input-append">
                                     <input id="keyword" type="text" v-model="keyword" class="input-error input-xxlarge" />
-                                    <button class="sui-btn btn-xlarge btn-danger" @click="search()" type="button">搜索</button>
+                                    <button class="sui-btn btn-xlarge btn-danger" @click="search()" type="button">Search</button>
                                 </div>
                             </form>
                         </div>
@@ -39,13 +39,13 @@
     <script src="/js/api/login.js"></script>
     <script th:inline="javascript">
         var item = new Vue({
-            el: '#header',
+            el:'#header',
 
             data: {
                 keyword: [[${searchParam?.keyword}]],
                 userInfo: {
-                    nickName: '',
-                    name: ''
+                    nickName:'',
+                    name:''
                 }
             },
 
@@ -63,8 +63,8 @@
                 },
 
                 search() {
-                    if(this.keyword == null) this.keyword = ''
-                    window.location.href = 'http://list.gmall.com/list.html?keyword=' + this.keyword
+                    if(this.keyword == null) this.keyword =''
+                    window.location.href ='http://list.gmall.com/list.html?keyword=' + this.keyword
                 }
             }
         })

@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "订单明细")
+@ApiModel(description = "Order Details")
 @TableName("order_detail")
 public class OrderDetail extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "订单编号")
+    @ApiModelProperty(value = "Order Number")
     @TableField("order_id")
     private Long orderId;
 
@@ -25,40 +25,40 @@ public class OrderDetail extends BaseEntity {
     @TableField("sku_id")
     private Long skuId;
 
-    @ApiModelProperty(value = "sku名称（冗余)")
+    @ApiModelProperty(value = "sku name (redundant)")
     @TableField("sku_name")
     private String skuName;
 
-    @ApiModelProperty(value = "图片名称（冗余)")
+    @ApiModelProperty(value = "Picture name (redundant)")
     @TableField("img_url")
     private String imgUrl;
 
-    @ApiModelProperty(value = "购买价格(下单时sku价格）")
+    @ApiModelProperty(value = "Purchase price (sku price when placing an order)")
     @TableField("order_price")
     private BigDecimal orderPrice;
 
-    @ApiModelProperty(value = "购买个数")
+    @ApiModelProperty(value = "Number of purchases")
     @TableField("sku_num")
     private Integer skuNum;
 
-    // 是否有足够的库存！
+    // Is there enough stock!
     @TableField(exist = false)
     private String hasStock;
 
-    @ApiModelProperty(value = "操作时间")
+    @ApiModelProperty(value = "operation time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private Date createTime;
 
-    @ApiModelProperty(value = "实际支付金额")
+    @ApiModelProperty(value = "Actual payment amount")
     @TableField("split_total_amount")
     private BigDecimal splitTotalAmount;
 
-    @ApiModelProperty(value = "促销分摊金额")
+    @ApiModelProperty(value = "Promotional apportionment amount")
     @TableField("split_activity_amount")
     private BigDecimal splitActivityAmount;
 
-    @ApiModelProperty(value = "优惠券分摊金额")
+    @ApiModelProperty(value = "Coupon allocation amount")
     @TableField("split_coupon_amount")
     private BigDecimal splitCouponAmount;
 

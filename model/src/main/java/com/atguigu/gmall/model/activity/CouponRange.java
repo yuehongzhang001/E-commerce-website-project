@@ -11,14 +11,14 @@ import lombok.Data;
 @ApiModel(description = "CouponRange")
 @TableName("coupon_range")
 public class CouponRange extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "优惠券id")
+
+   @ApiModelProperty(value = "coupon id")
    @TableField("coupon_id")
    private Long couponId;
 
-   @ApiModelProperty(value = "范围类型")
+   @ApiModelProperty(value = "Scope Type")
    @TableField("range_type")
    private String rangeType;
 

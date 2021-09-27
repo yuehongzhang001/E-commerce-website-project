@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 自定义异常处理方法
+     * Custom exception handling method
      * @param e
      * @return
      */

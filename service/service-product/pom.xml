@@ -12,13 +12,13 @@
     <artifactId>service-product</artifactId>
 
     <dependencies>
-        <!--依赖分布式文件系统-->
+        <!--Rely on distributed file system-->
         <dependency>
             <groupId>net.oschina.zcx7878</groupId>
             <artifactId>fastdfs-client-java</artifactId>
         </dependency>
 
-        <!--rabbitmq消息队列-->
+        <!--rabbitmq message queue-->
         <dependency>
             <groupId>com.atguigu.gmall</groupId>
             <artifactId>rabbit-util</artifactId>

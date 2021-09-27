@@ -6,7 +6,7 @@ import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.common.util.IpUtil;
 import com.atguigu.gmall.model.user.UserInfo;
 import com.atguigu.gmall.user.service.UserService;
-import com.sun.org.apache.regexp.internal.RE;
+
 import org.redisson.misc.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("/api/user/passport")
@@ -31,54 +31,54 @@ public class PassportApiController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    // Url是login
-    //  前台页面传递的Json 字符串
+    // Url is login
+    // Json string passed by the front page
     @PostMapping("login")
     public Result login(@RequestBody UserInfo userInfo, HttpServletRequest request){
 
         UserInfo info = userService.login(userInfo);
-        //  登录成功需要生成token 页面需要获取！ 然后将token 放入cookie 中！ 还需要放入userInfo 对象！
-        //        Cookie cookie = new Cookie("name","刘德华");
-        //        cookie.setDomain("gmall.com");
-        //        cookie.setPath("/");
-        //        cookie.setMaxAge(7*24*60*60);
+        // A token page needs to be generated for successful login! Then put the token in the cookie! You also need to put in the userInfo object!
+        // Cookie cookie = new Cookie("name","Andy Lau");
+        // cookie.setDomain("gmall.com");
+        // cookie.setPath("/");
+        // cookie.setMaxAge(7*24*60*60);
         if (info!=null){
-            //  用户登录成功了！
-            //  当用户登录成功，生成token ，同时将nickName 一起放入map 中。后台将数据返回给页面！页面通过js 将数据存储到了cookie！
+            // User login is successful!
+            // When the user logs in successfully, a token is generated and the nickName is put into the map together. The background returns the data to the page! The page stores the data in the cookie through js!
             String token = UUID.randomUUID().toString();
-            //  判断用户是否登录的真实依据，应该是将数据放入缓存！
-            //  确定数据类型以及key = user:login:
-            //  userKey=user:login:uusef123123 value={"ip":"192.168.200.128","userId":"2"}
+            // The real basis for judging whether a user is logged in should be to put the data in the cache!
+            // Determine the data type and key = user:login:
+            // userKey=user:login:uusef123123 value={"ip":"192.168.200.128","userId":"2"}
             String userKey = RedisConst.USER_LOGIN_KEY_PREFIX+token;
-            //  String userKey = RedisConst.USER_LOGIN_KEY_PREFIX+info.getId();
-            //  缓存中到底要存储什么?  info {有点多} info.getId(); 只存储用户Id！
-            //  为了防止别人伪造 token 做登录！ 此时，需要存储一个Ip 地址！
-            //  获取到了当前的服务器的IP 地址
+            // String userKey = RedisConst.USER_LOGIN_KEY_PREFIX+info.getId();
+            // What exactly should be stored in the cache? info {a bit too much} info.getId(); Only store the user ID!
+            // To prevent others from forging tokens to log in! At this time, an IP address needs to be stored!
+            // Get the IP address of the current server
             String ip = IpUtil.getIpAddress(request);
-            //  定义一个JsonObject 对象
+            // Define a JsonObject object
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("userId",info.getId().toString());
             jsonObject.put("ip",ip);
 
-            //  将登录之后的数据放入缓存！
+            // Put the data after login into the cache!
             redisTemplate.opsForValue().set(userKey,jsonObject.toJSONString(),RedisConst.USERKEY_TIMEOUT, TimeUnit.SECONDS);
 
             HashMap<Object, Object> hashMap = new HashMap<>();
             hashMap.put("token",token);
             hashMap.put("nickName",info.getNickName());
-            //  将map 中的数据返回给前台页面！
+            // Return the data in the map to the front page!
             return Result.ok(hashMap);
         }else {
-            return Result.fail().message("登录失败！");
+            return Result.fail().message("Login failed!");
         }
     }
 
     @GetMapping("logout")
     public Result logout(HttpServletRequest request){
-        //  登录的时候将数据 redis cookie！  删除对应的数据！
-        //  缓存的key  = user:login:1e583d6c-7042-4b7d-814d-8384ffb114b7
-        //  获取到token 组成缓存的key！
-        String token =  request.getHeader("token");;  //  token 存在cookie 中！ 还存在哪呢? header 中！
+        // The data will be redis cookie when logging in! Delete the corresponding data!
+        // Cached key = user:login:1e583d6c-7042-4b7d-814d-8384ffb114b7
+        // Get the key of the token that forms the cache!
+        String token = request.getHeader("token");; // The token is stored in the cookie! Where does it still exist? In the header!
         String userKey = "user:login:"+token;
         this.redisTemplate.delete(userKey);
         return Result.ok();

@@ -30,21 +30,21 @@
         me.elm = $elm;
         //opts
         me.opts = opts;
-        //是否开始滑动
+        //Whether to start sliding
         me.swipestart = opts.swipestart;
-        //最小值
+        //Minimum
         me.min = opts.min;
-        //最大值
+        //Maximum
         me.max = opts.max;
-        //当前滑动条所处的位置
+        //The current position of the slider
         me.index = opts.index;
-        //是否滑动成功
+        //Whether the slide is successful
         me.isOk = opts.isOk;
-        //滑块宽度
+        //Slider width
         me.labelWidth = me.elm.find('#label').width();
-        //滑块背景
+        //Slider background
         me.sliderBg = me.elm.find('#slider_bg');
-        //鼠标在滑动按钮的位置
+        //The position of the mouse on the sliding button
         me.lableIndex = opts.lableIndex;
         //success
         me.success = success;
@@ -56,7 +56,7 @@
         me.updateView();
         me.elm.find("#label").on("mousedown", function (event) {
             var e = event || window.event;
-            me.lableIndex = e.clientX - this.offsetLeft;
+            me.lableIndex = e.clientX-this.offsetLeft;
             me.handerIn();
         }).on("mousemove", function (event) {
             me.handerMove(event);
@@ -66,7 +66,7 @@
             me.handerOut();
         }).on("touchstart", function (event) {
             var e = event || window.event;
-            me.lableIndex = e.originalEvent.touches[0].pageX - this.offsetLeft;
+            me.lableIndex = e.originalEvent.touches[0].pageX-this.offsetLeft;
             me.handerIn();
         }).on("touchmove", function (event) {
             me.handerMove(event, "mobile");
@@ -76,7 +76,7 @@
     };
 
     /**
-     * 鼠标/手指接触滑动按钮
+     * Mouse/finger touch sliding button
      */
     SliderUnlock.prototype.handerIn = function () {
         var me = this;
@@ -86,20 +86,20 @@
     };
 
     /**
-     * 鼠标/手指移出
+     * Mouse/finger out
      */
     SliderUnlock.prototype.handerOut = function () {
         var me = this;
-        //停止
+        //stop
         me.swipestart = false;
         //me.move();
-        if (me.index < me.max) {
+        if (me.index <me.max) {
             me.reset();
         }
     };
 
     /**
-     * 鼠标/手指移动
+     * Mouse/finger movement
      * @param event
      * @param type
      */
@@ -109,35 +109,35 @@
             event.preventDefault();
             event = event || window.event;
             if (type == "mobile") {
-                me.index = event.originalEvent.touches[0].pageX - me.lableIndex;
+                me.index = event.originalEvent.touches[0].pageX-me.lableIndex;
             } else {
-                me.index = event.clientX - me.lableIndex;
+                me.index = event.clientX-me.lableIndex;
             }
             me.move();
         }
     };
 
     /**
-     * 鼠标/手指移动过程
+     * Mouse/finger movement process
      */
     SliderUnlock.prototype.move = function () {
         var me = this;
         if ((me.index + me.labelWidth) >= me.max) {
-            me.index = me.max - me.labelWidth -2;
-            //停止
+            me.index = me.max-me.labelWidth -2;
+            //stop
             me.swipestart = false;
-            //解锁
+            //Unlock
             me.isOk = true;
         }
-        if (me.index < 0) {
+        if (me.index <0) {
             me.index = me.min;
-            //未解锁
+            //Unlocked
             me.isOk = false;
         }
-        if (me.index+me.labelWidth+2 == me.max && me.max > 0 && me.isOk) {
-            //解锁默认操作
+        if (me.index+me.labelWidth+2 == me.max && me.max> 0 && me.isOk) {
+            //Unlock the default operation
             $('#label').unbind().next('#labelTip').
-            text(me.opts.successLabelTip).css({'color': '#fff'});
+            text(me.opts.successLabelTip).css({'color':'#fff'});
 
             me.success();
         }
@@ -146,7 +146,7 @@
 
 
     /**
-     * 更新视图
+     * Update view
      */
     SliderUnlock.prototype.updateView = function () {
         var me = this;
@@ -156,7 +156,7 @@
     };
 
     /**
-     * 重置slide的起点
+     * Reset the starting point of the slide
      */
     SliderUnlock.prototype.reset = function () {
         var me = this;
@@ -169,12 +169,12 @@
     };
 
     /**
-     * 检测元素是否存在
+     * Detect the presence of elements
      * @param elm
      * @returns {boolean}
      */
     SliderUnlock.prototype.checkElm = function (elm) {
-        if($(elm).length > 0){
+        if($(elm).length> 0){
             return true;
         }else{
             throw "this element does not exist.";
@@ -182,7 +182,7 @@
     };
 
     /**
-     * 检测传入参数是否是function
+     * Check whether the incoming parameter is a function
      * @param fn
      * @returns {boolean}
      */
@@ -193,6 +193,5 @@
             throw "the param is not a function.";
         }
     };
-
     window['SliderUnlock'] = SliderUnlock;
 })(jQuery, window, document);

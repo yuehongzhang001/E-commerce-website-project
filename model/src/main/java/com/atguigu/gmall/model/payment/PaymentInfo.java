@@ -19,51 +19,50 @@ import java.util.Date;
  *
  */
 @Data
-@ApiModel(description = "支付信息")
+@ApiModel(description = "Payment Information")
 @TableName("payment_info")
 public class PaymentInfo extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "对外业务编号")
+
+	@ApiModelProperty(value = "External Business Number")
 	@TableField("out_trade_no")
 	private String outTradeNo;
 
-	@ApiModelProperty(value = "订单编号")
+	@ApiModelProperty(value = "Order Number")
 	@TableField("order_id")
 	private Long orderId;
 
-	@ApiModelProperty(value = "支付类型（微信 支付宝）")
+	@ApiModelProperty(value = "Payment type (WeChat Alipay)")
 	@TableField("payment_type")
 	private String paymentType;
 
-	@ApiModelProperty(value = "交易编号")
+	@ApiModelProperty(value = "Transaction Number")
 	@TableField("trade_no")
 	private String tradeNo;
 
-	@ApiModelProperty(value = "支付金额")
+	@ApiModelProperty(value = "payment amount")
 	@TableField("total_amount")
 	private BigDecimal totalAmount;
 
-	@ApiModelProperty(value = "交易内容")
+	@ApiModelProperty(value = "transaction content")
 	@TableField("subject")
 	private String subject;
 
-	@ApiModelProperty(value = "支付状态")
+	@ApiModelProperty(value = "Payment Status")
 	@TableField("payment_status")
 	private String paymentStatus;
 
-	@ApiModelProperty(value = "创建时间")
+	@ApiModelProperty(value = "Creation Time")
 	@TableField("create_time")
 	private Date createTime;
 
-	@ApiModelProperty(value = "回调时间")
+	@ApiModelProperty(value = "callback time")
 	@TableField("callback_time")
 	private Date callbackTime;
 
-	@ApiModelProperty(value = "回调信息")
+	@ApiModelProperty(value = "callback information")
 	@TableField("callback_content")
 	private String callbackContent;
 
 }
-

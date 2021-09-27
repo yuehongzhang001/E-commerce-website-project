@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 获取ip地址
+ * Get ip address
  */
 public class IpUtil {
 
@@ -25,7 +25,7 @@ public class IpUtil {
             if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getRemoteAddr();
                 if (ipAddress.equals("127.0.0.1")) {
-                    // 根据网卡取本机配置的IP
+                    // Take the IP configured by the machine according to the network card
                     InetAddress inet = null;
                     try {
                         inet = InetAddress.getLocalHost();
@@ -35,10 +35,10 @@ public class IpUtil {
                     ipAddress = inet.getHostAddress();
                 }
             }
-            // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-            if (ipAddress != null && ipAddress.length() > 15) { // "***.***.***.***".length()
+            // In the case of multiple agents, the first IP is the real IP of the client, and multiple IPs are divided according to','
+            if (ipAddress != null && ipAddress.length()> 15) {// "***.***.***.***".length()
                 // = 15
-                if (ipAddress.indexOf(",") > 0) {
+                if (ipAddress.indexOf(",")> 0) {
                     ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
                 }
             }
@@ -49,12 +49,12 @@ public class IpUtil {
 
         return ipAddress;
     }
-    // 网关中获取Ip地址
+    // Get the IP address from the gateway
     public static String getGatwayIpAddress(ServerHttpRequest request) {
         HttpHeaders headers = request.getHeaders();
         String ip = headers.getFirst("x-forwarded-for");
         if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
-            // 多次反向代理后会有多个ip值，第一个ip才是真实ip
+            // There will be multiple ip values ​​after multiple reverse proxy, the first ip is the real ip
             if (ip.indexOf(",") != -1) {
                 ip = ip.split(",")[0];
             }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 全局异常处理类
+ * Global exception handling class
  *
  */
 @ControllerAdvice
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 自定义异常处理方法
+     * Custom exception handling method
      * @param e
      * @return
      */

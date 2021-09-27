@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 @Aspect
@@ -31,60 +31,60 @@ public class GmallCacheAspect {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //  切注解：
+    // Cut annotations:
     @SneakyThrows
     @Around("@annotation(com.atguigu.gmall.common.cache.GmallCache)")
     public Object gmallCacheGetData(ProceedingJoinPoint joinPoint){
         Object object = null;
         /*
-            1.  获取方法上的注解
-            2.  获取到注解的前缀，并组成缓存的key
-            3.  根据key 获取缓存中的数据
-            4.  判断是否获取到了数据{分布式锁的业务逻辑}
+            1. Get the annotations on the method
+            2. Get the prefix of the annotation and form the cached key
+            3. Get the data in the cache according to the key
+            4. Determine whether the data is acquired {business logic of distributed lock}
          */
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         GmallCache gmallCache = signature.getMethod().getAnnotation(GmallCache.class);
 
-        //  获取到注解的前缀
+        // Get the prefix of the annotation
         String prefix = gmallCache.prefix();
 
-        //  获取到方法上的参数
+        // Get the parameters on the method
         Object[] args = joinPoint.getArgs();
-        //  定义缓存的key
+        // Define the key of the cache
         String key = prefix + Arrays.asList(args);
 
         try {
-            //  从缓存获取方法
+            // Get method from cache
             object = gitCache(key,signature);
-            //  判断
+            //  judge
             if (object == null){
-                //  分布式锁的业务逻辑上来了！
-                //  先加锁
+                // The business logic of distributed locks is here!
+                // first lock
                 RLock lock = redissonClient.getLock(key + ":lock");
-                //  上锁：
+                // Locked:
                 boolean res = lock.tryLock(RedisConst.SKULOCK_EXPIRE_PX1, RedisConst.SKULOCK_EXPIRE_PX2, TimeUnit.SECONDS);
-                //  获取到锁对象
+                // Get the lock object
                 if (res){
                     try {
-                        //  执行被GmallCache 注解表示的方法体中的代码块！
+                        // Execute the code block in the method body indicated by the GmallCache annotation!
                         object = joinPoint.proceed(joinPoint.getArgs());
-                        //  判断 防止缓存穿透
+                        // Judgment to prevent cache penetration
                         if (object==null){
                             Object object1 = new Object();
                             redisTemplate.opsForValue().set(key,JSON.toJSONString(object1),RedisConst.SKUKEY_TEMPORARY_TIMEOUT,TimeUnit.SECONDS);
                             return object1;
                         }
-                        //  不为空！
-                        //  skuInfo 不为空
-                        //  set key value ; 对象，字符串！
+                        //  not null!
+                        // skuInfo is not empty
+                        // set key value; Object, string!
                         redisTemplate.opsForValue().set(key, JSON.toJSONString(object),RedisConst.SKUKEY_TIMEOUT,TimeUnit.SECONDS);
-                        //  返回数据！
+                        // Return data!
                         return object;
                     }finally {
                         lock.unlock();
                     }
                 }else {
-                    //  没有获取到锁对象
+                    // The lock object is not acquired
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
@@ -93,28 +93,28 @@ public class GmallCacheAspect {
                     return gmallCacheGetData(joinPoint);
                 }
             }else {
-                //  缓存有了，直接返回！
+                // The cache is there, just return!
                 return object;
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-        //  直接返回数据库！
+        // Go back to the database directly!
         Object proceed = joinPoint.proceed(joinPoint.getArgs());
         return proceed;
     }
 
     private Object gitCache(String key,MethodSignature signature) {
-        //  返回String
+        // return String
         String sObject = (String) redisTemplate.opsForValue().get(key);
         if (!StringUtils.isEmpty(sObject)){
-            //  返回数据！ 获取到返回类型
-            //  如果缓存 ： public BigDecimal getSkuPrice(Long skuId) 返回值 BigDecimal
-            //  如果缓存：  public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) 返回SpuSaleAttr
-            //  如果缓存：  public SkuInfo getSkuInfo(Long skuId) 返回SkuInfo
+            // Return data! Get the return type
+            // If cached: public BigDecimal getSkuPrice(Long skuId) return value BigDecimal
+            // If cached: public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) return SpuSaleAttr
+            // If cached: public SkuInfo getSkuInfo(Long skuId) returns SkuInfo
             Class returnType = signature.getReturnType();
 
-            //  将字符串变为要返回的数据类型！
+            // Change the string to the data type to be returned!
             return JSON.parseObject(sObject,returnType);
         }
         return null;

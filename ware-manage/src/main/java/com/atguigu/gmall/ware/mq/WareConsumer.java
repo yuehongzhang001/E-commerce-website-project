@@ -41,7 +41,7 @@ public class WareConsumer {
     private GwareService gwareService;
 
     /**
-     * 支付成功扣减库存
+     * Deduction of inventory after successful payment
      * @param message
      * @param channel
      * @throws IOException
@@ -55,17 +55,17 @@ public class WareConsumer {
         WareOrderTask wareOrderTask = JSON.parseObject(orderTaskJson, WareOrderTask.class);
         wareOrderTask.setTaskStatus(TaskStatus.PAID.name());
         gwareService.saveWareOrderTask(wareOrderTask);
-        // 检查是否拆单！  看商品是否在同一个仓库中！如果在同一个仓库，则不会发生拆单，否则拆单！
+        // Check if the order is split! See if the goods are in the same warehouse! If it is in the same warehouse, the order will not be split, otherwise the order will be split!
 
         List<WareOrderTask> wareSubOrderTaskList = gwareService.checkOrderSplit(wareOrderTask);
         if (wareSubOrderTaskList != null && wareSubOrderTaskList.size() >= 2) {
-            for (WareOrderTask orderTask : wareSubOrderTaskList) {
+            for (WareOrderTask orderTask: wareSubOrderTaskList) {
                 gwareService.lockStock(orderTask);
             }
         } else {
             gwareService.lockStock(wareOrderTask);
         }
-        //确认收到消息
+        //Acknowledge receipt of the message
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

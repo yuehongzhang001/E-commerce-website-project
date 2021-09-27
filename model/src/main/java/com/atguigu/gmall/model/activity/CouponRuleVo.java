@@ -10,33 +10,33 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@ApiModel(description = "优惠券规则")
+@ApiModel(description = "Coupon Rules")
 public class CouponRuleVo implements Serializable {
-   
+
    private static final long serialVersionUID = 1L;
 
-   @ApiModelProperty(value = "优惠券id")
+   @ApiModelProperty(value = "coupon id")
    private Long couponId;
 
-   @ApiModelProperty(value = "范围类型")
+   @ApiModelProperty(value = "Scope Type")
    private CouponRangeType rangeType;
 
-   @ApiModelProperty(value = "满额数")
+   @ApiModelProperty(value = "full amount")
    private BigDecimal conditionAmount;
 
-   @ApiModelProperty(value = "满件数")
+   @ApiModelProperty(value = "full number")
    private Long conditionNum;
 
-   @ApiModelProperty(value = "减金额")
+   @ApiModelProperty(value = "Amount reduced")
    private BigDecimal benefitAmount;
 
-   @ApiModelProperty(value = "折扣")
+   @ApiModelProperty(value = "discount")
    private BigDecimal benefitDiscount;
 
-   @ApiModelProperty(value = "优惠券参与的商品list")
+   @ApiModelProperty(value = "The list of products that the coupon participates in")
    private List<CouponRange> couponRangeList;
 
-   @ApiModelProperty(value = "优惠券范围描述")
+   @ApiModelProperty(value = "Coupon Range Description")
    private String rangeDesc;
 
 }

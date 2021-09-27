@@ -21,28 +21,28 @@ import lombok.Data;
 public class BaseCategoryView extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "一级分类编号")
+
+	@ApiModelProperty(value = "First level classification number")
 	@TableField("category1_id")
 	private Long category1Id;
 
-	@ApiModelProperty(value = "一级分类名称")
+	@ApiModelProperty(value = "First level category name")
 	@TableField("category1_name")
 	private String category1Name;
 
-	@ApiModelProperty(value = "二级分类编号")
+	@ApiModelProperty(value = "Secondary Classification Number")
 	@TableField("category2_id")
 	private Long category2Id;
 
-	@ApiModelProperty(value = "二级分类名称")
+	@ApiModelProperty(value = "second-level category name")
 	@TableField("category2_name")
 	private String category2Name;
 
-	@ApiModelProperty(value = "三级分类编号")
+	@ApiModelProperty(value = "Three-level classification number")
 	@TableField("category3_id")
 	private Long category3Id;
 
-	@ApiModelProperty(value = "三级分类名称")
+	@ApiModelProperty(value = "three-level category name")
 	@TableField("category3_name")
 	private String category3Name;
 

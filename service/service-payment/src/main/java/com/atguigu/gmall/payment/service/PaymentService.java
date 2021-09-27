@@ -6,23 +6,23 @@ import com.atguigu.gmall.model.payment.PaymentInfo;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface PaymentService {
 
-    //  保存交易记录接口
+    // Save transaction record interface
     void savePaymentInfo(OrderInfo orderInfo, String paymentType);
 
-    //  根据商户订单号查询交易记录
+    // Query transaction records according to the merchant order number
     PaymentInfo getPaymentInfo(String outTradeNo, String name);
 
-    //  更新交易记录
+    // Update transaction records
     void paySuccess(String outTradeNo, String name, Map<String, String> paramMap);
 
-    //  更新交易记录
+    // Update transaction records
     void updatePaymentInfo(String outTradeNo, String name, PaymentInfo paymentInfo);
 
-    //  关闭交易记录
+    // Close transaction history
     void closePayment(Long orderId);
 
 }

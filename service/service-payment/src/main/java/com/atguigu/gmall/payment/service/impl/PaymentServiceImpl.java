@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -29,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void savePaymentInfo(OrderInfo orderInfo, String paymentType) {
-        //  条件判断
+        // Conditional judgment
         QueryWrapper<PaymentInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("order_id", orderInfo.getId());
         queryWrapper.eq("payment_type", paymentType);
@@ -38,7 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
             return;
         }
 
-        //  直接插入数据到paymentInfo;
+        // Insert data directly into paymentInfo;
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setCreateTime(new Date());
         paymentInfo.setOutTradeNo(orderInfo.getOutTradeNo());
@@ -54,7 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentInfo getPaymentInfo(String outTradeNo, String name) {
-        //  直接写
+        // write directly
         QueryWrapper<PaymentInfo> paymentInfoQueryWrapper = new QueryWrapper<>();
         paymentInfoQueryWrapper.eq("out_trade_no",outTradeNo);
         paymentInfoQueryWrapper.eq("payment_type",name);
@@ -64,62 +64,62 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void paySuccess(String outTradeNo, String name, Map<String, String> paramMap) {
-        //  交易记录状态如何是CLOSED ，PAID ,则直接返回不需要继续处理！
+        // If the transaction record status is CLOSED, PAID, it will return directly without further processing!
         PaymentInfo paymentInfoQuery = getPaymentInfo(outTradeNo, name);
 
-        //  判断状态
+        // Judgment status
         if("CLOSED".equals(paymentInfoQuery.getPaymentStatus())
-            || "PAID".equals(paymentInfoQuery.getPaymentStatus())){
+                || "PAID".equals(paymentInfoQuery.getPaymentStatus())){
             return;
         }
 
-        //  trade_no , payment_status,callback_time,callback_content
-        //  第一个参数：更新的内容！ 第二个参数更新的条件
+        // trade_no, payment_status, callback_time, callback_content
+        // The first parameter: updated content! The condition of the second parameter update
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setTradeNo(paramMap.get("trade_no"));
         paymentInfo.setPaymentStatus(PaymentStatus.PAID.name());
         paymentInfo.setCallbackTime(new Date());
         paymentInfo.setCallbackContent(paramMap.toString());
 
-        //  构建条件
+        // Build conditions
         UpdateWrapper<PaymentInfo> paymentInfoUpdateWrapper = new UpdateWrapper<>();
         paymentInfoUpdateWrapper.eq("out_trade_no",outTradeNo);
         paymentInfoUpdateWrapper.eq("payment_type",name);
-        //  更新数据
+        //  update data
         paymentInfoMapper.update(paymentInfo,paymentInfoUpdateWrapper);
 
-        //  this.updatePaymentInfo(outTradeNo,name,paymentInfo);
-        //  发送消息给订单！ 更新订单状态： 可以传递orderId , outTradeNo;
-        //  outTradeNo = paramMap.get("out_trade_no");  paymentInfoQuery.getOutTradeNo();
-        //  orderId = paymentInfoQuery.getOrderId();
+        // this.updatePaymentInfo(outTradeNo,name,paymentInfo);
+        // Send a message to the order! Update order status: orderId, outTradeNo can be passed;
+        // outTradeNo = paramMap.get("out_trade_no"); paymentInfoQuery.getOutTradeNo();
+        // orderId = paymentInfoQuery.getOrderId();
         rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_PAYMENT_PAY,MqConst.ROUTING_PAYMENT_PAY,paymentInfoQuery.getOrderId());
 
     }
-    //  内部封装的！
+    // Internally encapsulated!
     public void updatePaymentInfo(String outTradeNo, String name, PaymentInfo paymentInfo) {
         UpdateWrapper<PaymentInfo> paymentInfoUpdateWrapper = new UpdateWrapper<>();
         paymentInfoUpdateWrapper.eq("out_trade_no",outTradeNo);
         paymentInfoUpdateWrapper.eq("payment_type",name);
-        //  更新数据
+        //  update data
         paymentInfoMapper.update(paymentInfo,paymentInfoUpdateWrapper);
     }
 
     @Override
     public void closePayment(Long orderId) {
-        //  在做订单的时候，什么时候才会在paymentInfo 中产生交易记录? 在有二维码的时候才会有本地paymentInfo 记录！
-        //  关闭交易记录;payment_status
+        // When making an order, when will the transaction record be generated in paymentInfo? Only when there is a QR code will there be a local paymentInfo record!
+        // Close the transaction record; payment_status
         UpdateWrapper<PaymentInfo> paymentInfoUpdateWrapper = new UpdateWrapper<>();
         paymentInfoUpdateWrapper.eq("order_id",orderId);
-        //  判断是否有数据产生！
+        // Determine whether there is data generated!
         Integer count = paymentInfoMapper.selectCount(paymentInfoUpdateWrapper);
         if (count==0){
             return;
         }
 
-        //  更新
+        //  renew
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setPaymentStatus(PaymentStatus.CLOSED.name());
-        //  第一个参数表示修改的内容，第二个参数表示更新的条件！
+        // The first parameter indicates the modified content, and the second parameter indicates the update condition!
         paymentInfoMapper.update(paymentInfo,paymentInfoUpdateWrapper);
     }
 }

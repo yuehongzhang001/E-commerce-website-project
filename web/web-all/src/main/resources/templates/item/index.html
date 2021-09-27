@@ -5,171 +5,191 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-    <title>尚品汇 产品详情</title>
-    <link rel="icon" href="/img/favicon.ico">
-
-    <link rel="stylesheet" type="text/css" href="/css/all.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/pages-item.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/pages-zoom.css"/>
-
-    <div th:include="common/head :: head"></div>
-</head>
-
-<body>
-
-<!--页面顶部-->
-<div th:include="common/header :: header"></div>
-
-<div id="itemArray">
-    <!-- 商品分类导航 -->
-    <div class="typeNav">
-        <div class="py-container">
-            <div class="yui3-g NavList">
-                <div class="all-sorts-list">
-                    <div class="yui3-u Left all-sort">
-                        <h4>全部商品分类</h4>
-                    </div>
-                </div>
-                <div class="yui3-u Center navArea">
-                    <ul class="nav">
-                        <li class="f-item">服装城</li>
-                        <li class="f-item">美妆馆</li>
-                        <li class="f-item">尚品汇超市</li>
-                        <li class="f-item">全球购</li>
-                        <li class="f-item">闪购</li>
-                        <li class="f-item">团购</li>
-                        <li class="f-item">有趣</li>
-                        <li class="f-item"><a href="http://activity.gmall.com/seckill.html" target="_blank">秒杀</a></li>
+    <div style="visibility: hidden;" class="J-content toolbar-panel tbar-panel-history toolbar-animate-in">
+        <h3 class="tbar-panel-header J-panel-header">
+            <a href="#" target="_blank" class="title">
+                <i></i>
+                <em class="title">My tracks</em>
+            </a>
+            <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('history');"></span>
+        </h3>
+        <div class="tbar-panel-main">
+            <div class="tbar-panel-content J-panel-content">
+                <div class="jt-history-wrap">
+                    <ul>
+                        <!--<li class="jth-item">
+                        <a href="#" class="img-wrap"> <img src="../../.../portal/img/like_03.png" height="100" width="100" /> </a>
+                        <a class="add-cart-button" href="#" target="_blank">Add to cart</a>
+                        <a href="#" target="_blank" class="price">￥498.00</a>
+                        </li>
+                        <li class="jth-item">
+                        <a href="#" class="img-wrap"> <img src="../../../portal/img/like_02.png" height="100" width="100" />< /a>
+                        <a class="add-cart-button" href="#" target="_blank">Add to cart</a>
+                        <a href="#" target="_blank" class="price">￥498.00</a>
+                        </li>-->
                     </ul>
+                    <a href="#" class="history-bottom-more" target="_blank">View more footprint products &gt;&gt;</a>
                 </div>
-                <div class="yui3-u Right"></div>
             </div>
         </div>
+        <div class="tbar-panel-footer J-panel-footer"></div>
     </div>
-    <div class="py-container" >
-        <div id="item">
-            <div class="crumb-wrap">
-                <ul class="sui-breadcrumb">
-                    <li>
+
+    </div>
+
+    <div class="toolbar-header"></div>
+
+    <!-- Sidebar button -->
+    <div class="toolbar-tabs J-tab">
+        <div onclick="cartPanelView.tabItemClick('cart')" class="toolbar-tab tbar-tab-cart" data="shopping cart" tag="cart">
+            <i class="tab-ico"></i>
+            <em class="tab-text"></em>
+            <span class="tab-sub J-count "id="tab-sub-cart-count">0</span>
+        </div>
+        <div onclick="cartPanelView.tabItemClick('follow')" class="toolbar-tab tbar-tab-follow" data="my attention" tag="follow">
+            <i class="tab-ico"></i>
+            <em class="tab-text"></em>
+            <span class="tab-sub J-count hide">0</span>
+        </div>
+        <div onclick="cartPanelView.tabItemClick('history')" class="toolbar-tab tbar-tab-history" data="My footprint" tag="history">
+            <i class="tab-ico"></i>
+            <em class="tab-text"></em>
+            <span class="tab-sub J-count hide">0</span>
+        </div>
+    </div>
+
+    <div class="toolbar-footer">
+        <div class="toolbar-tab tbar-tab-top">
+            <a href="#">
+                <i class="tab-ico "></i>
+                <em class="footer-tab-text">Top</em>
+            </a>
+        </div>
+        <div class="toolbar-tab tbar-tab-feedback">
+            <a href="#" target="_blank">
+                <i class="tab-ico"></i>
+                <em class="footer-tab-text ">Feedback</em>
+            </a>
+        </div>
                         <a th:href="@{http://list.gmall.com/list.html?category1Id={category1Id}(category1Id=${categoryView.category1Id})}" th:text="${categoryView.category1Name}">手机、数码、通讯</a>
-                    </li>
-                    <li>
-                        <a th:href="@{http://list.gmall.com/list.html?category2Id={category2Id}(category2Id=${categoryView.category2Id})}" th:text="${categoryView.category2Name}">手机</a>
-                    </li>
-                    <li>
-                        <a th:href="@{http://list.gmall.com/list.html?category3Id={category3Id}(category3Id=${categoryView.category3Id})}" th:text="${categoryView.category3Name}">Apple苹果</a>
-                    </li>
-                    <li class="active" th:text="${skuInfo.skuName}">iphone 6S系类</li>
-                </ul>
-            </div>
-            <!--product-info-->
-            <div class="product-info">
-                <div class="fl preview-wrap">
-                    <!--放大镜效果-->
-                    <div class="zoom">
-                        <!--默认第一个预览-->
-                        <div id="preview" class="spec-preview hm-display-statistics" th:attr="hm-display=|{'displayType':'query','item_type':'sku_id','item':${skuInfo.id},'order':1}|">
+                        </li>
+                        <li>
+                            <a th:href="@{http://list.gmall.com/list.html?category2Id={category2Id}(category2Id=${categoryView.category2Id})}" th:text="${categoryView.category2Name}">手机</a>
+                        </li>
+                        <li>
+                            <a th:href="@{http://list.gmall.com/list.html?category3Id={category3Id}(category3Id=${categoryView.category3Id})}" th:text="${categoryView.category3Name}">Apple苹果</a>
+                        </li>
+                        <li class="active" th:text="${skuInfo.skuName}">iphone 6S系类</li>
+                        </ul>
+                    </div>
+    <!--product-info-->
+    <div class="product-info">
+        <div class="fl preview-wrap">
+            <!--Magnifying glass effect-->
+            <div class="zoom">
+                <!--Default first preview-->
+                <div id="preview" class="spec-preview hm-display-statistics" th:attr="hm-display=|{'displayType':'query','item_type':'sku_id','item': ${skuInfo.id},'order':1}|">
                      <span class="jqzoom">
                         <img th:jqimg="${skuInfo.skuDefaultImg}" th:src="${skuInfo.skuDefaultImg}" width="400" height="400"/>
                      </span>
-                        </div>
-                        <!--下方的缩略图-->
-                        <div class="spec-scroll">
-                            <a class="prev">&lt;</a>
-                            <!--左右按钮-->
-                            <div class="items">
-                                <ul>
-                                    <li th:each="skuImage: ${skuInfo.skuImageList}">
-                                        <img th:src="${skuImage.imgUrl}" th:bimg="${skuImage.imgUrl}" onmousemove="preview(this)"/>
-                                    </li>
-                                </ul>
-                            </div>
-                            <a class="next">&gt;</a>
-                        </div>
-                    </div>
-
-
-                    <div class="preview-info" style="margin-top: 20px">
-                        <div class="left-btns">
-                            <a class="follow J-follow followed hm-action-statistics" href="#none" @click="addFavor()" :hm-action = "'{\'action_id\':\'favor_add\', \'item_type\': \'skuId\', \'item\': '+skuId+'}'">
-                                <i class="sprite-follow-sku"></i><em>{{ favorLable }}</em>
-                            </a>
-                            <a class="share J-share" href="#none">
-                                <i class="sprite-share"></i><em>分享</em>
-                            </a>
-                            <a class="compare J-compare J_contrast" href="#none">
-                                <i class="sprite-compare"></i><em>对比</em>
-                            </a>
-                        </div>
-                    </div>
-
                 </div>
-                <div class="fr itemInfo-wrap" id="app" >
-                    <div class="sku-name">
-                        <h4 th:text="${skuInfo.skuName}"></h4>
+                <!--Thumbnail below-->
+                <div class="spec-scroll">
+                    <a class="prev">&lt;</a>
+                    <!--Left and right buttons-->
+                    <div class="items">
+                        <ul>
+                            <li th:each="skuImage: ${skuInfo.skuImageList}">
+                                <img th:src="${skuImage.imgUrl}" th:bimg="${skuImage.imgUrl}" onmousemove="preview(this)"/>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="news">
-                        <span>推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返</span>
+                    <a class="next">&gt;</a>
+                </div>
+            </div>
+
+
+            <div class="preview-info" style="margin-top: 20px">
+                <div class="left-btns">
+                    <a class="follow J-follow followed hm-action-statistics" href="#none" @click="addFavor()" :hm-action = "'{\'action_id\':\'favor_add\', \'item_type\': \'skuId\', \'item\':'+skuId+'}'">
+                        <i class="sprite-follow-sku"></i><em>{{ favorLable }}</em>
+                    </a>
+                    <a class="share J-share" href="#none">
+                        <i class="sprite-share"></i><em>Share</em>
+                    </a>
+                    <a class="compare J-compare J_contrast" href="#none">
+                        <i class="sprite-compare"></i><em>Compare</em>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="fr itemInfo-wrap" id="app">
+            <div class="sku-name">
+                <h4 th:text="${skuInfo.skuName}"></h4>
+            </div>
+            <div class="news">
+                <span>Recommend to choose [mobile discount purchase] below, the mobile phone package will be completed, there is no need to change the number, and there will be a monthly cost rebate</span>
+            </div>
+            <div class="summary">
+                <div class="summary-wrap">
+                    <div class="fl title">
+                        <i>Price 　　格</i>
                     </div>
-                    <div class="summary">
-                        <div class="summary-wrap">
-                            <div class="fl title">
-                                <i>价　　格</i>
-                            </div>
-                            <div class="fl price">
-                                <i>¥</i>
-                                <em><span th:text="${price}">4499.00</span></em>
-                                <span>降价通知</span>
-                            </div>
-                            <div class="fr remark">
-                                <i>累计评价</i>
-                                <em>11111</em>
-                            </div>
-                        </div>
-                        <div class="summary-wrap" v-if="couponInfoList !== undefined && couponInfoList.length > 0">
-                            <div class="fl title">
-                                <i>优 惠 券</i>
-                            </div>
-                            <div class="fl fix-width">
-                                <div class="fl fix-width" @click="couponMore()">
-                                    <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index < 3" :title="couponInfo.couponName"><i class="red-bg i-coupon" v-if="couponInfo.couponType == 'CASH'">现金券{{ couponInfo.benefitAmount }}元</i></a>
-                                    <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index < 3" :title="couponInfo.couponName"><i class="red-bg i-coupon" v-if="couponInfo.couponType == 'DISCOUNT'">折扣券{{ couponInfo.benefitDiscount }}折</i></a>
-                                    <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index < 3" :title="couponInfo.couponName"><i class="red-bg i-coupon" v-if="couponInfo.couponType == 'FULL_REDUCTION'">满{{ couponInfo.conditionAmount }}减{{ couponInfo.benefitAmount }}元</i></a>
-                                    <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index < 3" :title="couponInfo.couponName"><i class="red-bg i-coupon" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">满{{ couponInfo.conditionNum }}件打{{ couponInfo.benefitDiscount }}折</i></a>
-                                    <a href="#none" v-if="couponInfoList.length > 3" class="coupon-more">更多</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="summary-wrap" v-if="activityRuleList !== undefined && activityRuleList.length > 0">
-                            <div class="fl title">
-                                <i>促　　销</i>
-                            </div>
-                            <div class="fl fix-width">
-                                <div v-for="activityRule in activityRuleList" :key="activityRule.id">
-                                    <i class="red-bg">{{ activityRule.activityType == 'FULL_REDUCTION' ? '满减' : '折扣' }}</i>
-                                    <em class="t-gray" v-if="activityRule.activityType == 'FULL_REDUCTION'">满{{ activityRule.conditionAmount }}减{{ activityRule.benefitAmount }}元 </em>
-                                    <em class="t-gray" v-if="activityRule.activityType == 'FULL_DISCOUNT'">满{{ activityRule.conditionNum}}件打{{ activityRule.benefitDiscount }}折</em>
-                                </div>
-                            </div>
+                    <div class="fl price">
+                        <i>¥</i>
+                        <em><span th:text="${price}">4499.00</span></em>
+                        <span>Notice of price reduction</span>
+                    </div>
+                    <div class="fr remark">
+                        <i>Cumulative reviews</i>
+                        <em>11111</em>
+                    </div>
+                </div>
+                <div class="summary-wrap" v-if="couponInfoList !== undefined && couponInfoList.length> 0">
+                    <div class="fl title">
+                        <i>Vouchers</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <div class="fl fix-width" @click="couponMore()">
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='CASH'">Cash coupon {{ couponInfo.benefitAmount }} yuan</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon {{ couponInfo.benefitDiscount }} discount</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full {{ couponInfo.conditionAmount }} minus {{ couponInfo.benefitAmount }} yuan</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='FULL_DISCOUNT'">full {{ couponInfo.conditionNum }} {{ couponInfo.benefitDiscount }} discount</i></a>
+                            <a href="#none" v-if="couponInfoList.length> 3" class="coupon-more">More</a>
                         </div>
                     </div>
-                    <div class="support">
-                        <div class="summary-wrap">
-                            <div class="fl title">
-                                <i>支　　持</i>
-                            </div>
-                            <div class="fl fix-width">
-                                <em class="t-gray">以旧换新，闲置手机回收 4G套餐超值抢 礼品购</em>
-                            </div>
+                </div>
+                <div class="summary-wrap" v-if="activityRuleList !== undefined && activityRuleList.length> 0">
+                    <div class="fl title">
+                        <i>Promote 　　 sales</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <div v-for="activityRule in activityRuleList" :key="activityRule.id">
+                            <i class="red-bg">{{ activityRule.activityType =='FULL_REDUCTION'?'Full reduction':'Discount' }}</i>
+                            <em class="t-gray" v-if="activityRule.activityType =='FULL_REDUCTION'">Full {{ activityRule.conditionAmount }} minus {{ activityRule.benefitAmount }} yuan </em>
+                            <em class="t-gray" v-if="activityRule.activityType =='FULL_DISCOUNT'">full {{ activityRule.conditionNum}} {{ activityRule.benefitDiscount }} discount</em>
                         </div>
-                        <div class="summary-wrap">
-                            <div class="fl title">
-                                <i>配 送 至</i>
-                            </div>
-                            <div class="fl fix-width">
-                                <em class="t-gray">满999.00另加20.00元，或满1999.00另加30.00元，或满2999.00另加40.00元，即可在购物车换购热销商品</em>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="support">
+                <div class="summary-wrap">
+                    <div class="fl title">
+                        <i>Support 　　Support</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <em class="t-gray">Trade the old for the new, recycle the idle mobile phone. The 4G package is great value to grab the gift purchase</em>
+                    </div>
+                </div>
+                <div class="summary-wrap">
+                    <div class="fl title">
+                        <i>Delivered to</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <em class="t-gray">Over 999.00 plus 20.00 yuan, or over 1999.00 plus 30.00 yuan, or over 2999.00 plus 40.00 yuan, you can redeem hot-selling items in the shopping cart</em>
+                    </div>
+                </div>
                         <div class="summary-wrap">
                             <div class="fl title">
                                 <i>重   量</i>
@@ -223,285 +243,262 @@
                 <div class="fl aside">
                     <ul class="sui-nav nav-tabs tab-wraped">
                         <li class="active">
-                            <a href="#index" data-toggle="tab">
-                                <span>相关分类</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#profile" data-toggle="tab">
-                                <span>推荐品牌</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content tab-wraped">
-                        <div id="index" class="tab-pane active">
-                            <ul class="part-list unstyled">
-                                <li>手机</li>
-                                <li>手机壳</li>
-                                <li>内存卡</li>
-                                <li>Iphone配件</li>
-                                <li>贴膜</li>
-                                <li>手机耳机</li>
-                                <li>移动电源</li>
-                                <li>平板电脑</li>
-                            </ul>
-                            <ul class="goods-list unstyled">
-                                <li>
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="./img/_/part01.png"/>
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s (A1699)</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-                                                <em>¥</em>
-                                                <i>6088.00</i>
-                                            </strong>
-                                        </div>
-                                        <div class="operate">
-                                            <a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="./img/_/part02.png"/>
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s (A1699)</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-                                                <em>¥</em>
-                                                <i>6088.00</i>
-                                            </strong>
-                                        </div>
-                                        <div class="operate">
-                                            <a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="./img/_/part03.png"/>
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s (A1699)</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-                                                <em>¥</em>
-                                                <i>6088.00</i>
-                                            </strong>
-                                        </div>
-                                        <div class="operate">
-                                            <a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
-                                        </div>
-                                    </div>
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="./img/_/part02.png"/>
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s (A1699)</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-                                                <em>¥</em>
-                                                <i>6088.00</i>
-                                            </strong>
-                                        </div>
-                                        <div class="operate">
-                                            <a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
-                                        </div>
-                                    </div>
-                                    <div class="list-wrap">
-                                        <div class="p-img">
-                                            <img src="./img/_/part03.png"/>
-                                        </div>
-                                        <div class="attr">
-                                            <em>Apple苹果iPhone 6s (A1699)</em>
-                                        </div>
-                                        <div class="price">
-                                            <strong>
-                                                <em>¥</em>
-                                                <i>6088.00</i>
-                                            </strong>
-                                        </div>
-                                        <div class="operate">
-                                            <a href="javascript:void(0);" class="sui-btn btn-bordered">加入购物车</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="profile" class="tab-pane">
-                            <p>推荐品牌</p>
+                </div>
+                <div class="summary-wrap" v-if="couponInfoList !== undefined && couponInfoList.length> 0">
+                    <div class="fl title">
+                        <i>Vouchers</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <div class="fl fix-width" @click="couponMore()">
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='CASH'">Cash coupon {{ couponInfo.benefitAmount }} yuan</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon {{ couponInfo.benefitDiscount }} discount</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full {{ couponInfo.conditionAmount }} minus {{ couponInfo.benefitAmount }} yuan</i></a>
+                            <a href="#none" v-for="(couponInfo, index) in couponInfoList" :key="couponInfo.id" v-if="index <3" :title="couponInfo.couponName"><i class ="red-bg i-coupon" v-if="couponInfo.couponType =='FULL_DISCOUNT'">full {{ couponInfo.conditionNum }} {{ couponInfo.benefitDiscount }} discount</i></a>
+                            <a href="#none" v-if="couponInfoList.length> 3" class="coupon-more">More</a>
                         </div>
                     </div>
                 </div>
-                <div class="fr detail">
-                    <div class="clearfix fitting">
-                        <h4 class="kt">选择搭配</h4>
-                        <div class="good-suits">
-                            <div class="fl master">
-                                <div class="list-wrap">
-                                    <div class="p-img">
-                                        <img src="./img/_/l-m01.png"/>
-                                    </div>
-                                    <em>￥5299</em>
-                                    <i>+</i>
-                                </div>
-                            </div>
-                            <div class="fl suits">
-                                <ul class="suit-list">
-                                    <li class="">
-                                        <div id="">
-                                            <img src="./img/_/dp01.png"/>
-                                        </div>
-                                        <i>Feless费勒斯VR</i>
-                                        <label data-toggle="checkbox" class="checkbox-pretty">
-                                            <input type="checkbox">
-                                            <span>39</span>
-                                        </label>
-                                    </li>
-                                    <li class="">
-                                        <div id="">
-                                            <img src="./img/_/dp02.png"/></div>
-                                        <i>Feless费勒斯VR</i>
-                                        <label data-toggle="checkbox" class="checkbox-pretty">
-                                            <input type="checkbox">
-                                            <span>50</span>
-                                        </label>
-                                    </li>
-                                    <li class="">
-                                        <div id="">
-                                            <img src="./img/_/dp03.png"/>
-                                        </div>
-                                        <i>Feless费勒斯VR</i>
-                                        <label data-toggle="checkbox" class="checkbox-pretty">
-                                            <input type="checkbox">
-                                            <span>59</span>
-                                        </label>
-                                    </li>
-                                    <li class="">
-                                        <div id="">
-                                            <img src="./img/_/dp04.png"/>
-                                        </div>
-                                        <i>Feless费勒斯VR</i>
-                                        <label data-toggle="checkbox" class="checkbox-pretty">
-                                            <input type="checkbox">
-                                            <span>99</span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="fr result">
-                                <div class="num">已选购0件商品</div>
-                                <div class="price-tit">
-                                    <strong>套餐价</strong>
-                                </div>
-                                <div class="price">￥5299</div>
-                                <button class="sui-btn  btn-danger addshopcar">加入购物车</button>
-                            </div>
+                <div class="summary-wrap" v-if="activityRuleList !== undefined && activityRuleList.length> 0">
+                    <div class="fl title">
+                        <i>Promote 　　 sales</i>
+                    </div>
+                    <div class="fl fix-width">
+                        <div v-for="activityRule in activityRuleList" :key="activityRule.id">
+                            <i class="red-bg">{{ activityRule.activityType =='FULL_REDUCTION'?'Full reduction':'Discount' }}</i>
+                            <em class="t-gray" v-if="activityRule.activityType =='FULL_REDUCTION'">Full {{ activityRule.conditionAmount }} minus {{ activityRule.benefitAmount }} yuan </em>
+                            <em class="t-gray" v-if="activityRule.activityType =='FULL_DISCOUNT'">full {{ activityRule.conditionNum}} {{ activityRule.benefitDiscount }} discount</em>
                         </div>
                     </div>
-                    <div class="tab-main intro">
-                        <ul class="sui-nav nav-tabs tab-wraped">
-                            <li class="active">
-                                <a href="#one" data-toggle="tab">
-                                    <span>商品介绍</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#two" data-toggle="tab">
-                                    <span>规格与包装</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#three" data-toggle="tab">
-                                    <span>售后保障</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#four" data-toggle="tab">
-                                    <span>商品评价</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#five" data-toggle="tab">
-                                    <span>手机社区</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                        <div class="tab-content tab-wraped">
-                            <div id="one" class="tab-pane active">
-                                <ul class="goods-intro unstyled">
-                                    <li>分辨率：1920*1080(FHD)</li>
-                                    <li>后置摄像头：1200万像素</li>
-                                    <li>前置摄像头：500万像素</li>
-                                    <li>核 数：其他</li>
-                                    <li>频 率：以官网信息为准</li>
-                                    <li>品牌： Apple</li>
-                                    <li>商品名称：APPLEiPhone 6s Plus</li>
-                                    <li>商品编号：1861098</li>
-                                    <li>商品毛重：0.51kg</li>
-                                    <li>商品产地：中国大陆</li>
-                                    <li>热点：指纹识别，Apple Pay，金属机身，拍照神器</li>
-                                    <li>系统：苹果（IOS）</li>
-                                    <li>像素：1000-1600万</li>
-                                    <li>机身内存：64GB</li>
-                                </ul>
-                                <div class="intro-detail">
-                                    <img src="./img/_/intro01.png"/>
-                                    <img src="./img/_/intro02.png"/>
-                                    <img src="./img/_/intro03.png"/>
-                                </div>
+                </div>
+            </div>
+    <div class="support">
+        <div class="summary-wrap">
+            <div class="fl title">
+                <i>Support 　　Support</i>
+            </div>
+            <div class="fl fix-width">
+                <em class="t-gray">Trade the old for the new, recycle the idle mobile phone. The 4G package is great value to grab the gift purchase</em>
+            </div>
+        </div>
+        <div class="summary-wrap">
+            <div class="fl title">
+                <i>Delivered to</i>
+            </div>
+            <div class="fl fix-width">
+                <em class="t-gray">Over 999.00 plus 20.00 yuan, or over 1999.00 plus 30.00 yuan, or over 2999.00 plus 40.00 yuan, you can redeem hot-selling items in the shopping cart</em>
+            </div>
+        </div>
+    </div>
+    <div class="price">
+        <strong>
+            <em>¥</em>
+            <i>6088.00</i>
+        </strong>
+    </div>
+    <div class="operate">
+        <a href="javascript:void(0);" class="sui-btn btn-bordered">Add to cart</a>
+    </div>
+    </div>
+    <div class="list-wrap">
+        <div class="p-img">
+            <img src="./img/_/part02.png"/>
+        </div>
+        <div class="attr">
+            <em>Apple iPhone 6s (A1699)</em>
+        </div>
+        <div class="price">
+            <strong>
+                <em>¥</em>
+                <i>6088.00</i>
+            </strong>
+        </div>
+        <div class="operate">
+            <a href="javascript:void(0);" class="sui-btn btn-bordered">Add to cart</a>
+        </div>
+    </div>
+    <div class="list-wrap">
+        <div class="p-img">
+            <img src="./img/_/part03.png"/>
+        </div>
+        <div class="attr">
+            <em>Apple iPhone 6s (A1699)</em>
+        </div>
+        <div class="price">
+            <strong>
+                <em>¥</em>
+                <i>6088.00</i>
+            </strong>
+        </div>
+        <div class="operate">
+            <a href="javascript:void(0);" class="sui-btn btn-bordered">Add to cart</a>
+        </div>
+    </div>
+    </li>
+    </ul>
+    </div>
+    <div id="profile" class="tab-pane">
+        <p>Recommended brand</p>
+    </div>
+    </div>
+    </div>
+    <div class="fr detail">
+        <div class="clearfix fitting">
+            <h4 class="kt">Choose a match</h4>
+            <div class="good-suits">
+                <div class="fl master">
+                    <div class="list-wrap">
+                        <div class="p-img">
+                            <img src="./img/_/l-m01.png"/>
+                        </div>
+                        <em>￥5299</em>
+                        <i>+</i>
+                    </div>
+                </div>
+                <div class="fl suits">
+                    <ul class="suit-list">
+                        <li class="">
+                            <div id="">
+                                <img src="./img/_/dp01.png"/>
                             </div>
-                            <div id="two" class="tab-pane">
-                                <p>规格与包装</p>
+                            <i>Feless Feless VR</i>
+                            <label data-toggle="checkbox" class="checkbox-pretty">
+                                <input type="checkbox">
+                                <span>39</span>
+                            </label>
+                        </li>
+                        <li class="">
+                            <div id="">
+                                <img src="./img/_/dp02.png"/></div>
+                            <i>Feless Feless VR</i>
+                            <label data-toggle="checkbox" class="checkbox-pretty">
+                                <input type="checkbox">
+                                <span>50</span>
+                            </label>
+                        </li>
+                        <li class="">
+                            <div id="">
+                                <img src="./img/_/dp03.png"/>
                             </div>
-                            <div id="three" class="tab-pane">
-                                <p>售后保障</p>
+                            <i>Feless Feless VR</i>
+                            <label data-toggle="checkbox" class="checkbox-pretty">
+                                <input type="checkbox">
+                                <span>59</span>
+                            </label>
+                        </li>
+                        <li class="">
+                            <div id="">
+                                <img src="./img/_/dp04.png"/>
                             </div>
-                            <div id="four" class="tab-pane">
-                                <div class="comment">
-                                    <div class="com-tit">商品评价</div>
-                                    <div class="com-percent">
-                                        <p>好评度
-                                            <span class="percent">96%</span>
-                                        </p>
-                                    </div>
-                                    <div class="com-tab-type">
-                                        <ul class="type">
-                                            <li class="current">
-                                                <a href="javascript:;">全部评价(123456)</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">晒图(500)</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">追评(500)</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">好评(500)</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">中评(500)</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:;">差评(500)</a>
-                                            </li>
-                                        </ul>
-                                        <div class="content">
-                                            <div class="com-item" v-for="commentInfo in commentList" :key="commentInfo.id">
-                                                <div class="user-column">
-                                                    <div class="username">
+                            <i>Feless Feless VR</i>
+                            <label data-toggle="checkbox" class="checkbox-pretty">
+                                <input type="checkbox">
+                                <span>99</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fr result">
+                    <div class="num">0 items have been purchased</div>
+                    <div class="price-tit">
+                        <strong>Package price</strong>
+                    </div>
+                    <div class="price">￥5299</div>
+                    <button class="sui-btn btn-danger addshopcar">Add to shopping cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="tab-main intro">
+            <ul class="sui-nav nav-tabs tab-wraped">
+                <li class="active">
+                    <a href="#one" data-toggle="tab">
+                        <span>Product introduction</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#two" data-toggle="tab">
+                        <span>Specifications and packaging</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#three" data-toggle="tab">
+                        <span>After-sales guarantee</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#four" data-toggle="tab">
+                        <span>Product Evaluation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#five" data-toggle="tab">
+                        <span>Mobile community</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <div class="tab-content tab-wraped">
+                <div id="one" class="tab-pane active">
+                    <ul class="goods-intro unstyled">
+                        <li>Resolution: 1920*1080(FHD)</li>
+                        <li>Rear camera: 12 million pixels</li>
+                        <li>Front camera: 5 million pixels</li>
+                        <li>Number of audits: other</li>
+                        <li>Frequency: Subject to official website information</li>
+                        <li>Brand: Apple</li>
+                        <li>Product name: APPLEiPhone 6s Plus</li>
+                        <li>Product ID: 1861098</li>
+                        <li>Product gross weight: 0.51kg</li>
+                        <li>Product origin: Mainland China</li>
+                        <li>Hot spot: fingerprint recognition, Apple Pay, metal body, camera artifact</li>
+                        <li>System: Apple (IOS)</li>
+                        <li>Pixel: 10-16 million </li>
+                        <li>Body memory: 64GB</li>
+                    </ul>
+                    <div class="intro-detail">
+                        <img src="./img/_/intro01.png"/>
+                        <img src="./img/_/intro02.png"/>
+                        <img src="./img/_/intro03.png"/>
+                    </div>
+                </div>
+                <div id="two" class="tab-pane">
+                    <p>Specifications and packaging</p>
+                </div>
+                <div id="three" class="tab-pane">
+                    <p>After-sales guarantee</p>
+                </div>
+                <div id="four" class="tab-pane">
+                    <div class="comment">
+                        <div class="com-tit">Product evaluation</div>
+                        <div class="com-percent">
+                            <p>Praise rating
+                                <span class="percent">96%</span>
+                            </p>
+                        </div>
+                        <div class="com-tab-type">
+                            <ul class="type">
+                                <li class="current">
+                                    <a href="javascript:;">All reviews (123456)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Picture(500)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Review (500)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Praise (500)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Medium review (500)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Bad reviews (500)</a>
+                                </li>
+                            </ul>
+                            <div class="content">
+                                <div class="com-item" v-for="commentInfo in commentList" :key="commentInfo.id">
+                                    <div class="user-column">
+                                        <div class="username">
                                                         <img :src="commentInfo.headImg" width="30"/>{{ commentInfo.nickName }}
                                                     </div>
                                                     <div class="usernum">品享值258698</div>
@@ -561,12 +558,11 @@
                             </div>
                         </li>
                         <li class="yui3-u-1-6">
-                            <div class="list-wrap">
-                                <div class="p-img">
-                                    <img src="./img/_/itemlike02.png"/>
-                                </div>
+                            <div class="list-wrap"><div class="p-img">
+                                <img src="./img/_/itemlike02.png"/>
+                            </div>
                                 <div class="attr">
-                                    <em>Apple苹果iPhone 6s/6s Plus 16G 64G 128G</em>
+                                    <em>Apple iPhone 6s/6s Plus 16G 64G 128G</em>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -575,7 +571,7 @@
                                     </strong>
                                 </div>
                                 <div class="commit">
-                                    <i class="command">已有700人评价</i>
+                                    <i class="command">700 people commented</i>
                                 </div>
                             </div>
                         </li>
@@ -585,7 +581,7 @@
                                     <img src="./img/_/itemlike03.png"/>
                                 </div>
                                 <div class="attr">
-                                    <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                    <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -594,7 +590,7 @@
                                     </strong>
                                 </div>
                                 <div class="commit">
-                                    <i class="command">已有700人评价</i>
+                                    <i class="command">700 people commented</i>
                                 </div>
                             </div>
                         </li>
@@ -604,7 +600,7 @@
                                     <img src="./img/_/itemlike04.png"/>
                                 </div>
                                 <div class="attr">
-                                    <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                    <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -613,7 +609,7 @@
                                     </strong>
                                 </div>
                                 <div class="commit">
-                                    <i class="command">已有700人评价</i>
+                                    <i class="command">700 people commented</i>
                                 </div>
                             </div>
                         </li>
@@ -623,7 +619,7 @@
                                     <img src="./img/_/itemlike05.png"/>
                                 </div>
                                 <div class="attr">
-                                    <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                    <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -632,7 +628,7 @@
                                     </strong>
                                 </div>
                                 <div class="commit">
-                                    <i class="command">已有700人评价</i>
+                                    <i class="command">700 people commented</i>
                                 </div>
                             </div>
                         </li>
@@ -642,7 +638,7 @@
                                     <img src="./img/_/itemlike06.png"/>
                                 </div>
                                 <div class="attr">
-                                    <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                    <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                 </div>
                                 <div class="price">
                                     <strong>
@@ -651,100 +647,100 @@
                                     </strong>
                                 </div>
                                 <div class="commit">
-                                    <i class="command">已有700人评价</i>
+                                    <i class="command">700 people commented</i>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
     </div>
-    <!-- 底部栏位 -->
-    <!--页面底部-->
+    </div>
+    <!-- Bottom column -->
+    <!--Bottom of the page-->
     <div class="clearfix footer">
         <div class="py-container">
             <div class="footlink">
                 <div class="clearfix Mod-list">
                     <div class="yui3-g">
                         <div class="yui3-u-1-6">
-                            <h4>购物指南</h4>
+                            <h4>Shopping Guide</h4>
                             <ul class="unstyled">
-                                <li>购物流程</li>
-                                <li>会员介绍</li>
-                                <li>生活旅行/团购</li>
-                                <li>常见问题</li>
-                                <li>购物指南</li>
+                                <li>Shopping process</li>
+                                <li>Member Introduction</li>
+                                <li>Life travel/group purchase</li>
+                                <li>Frequently asked questions</li>
+                                <li>Shopping guide</li>
                             </ul>
 
                         </div>
                         <div class="yui3-u-1-6">
-                            <h4>配送方式</h4>
+                            <h4>Delivery method</h4>
                             <ul class="unstyled">
-                                <li>上门自提</li>
-                                <li>211限时达</li>
-                                <li>配送服务查询</li>
-                                <li>配送费收取标准</li>
-                                <li>海外配送</li>
+                                <li>Home pick up</li>
+                                <li>211 Limited Time Up</li>
+                                <li>Distribution service inquiry</li>
+                                <li>Delivery fee charging standard</li>
+                                <li>Overseas delivery</li>
                             </ul>
                         </div>
                         <div class="yui3-u-1-6">
-                            <h4>支付方式</h4>
+                            <h4>Payment method</h4>
                             <ul class="unstyled">
-                                <li>货到付款</li>
-                                <li>在线支付</li>
-                                <li>分期付款</li>
-                                <li>邮局汇款</li>
-                                <li>公司转账</li>
+                                <li>Cash on delivery</li>
+                                <li>Online payment</li>
+                                <li>Instalment payment</li>
+                                <li>Post office remittance</li>
+                                <li>Company transfer</li>
                             </ul>
                         </div>
                         <div class="yui3-u-1-6">
-                            <h4>售后服务</h4>
+                            <h4>After-sales service</h4>
                             <ul class="unstyled">
-                                <li>售后政策</li>
-                                <li>价格保护</li>
-                                <li>退款说明</li>
-                                <li>返修/退换货</li>
-                                <li>取消订单</li>
+                                <li>After-sales policy</li>
+                                <li>Price protection</li>
+                                <li>Refund instructions</li>
+                                <li>Repair/return/exchange</li>
+                                <li>Cancel order</li>
                             </ul>
                         </div>
                         <div class="yui3-u-1-6">
-                            <h4>特色服务</h4>
+                            <h4>Special Services</h4>
                             <ul class="unstyled">
-                                <li>夺宝岛</li>
-                                <li>DIY装机</li>
-                                <li>延保服务</li>
-                                <li>尚品汇E卡</li>
-                                <li>尚品汇通信</li>
+                                <li>Treasure Island</li>
+                                <li>DIY installation</li>
+                                <li>Extended Warranty Service</li>
+                                <li>Shangpinhui E Card</li>
+                                <li>Shangpinhui Communication</li>
                             </ul>
                         </div>
                         <div class="yui3-u-1-6">
-                            <h4>帮助中心</h4>
+                            <h4>Help Center</h4>
                             <img src="/img/wx_cz.jpg">
                         </div>
                     </div>
                 </div>
                 <div class="Mod-copyright">
                     <ul class="helpLink">
-                        <li>关于我们<span class="space"></span></li>
-                        <li>联系我们<span class="space"></span></li>
-                        <li>关于我们<span class="space"></span></li>
-                        <li>商家入驻<span class="space"></span></li>
-                        <li>营销中心<span class="space"></span></li>
-                        <li>友情链接<span class="space"></span></li>
-                        <li>关于我们<span class="space"></span></li>
-                        <li>营销中心<span class="space"></span></li>
-                        <li>友情链接<span class="space"></span></li>
-                        <li>关于我们</li>
+                        <li>About us<span class="space"></span></li>
+                        <li>Contact us<span class="space"></span></li>
+                        <li>About us<span class="space"></span></li>
+                        <li>Businesses settled in<span class="space"></span></li>
+                        <li>Marketing Center<span class="space"></span></li>
+                        <li>Friendly link<span class="space"></span></li>
+                        <li>About us<span class="space"></span></li>
+                        <li>Marketing Center<span class="space"></span></li>
+                        <li>Friendly link<span class="space"></span></li>
+                        <li>About us</li>
                     </ul>
-                    <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-                    <p>京ICP备19006430号</p>
+                    <p>Address: 6th Floor, Comprehensive Building, Hongfu Science Park, Changping District, Beijing</p>
+                    <p>Beijing ICP No. 19006430</p>
                 </div>
             </div>
         </div>
     </div>
-    <!--页面底部END-->
-    <!--侧栏面板开始-->
+    <!--Bottom of the pageEND-->
+    <!--Start of sidebar panel-->
     <div class="J-global-toolbar">
         <div class="toolbar-wrap J-wrap">
             <div class="toolbar" :style="coupon.more == 0 ? 'width:59px;' : 'width:270px;'">
@@ -760,31 +756,31 @@
                             <div class="tbar-panel-content J-panel-content">
                                 <div id="J-cart-tips" class="tbar-tipbox hide">
                                     <div class="tip-inner">
-                                        <span class="tip-text">还没有登录，登录后商品将被保存</span>
-                                        <a href="#none" class="tip-btn J-login">登录</a>
+                                        <span class="tip-text">have not logged in yet, the product will be saved after logging in</span>
+                                        <a href="#none" class="tip-btn J-login">Log in</a>
                                     </div>
                                 </div>
                                 <div id="J-cart-render">
-                                    <!-- 列表 -->
+                                    <!-- List -->
                                     <div id="cart-list" class="tbar-cart-list">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- 小计 -->
+                        <!-- Subtotal -->
                         <div id="cart-footer" class="tbar-panel-footer J-panel-footer">
                             <div class="tbar-checkout">
-                                <div class="jtc-number"><strong class="J-count" id="cart-number">0</strong>件商品</div>
-                                <div class="jtc-sum"> 共计：<strong class="J-total" id="cart-sum">¥0</strong></div>
-                                <a class="jtc-btn J-btn" href="#none" target="_blank">去购物车结算</a>
+                                <div class="jtc-number"><strong class="J-count" id="cart-number">0</strong> items</div>
+                                <div class="jtc-sum"> Total: <strong class="J-total" id="cart-sum">¥0</strong></div>
+                                <a class="jtc-btn J-btn" href="#none" target="_blank">Go to the shopping cart for settlement</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 我的关注 -->
+                    <!-- My attention -->
                     <div style="visibility: hidden;" data-name="follow" class="J-content toolbar-panel tbar-panel-follow">
                         <h3 class="tbar-panel-header J-panel-header">
-                            <a href="#" target="_blank" class="title"> <i></i> <em class="title">我的关注</em> </a>
+                            <a href="#" target="_blank" class="title"> <i></i> <em class="title">My following</em> </a>
                             <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('follow');"></span>
                         </h3>
                         <div class="tbar-panel-main">
@@ -797,10 +793,10 @@
                         <div class="tbar-panel-footer J-panel-footer"></div>
                     </div>
 
-                    <!-- 我的优惠券 -->
+                    <!-- My coupon -->
                     <div id="coupon-div" class="J-content toolbar-panel tbar-panel-history toolbar-animate-in">
                         <h3 class="tbar-panel-header J-panel-header coupon-more">
-                            <a href="#none" class="title"> <i></i> <em class="title">我的优惠券</em> </a>
+                            <a href="#none" class="title"> <i></i> <em class="title">My coupon</em> </a>
                             <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('history');"></span>
                         </h3>
                         <div class="tbar-panel-main">
@@ -810,28 +806,28 @@
 
                                         <li v-for="couponInfo in couponInfoList" :key="couponInfo.id" class="jth-item" style="width: 190px;height:100%; padding: 10px 10px;">
                                             <div class="coupon-price">
-                                                <span class="token" v-if="couponInfo.couponType == 'CASH'">{{ couponInfo.benefitAmount }}元</span>
-                                                <span class="token" v-if="couponInfo.couponType == 'DISCOUNT'">{{ couponInfo.benefitDiscount }}折</span>
-                                                <span class="token" v-if="couponInfo.couponType == 'FULL_REDUCTION'">{{ couponInfo.benefitAmount }}元</span>
+                                                <span class="token" v-if="couponInfo.couponType =='CASH'">{{ couponInfo.benefitAmount }}yuan</span>
+                                                <span class="token" v-if="couponInfo.couponType =='DISCOUNT'">{{ couponInfo.benefitDiscount }} discount</span>
+                                                <span class="token" v-if="couponInfo.couponType =='FULL_REDUCTION'">{{ couponInfo.benefitAmount }}yuan</span>
                                                 <span class="token" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">{{ couponInfo.benefitDiscount }}折</span>
 
                                                 <span class="coupon-name" v-if="couponInfo.couponType == 'CASH'">现金券</span>
-                                                <span class="coupon-name" v-if="couponInfo.couponType == 'DISCOUNT'">折扣券</span>
-                                                <span class="coupon-name" v-if="couponInfo.couponType == 'FULL_REDUCTION'">满减卷</span>
-                                                <span class="coupon-name" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">满件打折卷</span>
+                                                <span class="coupon-name" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon</span>
+                                                <span class="coupon-name" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full reduction</span>
+                                                <span class="coupon-name" v-if="couponInfo.couponType =='FULL_DISCOUNT'">Full piece discount coupon</span>
                                             </div>
                                             <div class="coupon-info">
-                                                <span class="condition" v-if="couponInfo.couponType == 'CASH'">现金券{{ couponInfo.benefitAmount }}元</span>
-                                                <span class="condition" v-if="couponInfo.couponType == 'DISCOUNT'">折扣券{{ couponInfo.benefitDiscount }}折</span>
-                                                <span class="condition" v-if="couponInfo.couponType == 'FULL_REDUCTION'">满{{ couponInfo.conditionAmount }}减{{ couponInfo.benefitAmount }}元</span>
-                                                <span class="condition" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">满{{ couponInfo.conditionNum }}件打{{ couponInfo.benefitDiscount }}折</span>
+                                                <span class="condition" v-if="couponInfo.couponType =='CASH'">Cash coupon {{ couponInfo.benefitAmount }} yuan</span>
+                                                <span class="condition" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon {{ couponInfo.benefitDiscount }} discount</span>
+                                                <span class="condition" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full {{ couponInfo.conditionAmount }} minus {{ couponInfo.benefitAmount }} yuan</span>
+                                                <span class="condition" v-if="couponInfo.couponType =='FULL_DISCOUNT'">Full {{ couponInfo.conditionNum }} discounts for {{ couponInfo.benefitDiscount }}</span>
 
                                                 <p>{{ couponInfo.rangeDesc }}</p>
                                             </div>
-                                            <p class="coupon-time">过期时间：{{ couponInfo.expireTime }}</p>
-                                            <div class="coupon-seal" v-if="couponInfo.isGet > 0 && couponInfo.couponStatus == 'NOT_USED'"></div>
-                                            <div class="coupon-term" v-if="couponInfo.isGet > 0 && couponInfo.couponStatus == 'USED'"></div>
-                                            <button type="button" class="sui-btn btn-primary btn-large hm-action-statistics" @click="getCouponInfo(couponInfo.id)" v-if="couponInfo.isGet == 0" :hm-action = "'{\'action_id\':\'get_coupon\', \'item_type\': \'couponId\', \'item\': '+couponInfo.id+'}'">领&nbsp;取</button>
+                                            <p class="coupon-time">Expiration time: {{ couponInfo.expireTime }}</p>
+                                            <div class="coupon-seal" v-if="couponInfo.isGet> 0 && couponInfo.couponStatus =='NOT_USED'"></div>
+                                            <div class="coupon-term" v-if="couponInfo.isGet> 0 && couponInfo.couponStatus =='USED'"></div>
+                                            <button type="button" class="sui-btn btn-primary btn-large hm-action-statistics" @click="getCouponInfo(couponInfo.id)" v-if="couponInfo.isGet == 0" :hm -action = "'{\'action_id\':\'get_coupon\', \'item_type\': \'couponId\', \'item\':'+couponInfo.id+'}'">Collar&nbsp;get </button>
                                         </li>
 
                                     </ul>
@@ -845,21 +841,21 @@
 
                 <div class="toolbar-header"></div>
 
-                <!-- 侧栏按钮 -->
+                <!-- Sidebar button -->
                 <div class="toolbar-tabs J-tab">
-                    <div onclick="cartPanelView.tabItemClick('cart')" class="toolbar-tab tbar-tab-cart" data="购物车"
+                    <div onclick="cartPanelView.tabItemClick('cart')" class="toolbar-tab tbar-tab-cart" data="cart"
                          tag="cart">
                         <i class="tab-ico"></i>
                         <em class="tab-text"></em>
-                        <span class="tab-sub J-count " id="tab-sub-cart-count">0</span>
+                        <span class="tab-sub J-count "id="tab-sub-cart-count">0</span>
                     </div>
-                    <div onclick="cartPanelView.tabItemClick('follow')" class="toolbar-tab tbar-tab-follow" data="我的关注"
+                    <div onclick="cartPanelView.tabItemClick('follow')" class="toolbar-tab tbar-tab-follow" data="my attention"
                          tag="follow">
                         <i class="tab-ico"></i>
                         <em class="tab-text"></em>
                         <span class="tab-sub J-count hide">0</span>
                     </div>
-                    <div onclick="cartPanelView.tabItemClick('history')" class="toolbar-tab tbar-tab-history" data="我的足迹"
+                    <div onclick="cartPanelView.tabItemClick('history')" class="toolbar-tab tbar-tab-history" data="my footprint"
                          tag="history">
                         <i class="tab-ico"></i>
                         <em class="tab-text"></em>
@@ -906,17 +902,16 @@
             valuesSkuJson: [[${valuesSkuJson}]],
             activityRuleList: [],
             couponInfoList: [],
-
             coupon: {
-                more: 0, // 0：隐藏  1：显示
+                more: 0, // 0: hide 1: show
             },
 
-            favorLable: '关注',
+            favorLable:'Follow',
 
-            commentList: [], // 列表
-            total: 0, // 数据库中的总记录数
-            page: 1, // 默认页码
-            limit: 10 // 每页记录数
+            commentList: [], // list
+            total: 0, // total number of records in the database
+            page: 1, // Default page number
+            limit: 10 // number of records per page
         },
 
         created() {
@@ -935,39 +930,39 @@
                 })
                 console.log('this.valuesSku:' + this.valuesSku)
 
-                //初始化促销活动与优惠券
+                //Initialize promotions and coupons
                 this.findActivityAndCoupon()
 
-                //是否关注
+                //Whether to follow
                 this.isFavor()
 
-                //评论列表
+                //comment list
                 this.getCommentPageList(1)
             },
 
             addToCart() {
-                // 判断是否登录和是否存在临时用户，如果都没有，添加临时用户
+                // Determine whether to log in and whether there is a temporary user, if there are none, add a temporary user
                 if(!auth.isTokenExist() && !auth.isUserTempIdExist()) {
                     auth.setUserTempId()
                 }
 
-                // 获取来源信息
-                var sourceType = 'query'
-                var key = 'sourceType_'+this.skuId
+                // Get source information
+                var sourceType ='query'
+                var key ='sourceType_'+this.skuId
                 if(auth.isExist(key)) {
                     sourceType = auth.getCookie(key)
                     auth.removeCookie(key)
                 }
 
-                window.location.href = 'http://cart.gmall.com/addCart.html?skuId=' + this.skuId + '&skuNum=' + this.skuNum + '&sourceType=' + sourceType
+                window.location.href ='http://cart.gmall.com/addCart.html?skuId=' + this.skuId +'&skuNum=' + this.skuNum +'&sourceType=' + sourceType
             },
 
-            /*index：颜色，还是版本 spuSaleAttrValueId：销售属性值Id*/
+            /*index: color or version spuSaleAttrValueId: sales attribute value Id*/
             spuSaleAttrFun(index, spuSaleAttrValueId) {
-                //  debugger
+                // debugger
                 this.isAddCart = true
-                /*将Json 字符串 变为对象
-                    其中一种对象表示方法:
+                /* Turn the Json string into an object
+                  One of the object representation methods:
                     var valuesSkuJson = {
                         skuid:"46",
                         value_ids:"126|124"
@@ -975,28 +970,28 @@
                 */
                 var valuesSkuJson = JSON.parse(this.valuesSkuJson);
 
-                //根据索引替换已选中的spuSaleAttrValueId  记录选择的颜色销售属性值Id ，还是版本销售属性值Id
+                //According to the index, replace the selected spuSaleAttrValueId record the selected color sales attribute value Id, or the version sales attribute value Id
                 this.selectValuesSkus[index] = spuSaleAttrValueId
 
-                //  value_ids=126|124
+                // value_ids=126|124
                 var valuesSku = this.selectValuesSkus.join('|')
-                //查看新组装的数据是否存在skuId，如果存在跳到该页面，如果不存在控制选中状态
-                /*curSkuId = valuesSkuJson["126|124"]  curSkuId = 46*/
+                //Check whether there is a skuId in the newly assembled data, if it does, jump to the page, if it does not exist, control the selected state
+                /*curSkuId = valuesSkuJson["126|124"] curSkuId = 46*/
                 var curSkuId = valuesSkuJson[valuesSku]
 
                 if (curSkuId) {
-                    /*curSkuId = 46 this.skuId:表示当前正在显示的skuId*/
+                    /*curSkuId = 46 this.skuId: indicates the skuId currently being displayed*/
                     if(curSkuId != this.skuId) {
-                        window.location.href = '/' + curSkuId + '.html'
+                        window.location.href ='/' + curSkuId +'.html'
                     } else {
                         this.isAddCart = true
                     }
                 } else {
-                    //控制购物车是否可选
+                    //Control whether the shopping cart is optional
                     this.isAddCart = false
                 }
 
-                //控制销售属性是否选中
+                //Control whether the sales attribute is selected
                 this.spuSaleAttrList.forEach((spuSaleAttr, i) => {
                     spuSaleAttr.spuSaleAttrValueList.forEach((spuSaleAttrValue) => {
                         if (index == i) {
@@ -1015,7 +1010,7 @@
             },
 
             down() {
-                if (this.skuNum > 1) {
+                if (this.skuNum> 1) {
                     this.skuNum -= 1
                 }
             },
@@ -1028,7 +1023,7 @@
                 if(this.coupon.more == 0) {
                     this.coupon.more = 1
 
-                    //动态设置右侧浮动层高度为浏览器可见区域高度，更多出现滚动条
+                    // Dynamically set the height of the floating layer on the right to the height of the visible area of ​​the browser, and more scroll bars appear
                     $(".jt-history-wrap").css("height", $(window).height()-5)
                 } else {
                     this.coupon.more = 0
@@ -1046,10 +1041,10 @@
                 activity.getCouponInfo(couponId).then(response => {
                     this.couponInfoList.forEach(item => {
                         if(couponId == item.id) {
-                            // 已领取
+                            // Received
                             item.isGet = 1
-                            // 未使用
-                            item.couponStatus = 'NOT_USED'
+                            // Unused
+                            item.couponStatus ='NOT_USED'
                         }
                     })
                 })
@@ -1058,7 +1053,7 @@
             isFavor() {
                 favorInfo.isFavor(this.skuId).then(response => {
                     if(response.data.data) {
-                        this.favorLable = '已关注'
+                        this.favorLable ='Followed'
                     }
                 })
             },
@@ -1069,7 +1064,7 @@
                     skuId: this.skuId
                 }
                 favorInfo.add(param).then(response => {
-                    this.favorLable = '已关注'
+                    this.favorLable ='Followed'
                 })
             },
 

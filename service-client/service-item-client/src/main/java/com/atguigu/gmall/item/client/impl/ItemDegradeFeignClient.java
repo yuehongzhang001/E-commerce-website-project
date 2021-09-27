@@ -5,7 +5,7 @@ import com.atguigu.gmall.item.client.ItemFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 11:30:57
  */
 @Component

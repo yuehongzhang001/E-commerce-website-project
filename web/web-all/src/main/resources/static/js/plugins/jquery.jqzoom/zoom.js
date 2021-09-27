@@ -1,55 +1,55 @@
-﻿/*放大镜效果*/
-//=====================全局函数========================
-//Tab控制函数
+﻿/*Magnifying glass effect*/
+//=====================Global function=======================
+//Tab control function
 function tabs(tabId, tabNum){
-	//设置点击后的切换样式
-	$(tabId + " .tab li").removeClass("curr");
-	$(tabId + " .tab li").eq(tabNum).addClass("curr");
-	//根据参数决定显示内容
-	$(tabId + " .tabcon").hide();
-	$(tabId + " .tabcon").eq(tabNum).show();
+//Set the switching style after clicking
+	$(tabId + ".tab li").removeClass("curr");
+	$(tabId + ".tab li").eq(tabNum).addClass("curr");
+//Decide the display content according to the parameters
+	$(tabId + ".tabcon").hide();
+	$(tabId + ".tabcon").eq(tabNum).show();
 }
-//=====================全局函数========================
+//=====================Global function=======================
 
-//==================图片详细页函数=====================
-//鼠标经过预览图片函数
+//==================Picture detail page function=====================
+//Hover over the preview picture function
 function preview(img){
 	$("#preview .jqzoom img").attr("src",$(img).attr("src"));
 	$("#preview .jqzoom img").attr("jqimg",$(img).attr("bimg"));
 }
 
-//图片放大镜效果
+//Picture magnifying glass effect
 $(function(){
 	$(".jqzoom").jqueryzoom({xzoom:400,yzoom:400});
 });
 
-//图片预览小图移动效果,页面加载时触发
+//Image preview small image moving effect, triggered when the page loads
 $(function(){
-	var tempLength = 0; //临时变量,当前移动的长度
-	var viewNum = 5; //设置每次显示图片的个数量
-	var moveNum = 2; //每次移动的数量
-	var moveTime = 300; //移动速度,毫秒
-	var scrollDiv = $(".spec-scroll .items ul"); //进行移动动画的容器
-	var scrollItems = $(".spec-scroll .items ul li"); //移动容器里的集合
-	var moveLength = scrollItems.eq(0).width() * moveNum; //计算每次移动的长度
-	var countLength = (scrollItems.length - viewNum) * scrollItems.eq(0).width(); //计算总长度,总个数*单个长度
-	  
-	//下一张
+	var tempLength = 0; //Temporary variable, the length of the current move
+	var viewNum = 5; //Set the number of pictures displayed each time
+	var moveNum = 2; //The number of each move
+	var moveTime = 300; //Movement speed, milliseconds
+	var scrollDiv = $(".spec-scroll .items ul"); //Container for moving animation
+	var scrollItems = $(".spec-scroll .items ul li"); //Move the collection in the container
+	var moveLength = scrollItems.eq(0).width() * moveNum; //Calculate the length of each move
+	var countLength = (scrollItems.length-viewNum) * scrollItems.eq(0).width(); //Calculate the total length, total number * single length
+
+//Next
 	$(".spec-scroll .next").bind("click",function(){
-		if(tempLength < countLength){
-			if((countLength - tempLength) > moveLength){
+		if(tempLength <countLength){
+			if((countLength-tempLength)> moveLength){
 				scrollDiv.animate({left:"-=" + moveLength + "px"}, moveTime);
 				tempLength += moveLength;
 			}else{
-				scrollDiv.animate({left:"-=" + (countLength - tempLength) + "px"}, moveTime);
-				tempLength += (countLength - tempLength);
+				scrollDiv.animate({left:"-=" + (countLength-tempLength) + "px"}, moveTime);
+				tempLength += (countLength-tempLength);
 			}
 		}
 	});
-	//上一张
+	//Previous
 	$(".spec-scroll .prev").bind("click",function(){
-		if(tempLength > 0){
-			if(tempLength > moveLength){
+		if(tempLength> 0){
+			if(tempLength> moveLength){
 				scrollDiv.animate({left: "+=" + moveLength + "px"}, moveTime);
 				tempLength -= moveLength;
 			}else{
@@ -59,4 +59,4 @@ $(function(){
 		}
 	});
 });
-//==================图片详细页函数=====================
+//==================Picture detail page function=====================

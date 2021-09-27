@@ -8,25 +8,25 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-10 10:23:45
  */
 @Mapper
 public interface BaseAttrInfoMapper extends BaseMapper<BaseAttrInfo> {
     /**
-     * 根据分类Id 查询平台属性集合
-     * mybatis 在使用xml 进行查询的时候，如果传递单个参数，则直接使用参数名称即可或者使用#{0}
-     * 如果是多个参数：使用注解@Param 映射，xml 中使用名称来获取！
-     * mybatis 中有两个配置文件
-     * 1.   核心配置文件 mybatis-cfg.xml
-     *      <mappers>
-     *          <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
-     *          <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
-     *          <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
-     *          <package name="com.atguigu.mapper"></package>
-     *          需要将mapper.java mapper.xml 放在同一个包下！
-     *      </mappers>
-     * 2.   映射文件*Mapper.xml
+     * Query the platform attribute collection according to the category Id
+     * When using xml to query mybatis, if you pass a single parameter, you can directly use the parameter name or use #{0}
+     * If there are multiple parameters: use the annotation @Param mapping, and use the name in the xml to get it!
+     * There are two configuration files in mybatis
+     * 1. Core configuration file mybatis-cfg.xml
+     * <mappers>
+     * <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
+     * <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
+     * <mapper resource="/com/atguigu/mapper/BaseAttrInfoMapper.xml"/>
+     * <package name="com.atguigu.mapper"></package>
+     * Need to put mapper.java mapper.xml in the same package!
+     * </mappers>
+     * 2. Mapping file *Mapper.xml
      *
      *
      * @param category1Id
@@ -39,7 +39,7 @@ public interface BaseAttrInfoMapper extends BaseMapper<BaseAttrInfo> {
                                               @Param("category3Id") Long category3Id);
 
     /**
-     * 根据skuId查询平台属性，属性值数据
+     * Query platform attributes and attribute value data according to skuId
      * @param skuId
      * @return
      */

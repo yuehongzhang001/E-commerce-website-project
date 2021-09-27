@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-14 14:13:09
  */
 @RestController
@@ -21,13 +21,13 @@ public class ItemApiController {
     @Autowired
     private ItemService itemService;
 
-    //  编写一个控制器 给web-all 使用！
-    //  原来一直用的返回数据对象是 Result ,
+    // Write a controller for web-all use!
+    // The return data object that has been used is Result,
     @GetMapping("{skuId}")
     public Result getItemById(@PathVariable Long skuId){
-        //  调用服务层方法
+        // Call the service layer method
         Map<String, Object> map = itemService.getItemBySkuId(skuId);
-        //  返回数据，并将数据放入Result.data中
+        // Return the data and put the data in Result.data
         return Result.ok(map);
     }
 

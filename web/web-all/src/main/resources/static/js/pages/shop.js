@@ -1,50 +1,50 @@
-//列表数据加载
+//List data loading
 $(function () {
     // $.getJSON("../data/shoplist.json",function (data) {
-    //     $.each(data,function (index,type) {
-    //         $("#listall").append(
-    //             "<li>"+ type["name"] + "</li>"
-    //         );
-    //     })
+    // $.each(data,function (index,type) {
+    // $("#listall").append(
+    // "<li>"+ type["name"] + "</li>"
+    // );
+    // })
     // });
     // $.getJSON("../data/shoplist-data.json", function (data) {
-    //     $.each(data, function (index, list) {
-    //         $("#goods-list").append(
-    //             "<li class='yui3-u-1-4'><div class='list-wrap' ><div class='p-img'><img src='" + list["img"] + "' alt=''></div><div class='price'><strong><em>¥</em> <i>" + list["n-price"] + "</i></strong></div>"
-    //             + "<div class='attr'><em>" + list["desc"] + "</em></div><div class='cu'><em><span>促</span>" + list["cu"] + "</em></div>"
-    //             + "<div class='operate'><a href='success-cart.html' target='blank' class='sui-btn btn-bordered btn-danger'>加入购物车</a>"
-    //             + "<a href='javascript:void(0);' class='sui-btn btn-bordered'>对比</a>"
-    //             + "<a href='javascript:void(0);' class='sui-btn btn-bordered'>关注</a>"
-    //             + "</div></div></li >"
-    //         );
+    // $.each(data, function (index, list) {
+    // $("#goods-list").append(
+    // "<li class='yui3-u-1-4'><div class='list-wrap' ><div class='p-img'><img src='" + list["img"] + "'alt=''></div><div class='price'><strong><em>¥</em> <i>" + list["n-price"] + "</i> </strong></div>"
+    // + "<div class='attr'><em>" + list["desc"] + "</em></div><div class='cu'><em><span>Promote</ span>" + list["cu"] + "</em></div>"
+    // + "<div class='operate'><a href='success-cart.html' target='blank' class='sui-btn btn-bordered btn-danger'>Add to cart</a>"
+    // + "<a href='javascript:void(0);' class='sui-btn btn-bordered'>Comparison</a>"
+    // + "<a href='javascript:void(0);' class='sui-btn btn-bordered'>Follow</a>"
+    // + "</div></div></li >"
+    // );
 
-    //     })
+    // })
     // });
     var lileg = $(".sui-nav").children().length;
-    if (lileg < 8) {
+    if (lileg <8) {
         $("#li-1").css({"display":"none"});
     }
 })
 
 $(document).ready(function () {
-    //    nav-li hover e
+    // nav-li hover e
     var num;
     $('.sui-nav>li[id]').hover(function () {
-        /*图标向上旋转*/
+        /*Icon rotate upward*/
         $(this).children().removeClass().addClass('hover-up');
-        /*下拉框出现*/
+        /*The drop-down box appears*/
         var Obj = $(this).attr('id');
         num = Obj.substring(3, Obj.length);
         $('#box-' + num).slideDown(300);
     }, function () {
-        /*图标向下旋转*/
+        /*Icon rotate down*/
         $(this).children().removeClass().addClass('hover-down');
-        /*下拉框消失*/
+        /*The drop-down box disappears*/
         $('#box-' + num).hide();
     });
     // hidden-box hover e
     $('.hidden-box').hover(function () {
-        /*保持图标向上*/
+        /*Keep the icon up*/
         $('#li-' + num).children().removeClass().addClass('hover-up');
         $(this).show();
     }, function () {
@@ -54,17 +54,14 @@ $(document).ready(function () {
 });
 
 $(function () {
-    var navH = $("#headnav-fixed").offset().top; //获取到顶部的距离
-    // 滚动条事件
+    var navH = $("#headnav-fixed").offset().top; //Get the distance to the top
+    // Scroll bar event
     $(window).scroll(function () {
-        var scroH = $(this).scrollTop(); //获取滚动条滑动距离
+        var scroH = $(this).scrollTop(); //Get the sliding distance of the scroll bar
         if (scroH >= navH) {
             $("#headnav-fixed").css({ "position": "fixed", "top": 0,"width":"inherit" ,"border-bottom":"1px solid #B1191A"});
-        } else if (scroH < navH) {
+        } else if (scroH <navH) {
             $("#headnav-fixed").css({ "position": "static","border-bottom":0});
         }
     })
 })
-
-
-

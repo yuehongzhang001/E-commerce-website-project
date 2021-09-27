@@ -13,12 +13,12 @@
 
 
     <dependencies>
-        <!--rabbitmq消息队列-->
+        <!--rabbitmq-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--rabbitmq 协议-->
+        <!--rabbitmq -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>

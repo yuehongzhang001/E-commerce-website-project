@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("/api/activity/seckill")
@@ -51,105 +51,105 @@ public class SeckillGoodsApiController {
     @Autowired
     private OrderFeignClient orderFeignClient;
 
-    //  查询所有秒杀商品
+    // Query all spike products
     @GetMapping("/findAll")
     public Result findAll(){
         return Result.ok(seckillGoodsService.findAll());
     }
-    //  根据skuId 获取秒杀商品数据
+    // Obtain seckill product data according to skuId
     @GetMapping("/getSeckillGoods/{skuId}")
     public Result getSeckillGoods(@PathVariable Long skuId){
         return Result.ok(seckillGoodsService.findSeckillGoodsById(skuId));
     }
 
-    //  获取下单码:为什么要下单码? 防止用户非法抢购！
+    // Get the order code: Why do you want to place the order code? Prevent users from illegally buying!
     @GetMapping("/auth/getSeckillSkuIdStr/{skuId}")
     public Result getSeckillSkuIdStr(@PathVariable Long skuId, HttpServletRequest request){
-        //  下单码生成的方式：userId MD5加密！
-        //  必须在秒杀时间范围内！
-        //  根据当前skuId 查询到秒杀商品是谁！
+        // The way the order code is generated: userId MD5 encryption!
+        // Must be within the spike time range!
+        // According to the current skuId to find out who the spike product is!
         SeckillGoods seckillGoods = seckillGoodsService.findSeckillGoodsById(skuId);
-        //  获取用户Id
+        // Get user ID
         String userId = AuthContextHolder.getUserId(request);
         if (!StringUtils.isEmpty(userId)){
-            //  判断时间范围
+            // Determine the time range
             Date currentTime = new Date();
-            //  时间做比较
+            // time to compare
             if (DateUtil.dateCompare(seckillGoods.getStartTime(),currentTime) &&
-                DateUtil.dateCompare(currentTime,seckillGoods.getEndTime())){
-                //  在秒杀范围时间内：
+                    DateUtil.dateCompare(currentTime,seckillGoods.getEndTime())){
+                // Within the scope of the spike:
                 String skuIdStr = MD5.encrypt(userId);
-                //  返回下单码
+                // Return the order code
                 return Result.ok(skuIdStr);
             }
         }
-        //  返回数据：
-        return Result.fail().message("获取下单码失败!");
+        // Return data:
+        return Result.fail().message("Failed to obtain the order code!");
     }
 
-    //  下单：
-    //  /api/activity/seckill/auth/seckillOrder/{skuId}?skuIdStr=xxxx
+    // Place an order:
+    // /api/activity/seckill/auth/seckillOrder/{skuId}?skuIdStr=xxxx
     @PostMapping("auth/seckillOrder/{skuId}")
     public Result seckillOrder(@PathVariable Long skuId ,HttpServletRequest request){
-        //  校验下单码，只有正确获得下单码的请求才是合法请求
+        // Check the order code, only the request to get the order code correctly is a legal request
         String skuIdStr = request.getParameter("skuIdStr");
-        //  获取用户Id然后在加密 与 skuIdStr 做个比较！
+        // Get the user ID and compare it with skuIdStr in encryption!
         String userId = AuthContextHolder.getUserId(request);
         if (!skuIdStr.equals(MD5.encrypt(userId))){
-            //  下单码不正确！
+            // The order code is incorrect!
             return Result.build(null, ResultCodeEnum.SECKILL_ILLEGAL);
         }
-        //  校验状态位state  redis 订阅发布；
+        // Check the status bit state redis subscription release;
         String state = (String) CacheHelper.get(skuId.toString());
         if (StringUtils.isEmpty(state)){
-            //  请求不合法
+            // request is illegal
             return Result.build(null, ResultCodeEnum.SECKILL_ILLEGAL);
         }else if ("0".equals(state)){
-            //  已售罄
+            //  Sold out
             return Result.build(null, ResultCodeEnum.SECKILL_FINISH);
         }else {
-            //  商品可以秒杀！ state = 1
+            // Commodities can be killed in seconds! state = 1
             UserRecode userRecode = new UserRecode();
             userRecode.setUserId(userId);
             userRecode.setSkuId(skuId);
-            //  发送到mq 上！
+            // Send to mq!
             rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_SECKILL_USER,MqConst.ROUTING_SECKILL_USER,userRecode);
             return Result.ok();
         }
     }
 
-    //  检查秒杀状态！
-    //  /api/activity/seckill/auth/checkOrder/{skuId}
+    // Check the spike status!
+    // /api/activity/seckill/auth/checkOrder/{skuId}
     @GetMapping("auth/checkOrder/{skuId}")
     public Result checkOrder(@PathVariable Long skuId,HttpServletRequest request){
-        //  获取到用户Id
+        // Get the user ID
         String userId = AuthContextHolder.getUserId(request);
-        //  调用服务层方法
+        // Call the service layer method
         return seckillGoodsService.checkOrder(skuId,userId);
     }
 
-    //  秒杀下单页面数据回显！
+    // Spike back the order page data!
     @GetMapping("/auth/trade")
     public Result seckillTrade(HttpServletRequest request){
-        //  获取用户Id
+        // Get user ID
         String userId = AuthContextHolder.getUserId(request);
-        //  声明一个map
+        // Declare a map
         HashMap<String, Object> map = new HashMap<>();
 
-        //  远程调用service-user feign client
+        // remotely call service-user feign client
         List<UserAddress> userAddressList = userFeignClient.findUserAddressListByUserId(Long.parseLong(userId));
 
-        //  送货清单： orderKey = seckill:orders  field = userId value = orderRecode
+        // Shipping list: orderKey = seckill:orders field = userId value = orderRecode
         String orderKey = RedisConst.SECKILL_ORDERS;
         OrderRecode orderRecode = (OrderRecode) redisTemplate.boundHashOps(orderKey).get(userId);
         if (orderRecode==null){
-            //  返回停止
-            return Result.fail().message("下单失败");
+            // return to stop
+            return Result.fail().message("Order failed");
         }
-        //  获取到当前的秒杀商品！
+        // Get the current spike product!
         SeckillGoods seckillGoods = orderRecode.getSeckillGoods();
         List<OrderDetail> detailArrayList = new ArrayList<>();
-        //  声明一个订单明细
+        // Declare an order details
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setSkuId(seckillGoods.getSkuId());
         orderDetail.setSkuName(seckillGoods.getSkuName());
@@ -158,40 +158,40 @@ public class SeckillGoodsApiController {
         orderDetail.setOrderPrice(seckillGoods.getCostPrice());
         detailArrayList.add(orderDetail);
 
-        //  计算总金额：
-        //        OrderInfo orderInfo = new OrderInfo();
-        //        orderInfo.setOrderDetailList(detailArrayList);
-        //        orderInfo.sumTotalAmount();
-        //        map.put("totalAmount",orderInfo.getTotalAmount());
-        //  将页面需要的key 保存到map 中！
+        // Calculate the total amount:
+        // OrderInfo orderInfo = new OrderInfo();
+        // orderInfo.setOrderDetailList(detailArrayList);
+        // orderInfo.sumTotalAmount();
+        // map.put("totalAmount",orderInfo.getTotalAmount());
+        // Save the key required by the page to the map!
         map.put("detailArrayList",detailArrayList);
         map.put("userAddressList",userAddressList);
         map.put("totalNum","1");
         map.put("totalAmount",seckillGoods.getCostPrice());
-        //  返回数据
+        // return data
         return Result.ok(map);
     }
 
-    //  提交订单
+    //  Submit orders
     @PostMapping("/auth/submitOrder")
     public Result submitOrder(@RequestBody OrderInfo orderInfo, HttpServletRequest request){
-        //  在实现类中没有设置userId
+        // UserId is not set in the implementation class
         String userId = AuthContextHolder.getUserId(request);
         orderInfo.setUserId(Long.parseLong(userId));
 
-        //  调用service-order 的feign-client
+        // Call the feign-client of service-order
         Long orderId = orderFeignClient.submitOrder(orderInfo);
         if (orderId==null){
-            return Result.fail().message("提交订单失败!");
+            return Result.fail().message("Failed to submit the order!");
         }
 
-        //  删除缓存的信息{预下单信息}： setnx; RedisConst.SECKILL_ORDERS; userId
+        // Delete cached information {pre-order information}: setnx; RedisConst.SECKILL_ORDERS; userId
         redisTemplate.boundHashOps(RedisConst.SECKILL_ORDERS).delete(userId);
 
-        //  存储一个真正下单的数据到缓存！
+        // Store the data of a real order to the cache!
         redisTemplate.boundHashOps(RedisConst.SECKILL_ORDERS_USERS).put(userId, orderId.toString());
 
-        //  返回数据
+        // return data
         return Result.ok(orderId);
     }
 

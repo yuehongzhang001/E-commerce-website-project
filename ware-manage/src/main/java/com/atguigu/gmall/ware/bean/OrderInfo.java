@@ -17,7 +17,7 @@ public class OrderInfo implements Serializable {
     @TableId(type = IdType.AUTO)
     private String id;
 
-     @TableField
+    @TableField
     private String consignee;
 
     @TableField
@@ -26,7 +26,7 @@ public class OrderInfo implements Serializable {
     @TableField
     private BigDecimal totalAmount;
 
-     @TableField
+    @TableField
     private OrderStatus orderStatus;
 
     @TableField
@@ -36,32 +36,32 @@ public class OrderInfo implements Serializable {
     private String userId;
 
 
-     @TableField
+    @TableField
     private String deliveryAddress;
 
-     @TableField
+    @TableField
     private String orderComment;
 
-     @TableField
+    @TableField
     private Date createTime;
 
-     @TableField
-     private String parentOrderId;
+    @TableField
+    private String parentOrderId;
 
-     @TableField
-     private String trackingNo;
-
-    @TableField(exist = false)
-     private List<OrderDetail> orderDetailList;
+    @TableField
+    private String trackingNo;
 
     @TableField(exist = false)
-     private List<OrderInfo> orderSubList;
+    private List<OrderDetail> orderDetailList;
 
     @TableField(exist = false)
-     private String wareId;
+    private List<OrderInfo> orderSubList;
 
-     @TableField
-     private String outTradeNo;
+    @TableField(exist = false)
+    private String wareId;
+
+    @TableField
+    private String outTradeNo;
 
     public String getId() {
         return id;
@@ -76,7 +76,7 @@ public class OrderInfo implements Serializable {
     }
 
     public void setConsignee(String consignee) {
-        this.consignee = consignee == null ? null : consignee.trim();
+        this.consignee = consignee == null? null: consignee.trim();
     }
 
     public BigDecimal getTotalAmount() {
@@ -128,7 +128,7 @@ public class OrderInfo implements Serializable {
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress == null ? null : deliveryAddress.trim();
+        this.deliveryAddress = deliveryAddress == null? null: deliveryAddress.trim();
     }
 
     public String getOrderComment() {
@@ -167,17 +167,17 @@ public class OrderInfo implements Serializable {
     public String getOrderBoby(){
         String body="";
         if(orderDetailList!=null&&orderDetailList.size()>0){
-            body=  orderDetailList.get(0).getSkuName();
+            body = orderDetailList.get(0).getSkuName();
         }
-        body+="等"+getSumSkuNums()+"件商品";
+        body+="wait"+getSumSkuNums()+"items";
         return body;
 
     }
 
     public Integer getSumSkuNums(){
         Integer sumNums=0;
-        for (OrderDetail orderDetail : orderDetailList) {
-            sumNums+=  orderDetail.getSkuNum();
+        for (OrderDetail orderDetail: orderDetailList) {
+            sumNums+= orderDetail.getSkuNum();
         }
         return sumNums;
     }

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 /**
- * redisson配置信息
+ * redisson configuration information
  */
 @Data
 @Configuration
@@ -33,18 +33,18 @@ public class RedissonConfig {
     private static String ADDRESS_PREFIX = "redis://";
 
     /**
-     * 自动装配
+     * Automatic assembly
      *
      */
     @Bean
     RedissonClient redissonSingle() {
-        //  创建一个对象
+        // Create an object
         Config config = new Config();
-        //  判断地址是否为空
+        // Determine whether the address is empty
         if(StringUtils.isEmpty(host)){
-            throw new RuntimeException("host is  empty");
+            throw new RuntimeException("host is empty");
         }
-        //  配置服务
+        // Configure service
         SingleServerConfig serverConfig = config.useSingleServer()
                 // redis://127.0.0.1:7181
                 .setAddress(ADDRESS_PREFIX + this.host + ":" + port)
@@ -52,7 +52,7 @@ public class RedissonConfig {
                 .setPingConnectionInterval(pingConnectionInterval)
                 .setConnectionPoolSize(this.connectionPoolSize)
                 .setConnectionMinimumIdleSize(this.connectionMinimumIdleSize);
-        //  是否需要密码 redis.conf
+        // Do you need a password redis.conf
         if(!StringUtils.isEmpty(this.password)) {
             serverConfig.setPassword(this.password);
         }

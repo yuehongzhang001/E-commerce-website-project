@@ -6,7 +6,7 @@ import com.atguigu.gmall.model.list.SearchParam;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class ListDegradeFeignClient implements ListFeignClient {

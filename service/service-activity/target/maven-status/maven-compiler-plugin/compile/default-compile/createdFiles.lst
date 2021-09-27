@@ -1,0 +1,9 @@
+com\atguigu\gmall\activity\receiver\SeckillReceiver.class
+com\atguigu\gmall\activity\controller\SeckillGoodsApiController.class
+com\atguigu\gmall\activity\redis\RedisChannelConfig.class
+com\atguigu\gmall\activity\mapper\SeckillGoodsMapper.class
+com\atguigu\gmall\activity\redis\MessageReceive.class
+com\atguigu\gmall\activity\service\impl\SeckillGoodsServiceImpl.class
+com\atguigu\gmall\activity\ServiceActivityApplication.class
+com\atguigu\gmall\activity\service\SeckillGoodsService.class
+com\atguigu\gmall\activity\util\CacheHelper.class

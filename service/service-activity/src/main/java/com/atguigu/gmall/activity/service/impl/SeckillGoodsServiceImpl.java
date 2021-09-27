@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class SeckillGoodsServiceImpl implements SeckillGoodsService {
@@ -46,60 +46,60 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     @Override
     public void seckillOrder(Long skuId, String userId) {
         /*
-        1，首先判断产品状态位，我们前面不是已经判断过了吗？因为产品可能随时售罄，mq队列里面可能堆积了十万数据，
-                但是已经售罄了，那么后续流程就没有必要再走了；
-        2，判断用户是否已经下过订单，这个地方就是控制用户重复下单，同一个用户只能抢购一个下单资格，怎么控制呢？
-                很简单，我们可以利用setnx控制用户，当用户第一次进来时，返回true，可以抢购，以后进入返回false，直接返回，
-                过期时间可以根据业务自定义，这样用户这一段咋们就控制注了
-        3，获取队列中的商品，如果能够获取，则商品有库存，可以下单。如果获取的商品id为空，则商品售罄，
-                商品售罄我们要第一时间通知兄弟节点，更新状态位，所以在这里发送redis广播
-        4，将订单记录放入redis缓存，说明用户已经获得下单资格，秒杀成功
+        1. First judge the product status bit. Haven't we already judged it before? Because the product may be sold out at any time, there may be 100,000 data accumulated in the mq queue,
+                But it has been sold out, then the follow-up process does not need to go anymore;
+        2. Determine whether the user has placed an order. This place is to control the user to place an order repeatedly. The same user can only snap up one order qualification. How to control it?
+                It’s very simple. We can use setnx to control the user. When the user comes in for the first time, it returns true and can be snapped up. After entering, it returns false and returns directly.
+                The expiration time can be customized according to the business, so that users can control the note during this period
+        3. Get the goods in the queue. If they can be obtained, the goods are in stock and you can place an order. If the obtained product id is empty, the product is sold out.
+                When the product is sold out, we need to notify the brother node as soon as possible to update the status bit, so send the redis broadcast here
+        4. Put the order record into the redis cache, indicating that the user has obtained the qualification to place an order, and the spike is successful
 
-        5，秒杀成功要更新库存
+        5. If the spike is successful, the inventory needs to be updated
          */
-        //  OrderRecode 订单记录：
-        //  校验状态位state  redis 订阅发布；
+        // OrderRecode order record:
+        // Check the status bit state redis subscription release;
         String state = (String) CacheHelper.get(skuId.toString());
-        //  状态位 0 表示已经售罄， 1 表示可以秒杀！
+        // Status bit 0 means it has been sold out, 1 means it can be killed in seconds!
         if("0".equals(state)){
-            //  已售罄
+            //  Sold out
             return;
         }
-        //  判断用户是否已经下过订单 setnx
-        //  key  = seckill:user:userId  value = skuId
+        // Determine whether the user has placed an order setnx
+        // key = seckill:user:userId value = skuId
         String userOrderKey = RedisConst.SECKILL_USER + userId;
-        //  执行setnx 命令
+        // execute setnx command
         Boolean flag = redisTemplate.opsForValue().setIfAbsent(userOrderKey, skuId, RedisConst.SECKILL__TIMEOUT, TimeUnit.SECONDS);
-        //  flag = true;
+        // flag = true;
         if (!flag){
-            // 用户在缓存中已经存在
+            // The user already exists in the cache
             return;
         }
-        //  从缓存中减少商品的库存数
-        //  key = seckill:stock:46
+        // Reduce the inventory of the product from the cache
+        // key = seckill:stock:46
         String seckillKey = RedisConst.SECKILL_STOCK_PREFIX + skuId;
         String skuIdValues = (String) redisTemplate.boundListOps(seckillKey).rightPop();
-        //  skuIdValues 不为空，则说明减库存成功，为空则说明库存已经售罄
+        // If skuIdValues is not empty, it means the inventory reduction is successful, if it is empty, it means the inventory has been sold out
         if (StringUtils.isEmpty(skuIdValues)){
-            //  通知其他兄弟节点： skuId:0
+            // Notify other sibling nodes: skuId:0
             redisTemplate.convertAndSend("seckillpush",skuId+":0");
-            //  已售罄
+            //  Sold out
             return;
         }
-        //  上述验证通过，将OrderRecode 对象存储到缓存中，说明用户有下单资格！
+        // The above verification is passed and the OrderRecode object is stored in the cache, indicating that the user is eligible to place an order!
         OrderRecode orderRecode = new OrderRecode();
         orderRecode.setUserId(userId);
         orderRecode.setSeckillGoods(findSeckillGoodsById(skuId));
         orderRecode.setNum(1);
         orderRecode.setOrderStr(MD5.encrypt(skuId+userId));
 
-        //  放入缓存！
-        //  hset key field value
-        //  orderKey = seckill:orders  field = userId value = orderRecode
+        // Put it in the cache!
+        // hset key field value
+        // orderKey = seckill:orders field = userId value = orderRecode
         String orderKey = RedisConst.SECKILL_ORDERS;
         redisTemplate.boundHashOps(orderKey).put(userId,orderRecode);
 
-        //  更新库存！
+        // Update inventory!
         this.updateStockCount(skuId);
 
     }
@@ -107,75 +107,75 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     @Override
     public Result checkOrder(Long skuId, String userId) {
         /*
-            1.  判断用户是否在缓存中存在
-            2.  判断用户是否抢单成功
-                    {在缓存中：seckill:orders userId orderRecode} 预下单成功！
-            3.  判断用户是否下过订单
+            1. Determine whether the user exists in the cache
+            2. Determine whether the user has successfully grabbed the order
+                    {In cache: seckill:orders userId orderRecode} Pre-order successfully!
+            3. Determine whether the user has placed an order
                     {redisTemplate.boundHashOps(RedisConst.SECKILL_ORDERS_USERS).put(userId, orderId.toString());}
-            4.  判断状态位
+            4. Judging the status bit
          */
         String userOrderKey = RedisConst.SECKILL_USER + userId;
         Boolean flag = redisTemplate.hasKey(userOrderKey);
-        //  flag = true
+        // flag = true
         if (flag){
-            //  说明用户在缓存中存在，然后判断用户是否抢单成功！
-            //  orderKey = seckill:orders  field = userId value = orderRecode
+            // Indicates that the user exists in the cache, and then judge whether the user has successfully grabbed the order!
+            // orderKey = seckill:orders field = userId value = orderRecode
             String orderKey = RedisConst.SECKILL_ORDERS;
             Boolean result = redisTemplate.boundHashOps(orderKey).hasKey(userId);
-            //  result = true 表示抢单成功！
+            // result = true means that the order was successfully grabbed!
             if (result){
-                //  获取订单数据
+                // Get order data
                 OrderRecode orderRecode = (OrderRecode) redisTemplate.boundHashOps(orderKey).get(userId);
-                //  返回数据
+                // return data
                 return Result.build(orderRecode, ResultCodeEnum.SECKILL_SUCCESS);
             }
         }
 
-        //  判断用户是否下过订单
+        // Determine whether the user has placed an order
         String orderUserKey = RedisConst.SECKILL_ORDERS_USERS;
         Boolean res = redisTemplate.boundHashOps(orderUserKey).hasKey(userId);
-        //  判断 res = true
+        // judge res = true
         if (res){
-            //  表示已经下过订单
+            // Indicates that an order has been placed
             String orderId = (String) redisTemplate.boundHashOps(orderUserKey).get(userId);
-            //  返回数据
+            // return data
             return Result.build(orderId, ResultCodeEnum.SECKILL_ORDER_SUCCESS);
         }
-        //  判断状态位
-        //  校验状态位state  redis 订阅发布；
+        // Determine the status bit
+        // Check the status bit state redis subscription release;
         String state = (String) CacheHelper.get(skuId.toString());
-        //  状态位 0 表示已经售罄， 1 表示可以秒杀！
+        // Status bit 0 means it has been sold out, 1 means it can be killed in seconds!
         if("0".equals(state)){
-            //  返回数据
+            // return data
             return Result.build(null, ResultCodeEnum.SECKILL_FAIL);
         }
-        //  默认排队中！
+        // Queued by default!
         return Result.build(null, ResultCodeEnum.SECKILL_RUN);
     }
 
-    //  更新库存！
+    // Update inventory!
     private void updateStockCount(Long skuId) {
-        //  缓存，数据库
-        //  剩余库存数：seckill:stock:46
+        // cache, database
+        // Remaining inventory: seckill:stock:46
         String seckillKey = RedisConst.SECKILL_STOCK_PREFIX + skuId;
-        //  count 剩余库存
+        // count remaining inventory
         Long count = redisTemplate.boundListOps(seckillKey).size();
 
-        //  制定规则更新库存！
+        // Make rules to update inventory!
         if(count%2==0){
-            //  更新缓存：
+            //  refresh cache:
             SeckillGoods seckillGoods = findSeckillGoodsById(skuId);
             seckillGoods.setStockCount(count.intValue());
 
-            //  写入缓存
+            // write cache
             redisTemplate.boundHashOps(RedisConst.SECKILL_GOODS).put(skuId.toString(),seckillGoods);
 
-            //  更新数据库：
-            //            UpdateWrapper<SeckillGoods> seckillGoodsUpdateWrapper = new UpdateWrapper<>();
-            //            seckillGoodsUpdateWrapper.eq("sku_id",skuId);
-            //            SeckillGoods seckillGoods1 = new SeckillGoods();
-            //            seckillGoods.setStockCount(count.intValue());
-            //            seckillGoodsMapper.update(seckillGoods1,seckillGoodsUpdateWrapper);
+            // Update the database:
+            // UpdateWrapper<SeckillGoods> seckillGoodsUpdateWrapper = new UpdateWrapper<>();
+            // seckillGoodsUpdateWrapper.eq("sku_id",skuId);
+            // SeckillGoods seckillGoods1 = new SeckillGoods();
+            // seckillGoods.setStockCount(count.intValue());
+            // seckillGoodsMapper.update(seckillGoods1,seckillGoodsUpdateWrapper);
 
             seckillGoodsMapper.updateById(seckillGoods);
         }

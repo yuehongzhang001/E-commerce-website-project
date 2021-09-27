@@ -10,43 +10,43 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-10 10:24:49
  */
 public interface ManageService {
 
    /*
-        3.1	先加载所有的一级分类数据！
+        3.1 First load all the first-level classification data!
 
-		3.2	通过选择一级分类Id数据加载二级分类数据！
+3.2 Load the second-level classification data by selecting the first-level classification Id data!
 
-		3.3	通过选择二级分类数据加载三级分类数据！
+3.3 Load the third-level classification data by selecting the second-level classification data!
 
-		3.4	根据分类Id 加载 平台属性列表！
+3.4 Load the platform attribute list according to the category Id!
     */
 
     /**
-     * 获取所有一级分类数据
-      * @return
+     * Get all first-level classification data
+     * @return
      */
-   List<BaseCategory1> getBaseCategory1();
+    List<BaseCategory1> getBaseCategory1();
 
     /**
-     * 根据一级分类Id ，获取二级分类数据
+     * According to the first-level classification Id, obtain the second-level classification data
      * @param category1Id
      * @return
      */
-   List<BaseCategory2> getBaseCategory2(Long category1Id);
+    List<BaseCategory2> getBaseCategory2(Long category1Id);
 
     /**
-     * 根据二级分类Id ，获取三级分类数据
+     * According to the second-level classification Id, obtain the third-level classification data
      * @param category2Id
      * @return
      */
     List<BaseCategory3> getBaseCategory3(Long category2Id);
 
     /**
-     * 根据分类Id 获取平台属性列表
+     * Obtain the platform attribute list according to the category Id
      * @param category1Id
      * @param category2Id
      * @param category3Id
@@ -56,138 +56,138 @@ public interface ManageService {
 
 
     /**
-     * 保存平台属性
+     * Save platform properties
      * @param baseAttrInfo
      */
     void saveAttrInfo(BaseAttrInfo baseAttrInfo);
 
     /**
-     * 根据平台属性Id 获取平台属性值集合
+     * Obtain the platform attribute value collection according to the platform attribute Id
      * @param attrId
      * @return
      */
     List<BaseAttrValue> getAttrValueList(Long attrId);
 
     /**
-     * 根据属性Id 获取数据
+     * Get data according to the attribute Id
      * @param attrId
      * @return
      */
     BaseAttrInfo getBaseAttrInfo(Long attrId);
 
     /**
-     * 根据三级分类Id 获取spuInfo集合数据
+     * Obtain spuInfo collection data according to the three-level classification Id
      * @param spuInfoPage
      * @param spuInfo
      * @return
      */
     IPage<SpuInfo> getSpuInfoList(Page<SpuInfo> spuInfoPage, SpuInfo spuInfo);
 
-  /**
-   * 获取所有的销售属性列表
-   * @return
-   */
-  List<BaseSaleAttr> getBaseSaleAttrList();
+    /**
+     * Get a list of all sales attributes
+     * @return
+     */
+    List<BaseSaleAttr> getBaseSaleAttrList();
 
     /**
-     * 保存spuInfo数据
+     * Save spuInfo data
      * @param spuInfo
      */
     void saveSpuInfo(SpuInfo spuInfo);
 
     /**
-     * 根据spuId 查询spuImage 列表
+     * Query spuImage list according to spuId
      * @param spuId
      * @return
      */
     List<SpuImage> getSpuImageList(Long spuId);
 
     /**
-     * 根据spuId 获取销售属性列表
+     * Get the list of sales attributes according to spuId
      * @param spuId
      * @return
      */
     List<SpuSaleAttr> getSpuSaleAttrList(Long spuId);
 
     /**
-     * 保存skuInfo 数据
+     * Save skuInfo data
      * @param skuInfo
      */
     void saveSkuInfo(SkuInfo skuInfo);
 
     /**
-     * 查询skuInfo 带分页
+     * Query skuInfo with pagination
      * @param skuInfoPage
      * @return
      */
     IPage getSkuInfoList(Page<SkuInfo> skuInfoPage);
 
     /**
-     * 根据skuId 进行上架操作
+     * According to skuId for listing operations
      * @param skuId
      */
     void onSale(Long skuId);
 
     /**
-     * 根据skuId 进行下架操作
+     * Delisting operations based on skuId
      * @param skuId
      */
     void cancelSale(Long skuId);
 
     /**
-     * 根据skuId 查询skuInfo 以及 skuImageList
+     * Query skuInfo and skuImageList according to skuId
      * @param skuId
      * @return
      */
     SkuInfo getSkuInfo(Long skuId);
 
     /**
-     * 根据三级分类Id 查询属性名称
+     * Query the attribute name according to the three-level classification Id
      * @param category3Id
      * @return
      */
     BaseCategoryView getCategoryViewByCategory3Id(Long category3Id);
 
     /**
-     * 根据skuId 查询商品价格
+     * Query product price according to skuId
      * @param skuId
      * @return
      */
     BigDecimal getSkuPrice(Long skuId);
 
     /**
-     * 根据spuId,skuId 查询销售属性+销售属性值
+     * Query sales attribute + sales attribute value according to spuId, skuId
      * @param skuId
      * @param spuId
      * @return
      */
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
 
-    //  返回值可以自定义一个实体类 {skuId, valueIds } 还可以使用map数据结构接收数据 map(key,value);
-    //  skuId = 46  valueIds = 124|126;  map(skuId,"46")  map.put("valueIds","124|126")
+    // The return value can customize an entity class {skuId, valueIds} You can also use the map data structure to receive data map(key, value);
+    // skuId = 46 valueIds = 124|126; map(skuId,"46") map.put("valueIds","124|126")
 
     /**
-     * 根据spuId 获取销售属性值Id与skuId 的组合数据
+     * Obtain the combined data of the sales attribute value Id and skuId according to spuId
      * @param spuId
      * @return
      */
     Map getSkuValueIdsMap(Long spuId);
 
     /**
-     * 获取全部分类信息
+     * Get all classification information
      * @return
      */
     List<JSONObject> getBaseCategoryList();
 
     /**
-     * 通过品牌Id 来查询数据
+     * Query data by brand Id
      * @param tmId
      * @return
      */
     BaseTrademark getTrademarkByTmId(Long tmId);
 
     /**
-     * 通过skuId 集合来查询数据
+     * Query data through the skuId collection
      * @param skuId
      * @return
      */

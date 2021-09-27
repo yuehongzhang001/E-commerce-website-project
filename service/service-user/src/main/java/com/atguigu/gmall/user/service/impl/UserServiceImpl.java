@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class UserServiceImpl implements UserService {

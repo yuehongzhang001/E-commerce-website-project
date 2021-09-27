@@ -1,22 +1,22 @@
 package com.atguigu.gmall.common.constant;
 
 /**
- * Redis常量配置类
+ * Redis constant configuration class
  * set name admin
  */
 public class RedisConst {
 
-    //  String set(key,value)  set(sku:100016773624:info,value);
+    // String set(key,value) set(sku:100016773624:info,value);
     public static final String SKUKEY_PREFIX = "sku:";
     public static final String SKUKEY_SUFFIX = ":info";
-    //单位：秒
+    //Unit: seconds
     public static final long SKUKEY_TIMEOUT = 24 * 60 * 60;
-    // 定义变量，记录空对象的缓存过期时间
+    // Define variables to record the cache expiration time of empty objects
     public static final long SKUKEY_TEMPORARY_TIMEOUT = 10 * 60;
 
-    //单位：秒 尝试获取锁的最大等待时间
+    //Unit: seconds The maximum waiting time for trying to acquire a lock
     public static final long SKULOCK_EXPIRE_PX1 = 1;
-    //单位：秒 锁的持有时间
+    //Unit: seconds The holding time of the lock
     public static final long SKULOCK_EXPIRE_PX2 = 1;
     public static final String SKULOCK_SUFFIX = ":lock";
 
@@ -24,18 +24,18 @@ public class RedisConst {
     public static final String USER_CART_KEY_SUFFIX = ":cart";
     public static final long USER_CART_EXPIRE = 60 * 60 * 24 * 7;
 
-    //用户登录
+    //User login
     public static final String USER_LOGIN_KEY_PREFIX = "user:login:";
-    //    public static final String userinfoKey_suffix = ":info";
+    // public static final String userinfoKey_suffix = ":info";
     public static final int USERKEY_TIMEOUT = 60 * 60 * 24 * 7;
 
-    //秒杀商品前缀
+    //Scill product prefix
     public static final String SECKILL_GOODS = "seckill:goods";
     public static final String SECKILL_ORDERS = "seckill:orders";
     public static final String SECKILL_ORDERS_USERS = "seckill:orders:users";
     public static final String SECKILL_STOCK_PREFIX = "seckill:stock:";
     public static final String SECKILL_USER = "seckill:user:";
-    //用户锁定时间 单位：秒
+    //User lock time unit: second
     public static final int SECKILL__TIMEOUT = 60 * 60 * 1;
 
 

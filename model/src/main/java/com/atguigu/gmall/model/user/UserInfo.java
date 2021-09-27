@@ -13,35 +13,35 @@ import lombok.Data;
 public class UserInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户名称")
+    @ApiModelProperty(value = "User Name")
     @TableField("login_name")
     private String loginName;
 
-    @ApiModelProperty(value = "用户昵称")
+    @ApiModelProperty(value = "user nickname")
     @TableField("nick_name")
     private String nickName;
 
-    @ApiModelProperty(value = "用户密码")
+    @ApiModelProperty(value = "User Password")
     @TableField("passwd")
     private String passwd;
 
-    @ApiModelProperty(value = "用户姓名")
+    @ApiModelProperty(value = "user name")
     @TableField("name")
     private String name;
 
-    @ApiModelProperty(value = "手机号")
+    @ApiModelProperty(value = "mobile phone number")
     @TableField("phone_num")
     private String phoneNum;
 
-    @ApiModelProperty(value = "邮箱")
+    @ApiModelProperty(value = "Mailbox")
     @TableField("email")
     private String email;
 
-    @ApiModelProperty(value = "头像")
+    @ApiModelProperty(value = "Avatar")
     @TableField("head_img")
     private String headImg;
 
-    @ApiModelProperty(value = "用户级别")
+    @ApiModelProperty(value = "User Level")
     @TableField("user_level")
     private String userLevel;
 

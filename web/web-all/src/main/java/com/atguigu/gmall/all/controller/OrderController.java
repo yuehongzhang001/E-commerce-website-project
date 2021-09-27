@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Controller
 public class OrderController {
@@ -18,13 +18,13 @@ public class OrderController {
     @Autowired
     private OrderFeignClient orderFeignClient;
 
-    //  http://order.gmall.com/trade.html
+
     @GetMapping("trade.html")
     public String trade(Model model){
         Result<Map<String, Object>> result = orderFeignClient.trade();
 
         model.addAllAttributes(result.getData());
-        //  订单页面
+        // order page
         return "order/trade";
     }
 }

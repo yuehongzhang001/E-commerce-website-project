@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class UserDegradeFeignClient implements UserFeignClient {

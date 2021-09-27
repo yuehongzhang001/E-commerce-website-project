@@ -10,12 +10,12 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "订单状态记录")
+@ApiModel(description = "Order Status Record")
 @TableName("order_status_log")
 public class OrderStatusLog extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
+
    @ApiModelProperty(value = "orderId")
    @TableField("order_id")
    private Long orderId;

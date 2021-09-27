@@ -11,40 +11,40 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "活动信息")
+@ApiModel(description = "Activity Information")
 @TableName("activity_info")
 public class ActivityInfo extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "活动名称")
+
+   @ApiModelProperty(value = "Activity name")
    @TableField("activity_name")
    private String activityName;
 
-   @ApiModelProperty(value = "活动类型（满减、折扣）")
+   @ApiModelProperty(value = "Activity type (full reduction, discount)")
    @TableField("activity_type")
    private String activityType;
 
-   @ApiModelProperty(value = "活动描述")
+   @ApiModelProperty(value = "Activity Description")
    @TableField("activity_desc")
    private String activityDesc;
 
-   @ApiModelProperty(value = "开始时间")
+   @ApiModelProperty(value = "start time")
    @TableField("start_time")
    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
    private Date startTime;
 
-   @ApiModelProperty(value = "结束时间")
+   @ApiModelProperty(value = "End Time")
    @TableField("end_time")
    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
    private Date endTime;
 
-   @ApiModelProperty(value = "创建时间")
+   @ApiModelProperty(value = "Creation Time")
    @TableField("create_time")
    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
    private Date createTime;
 
-   // 活动类型
+   // type of activity
    @TableField(exist = false)
    private String activityTypeString;
 }

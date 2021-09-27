@@ -15,33 +15,32 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "销售属性值")
+@ApiModel(description = "Sales attribute value")
 @TableName("spu_sale_attr_value")
 public class SpuSaleAttrValue extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "商品id")
+
+	@ApiModelProperty(value = "product id")
 	@TableField("spu_id")
 	private Long spuId;
 
-	@ApiModelProperty(value = "销售属性id")
+	@ApiModelProperty(value = "Sales Property ID")
 	@TableField("base_sale_attr_id")
 	private Long baseSaleAttrId;
 
-	@ApiModelProperty(value = "销售属性值名称")
+	@ApiModelProperty(value = "Sales Property Value Name")
 	@TableField("sale_attr_value_name")
 	private String saleAttrValueName;
 
-	@ApiModelProperty(value = "销售属性名称(冗余)")
+	@ApiModelProperty(value = "Sales property name (redundant)")
 	@TableField("sale_attr_name")
 	private String saleAttrName;
 
-	// 是否是默认选中状态
-//	@TableField("sale_attr_name")
-//	String isChecked;
+	// Is it the default selected state
+// @TableField("sale_attr_name")
+// String isChecked;
 	@TableField(exist = false)
 	String isChecked;
 
 }
-

@@ -1,37 +1,37 @@
 var trade = {
 
-    api_name : '/api/order',
+  api_name:'/api/order',
 
-  // 添加购物车
+  // add shopping cart
   trade() {
     return request({
-      url: this.api_name + '/auth/trade',
-      method: 'get'
+      url: this.api_name +'/auth/trade',
+      method:'get'
     })
   },
 
-  // 提交订单
+  // Submit orders
   submitOrder(order, tradeNo) {
     return request({
-      url: this.api_name + '/auth/submitOrder?tradeNo=' + tradeNo,
-      method: 'post',
+      url: this.api_name +'/auth/submitOrder?tradeNo=' + tradeNo,
+      method:'post',
       data: order
     })
   },
 
-  // 获取订单
+  // Get order
   getPayOrderInfo(orderId) {
     return request({
-      url: this.api_name + '/auth/getPayOrderInfo/' + orderId,
-      method: 'get'
+      url: this.api_name +'/auth/getPayOrderInfo/' + orderId,
+      method:'get'
     })
   },
 
-  // 获取订单
+  // Get order
   getOrderPageList(page, limit) {
     return request({
       url: this.api_name + `/auth/${page}/${limit}`,
-      method: 'get'
+      method:'get'
     })
   }
 }

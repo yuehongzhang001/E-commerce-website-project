@@ -4,6 +4,7 @@ import com.atguigu.gmall.model.activity.CouponInfo;
 import com.atguigu.gmall.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,11 +14,12 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-@ApiModel(description = "购物车")
+@ApiModel(description = "shopping cart")
+
 public class CartInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "user id")
     @TableField("user_id")
     private String userId;
 
@@ -25,19 +27,19 @@ public class CartInfo extends BaseEntity {
     @TableField("sku_id")
     private Long skuId;
 
-    @ApiModelProperty(value = "放入购物车时价格")
+    @ApiModelProperty(value = "The price when placed in the shopping cart")
     @TableField("cart_price")
     private BigDecimal cartPrice;
 
-    @ApiModelProperty(value = "数量")
+    @ApiModelProperty(value = "quantity")
     @TableField("sku_num")
     private Integer skuNum;
 
-    @ApiModelProperty(value = "图片文件")
+    @ApiModelProperty(value = "Picture File")
     @TableField("img_url")
     private String imgUrl;
 
-    @ApiModelProperty(value = "sku名称 (冗余)")
+    @ApiModelProperty(value = "sku name (redundant)")
     @TableField("sku_name")
     private String skuName;
 
@@ -51,12 +53,12 @@ public class CartInfo extends BaseEntity {
     @TableField(value = "update_time")
     private Timestamp updateTime;
 
-    // 实时价格 skuInfo.price
+    // Real-time price skuInfo.price
     @TableField(exist = false)
     BigDecimal skuPrice;
 
-    //  优惠券信息列表
-    @ApiModelProperty(value = "购物项对应的优惠券信息")
+    // List of coupon information
+    @ApiModelProperty(value = "The coupon information corresponding to the shopping item")
     @TableField(exist = false)
     private List<CouponInfo> couponInfoList;
 

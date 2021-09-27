@@ -39,27 +39,27 @@ public class GwareController {
         return "wareSkuListPage";
     }
 
-    //根据sku判断是否有库存
+    //Judging whether there is inventory according to sku
     @RequestMapping("hasStock")
     @ResponseBody
     public ResponseEntity<String> hasStock(@RequestParam Map<String,String> hashMap){
         String numstr = (String) hashMap.get("num");
         Integer num=Integer.parseInt(numstr);
         String skuid =(String)hashMap.get("skuId");
-        boolean hasStock = gwareService.hasStockBySkuId( skuid , num);
+        boolean hasStock = gwareService.hasStockBySkuId( skuid, num);
         if(hasStock){
-            return   ResponseEntity.ok("1");
+            return ResponseEntity.ok("1");
         }
-        return  ResponseEntity.ok("0");
+        return ResponseEntity.ok("0");
     }
 
 
-    //根据skuid 返回 仓库
+    //Return to warehouse according to skuid
     @RequestMapping(value = "skuWareInfo")
     @ResponseBody
-    public  ResponseEntity<String> getWareInfoBySkuid(String skuid){
+    public ResponseEntity<String> getWareInfoBySkuid(String skuid){
         if(skuid==null){
-            return     ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         }
         List<WareInfo> wareInfos = gwareService.getWareInfoBySkuid( skuid );
         String jsonString = JSON.toJSONString(wareInfos);
@@ -70,14 +70,14 @@ public class GwareController {
     @RequestMapping(value = "wareInfo")
     @ResponseBody
     public void addWareInfo(){
-          gwareService.addWareInfo();
+        gwareService.addWareInfo();
     }
 
-    //根据skuid 返回 仓库
-    @RequestMapping(value = "wareSkuMap"  )
+    //Return to warehouse according to skuid
+    @RequestMapping(value = "wareSkuMap")
     @ResponseBody
     public ResponseEntity<String> getWareSkuMap(@RequestParam("skuid") List<String> skuidsList){
-       // List<String> skuidsList = JSON.parseArray(skuids, String.class) ;
+        // List<String> skuidsList = JSON.parseArray(skuids, String.class);
         Map<String, List<String>> wareSkuMap = gwareService.getWareSkuMap(skuidsList);
         String jsonString = JSON.toJSONString(wareSkuMap);
         return ResponseEntity.ok(jsonString);
@@ -88,12 +88,12 @@ public class GwareController {
     @RequestMapping(value = "saveWareSku" ,method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Void> addWareSku( WareSku wareSku){
-         gwareService.addWareSku(wareSku);
-         return ResponseEntity.ok().build();
+        gwareService.addWareSku(wareSku);
+        return ResponseEntity.ok().build();
     }
 
 
-    @RequestMapping(value = "wareSkuList" ,method = RequestMethod.GET,produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "wareSkuList" ,method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<WareSku> getWareSkuList(HttpServletResponse response){
         List<WareSku> wareSkuList = gwareService.getWareSkuList();
@@ -109,7 +109,7 @@ public class GwareController {
 
 
     /***
-     * 出库
+     * Out of the library
      * @param httpServletRequest
      * @return
      */
@@ -122,7 +122,7 @@ public class GwareController {
         wareOrderTask.setId(id);
         wareOrderTask.setTrackingNo(trackingNo);
         gwareService.deliveryStock(wareOrderTask);
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 
 

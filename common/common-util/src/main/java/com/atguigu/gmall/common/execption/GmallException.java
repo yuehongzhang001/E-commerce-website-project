@@ -6,18 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 自定义全局异常类
+ * Customize the global exception class
  *
  */
 @Data
-@ApiModel(value = "自定义全局异常类")
+@ApiModel(value = "Custom global exception class")
 public class GmallException extends RuntimeException {
 
-    @ApiModelProperty(value = "异常状态码")
+    @ApiModelProperty(value = "Exception status code")
     private Integer code;
 
     /**
-     * 通过状态码和错误消息创建异常对象
+     * Create exception objects through status codes and error messages
      * @param message
      * @param code
      */
@@ -27,7 +27,7 @@ public class GmallException extends RuntimeException {
     }
 
     /**
-     * 接收枚举类型对象
+     * Receive enumerated type objects
      * @param resultCodeEnum
      */
     public GmallException(ResultCodeEnum resultCodeEnum) {

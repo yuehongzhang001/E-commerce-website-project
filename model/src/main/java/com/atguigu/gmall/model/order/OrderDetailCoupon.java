@@ -10,21 +10,21 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "订单优惠券关联表")
+@ApiModel(description = "Order Coupon Association Table")
 @TableName("order_detail_coupon")
 public class OrderDetailCoupon extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "订单id")
+
+   @ApiModelProperty(value = "Order id")
    @TableField("order_id")
    private Long orderId;
 
-   @ApiModelProperty(value = "订单明细id")
+   @ApiModelProperty(value = "Order details id")
    @TableField("order_detail_id")
    private Long orderDetailId;
 
-   @ApiModelProperty(value = "购物券ID")
+   @ApiModelProperty(value = "shopping coupon ID")
    @TableField("coupon_id")
    private Long couponId;
 
@@ -32,7 +32,7 @@ public class OrderDetailCoupon extends BaseEntity {
    @TableField("sku_id")
    private Long skuId;
 
-   @ApiModelProperty(value = "创建时间")
+   @ApiModelProperty(value = "Creation Time")
    @TableField("create_time")
    private Date createTime;
 

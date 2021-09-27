@@ -4,22 +4,22 @@ import com.atguigu.gmall.model.list.SearchParam;
 import com.atguigu.gmall.model.list.SearchResponseVo;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface SearchService {
 
-    //  商品上架
+    // Goods on the shelves
     void upperGoods(Long skuId);
-    //  商品下架
+    // product off the shelf
     void lowerGoods(Long skuId);
     /**
-     * 更新热度
+     * Update popularity
      * @param skuId
      */
     void incrHotScore(Long skuId);
 
     /**
-     * 检索数据接口
+     * Retrieve data interface
      * @param searchParam
      * @return
      */

@@ -1,13 +1,13 @@
 var list = {
 
-    api_name: '/api/list',
+  api_name:'/api/list',
 
-  // 搜索
+  // search
   getPageList(searchObj) {
     return request({
-      url: this.api_name + '/search',
-      method: 'post',
-      data: searchObj // url查询字符串或表单键值对
+      url: this.api_name +'/search',
+      method:'post',
+      data: searchObj // url query string or form key-value pair
     })
   },
 }

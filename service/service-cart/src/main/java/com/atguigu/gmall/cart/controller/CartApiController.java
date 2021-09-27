@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("api/cart")
 public class CartApiController {
 
-    //  注入服务层
+    // Inject the service layer
     @Autowired
     private CartInfoService cartInfoService;
 
@@ -27,63 +27,63 @@ public class CartApiController {
                             @PathVariable Integer skuNum,
                             HttpServletRequest request){
 
-        //  缺少一个用户Id    在网关中已经获取过了！
+        // Missing a user ID has already been obtained in the gateway!
         String userId = AuthContextHolder.getUserId(request);
         if (StringUtils.isEmpty(userId)){
-            //  未登录：没有用户Id,给一个临时用户Id！
+            // Not logged in: No user Id, give a temporary user Id!
             userId = AuthContextHolder.getUserTempId(request);
         }
-        //  userId=""
+        // userId=""
         cartInfoService.addToCart(skuId,userId,skuNum);
-        //  返回
+        //  return
         return Result.ok();
     }
 
-    //  查询购物车列表
+    // Query the shopping cart list
     @GetMapping("cartList")
     public Result cartList(HttpServletRequest request){
-        //  缺少一个用户Id    在网关中已经获取过了！
+        // Missing a user ID has already been obtained in the gateway!
         String userId = AuthContextHolder.getUserId(request);
-        //  未登录：没有用户Id,给一个临时用户Id！
+        // Not logged in: No user Id, give a temporary user Id!
         String userTempId = AuthContextHolder.getUserTempId(request);
-        //  调用服务层查询方法！
+        // Call the service layer query method!
         List<CartInfo> cartList = cartInfoService.getCartList(userId, userTempId);
-        //  将购物车列表放入result 结果集
+        // Put the shopping cart list into the result set
         return Result.ok(cartList);
     }
 
     @GetMapping("checkCart/{skuId}/{isChecked}")
     public Result checkCart(@PathVariable Long skuId,
                             @PathVariable Integer isChecked, HttpServletRequest request) {
-        //  获取userId
+        // Get userId
         String userId = AuthContextHolder.getUserId(request);
         if(StringUtils.isEmpty(userId)){
             userId = AuthContextHolder.getUserTempId(request);
         }
-        //  调用方法
+        // call method
         cartInfoService.checkCart(userId,isChecked,skuId);
         return Result.ok();
     }
-    //  删除购物项
+    // delete shopping item
     @DeleteMapping("deleteCart/{skuId}")
     public Result deleteCart(@PathVariable("skuId") Long skuId,
                              HttpServletRequest request) {
-        //  获取userId
+        // Get userId
         String userId = AuthContextHolder.getUserId(request);
         if(StringUtils.isEmpty(userId)){
             userId = AuthContextHolder.getUserTempId(request);
         }
-        //  删除数据
+        //  delete data
         cartInfoService.deleteCart(skuId,userId);
         return Result.ok();
     }
 
-    //  制作远程调用的数据接口
+    // Make a data interface for remote calls
     @GetMapping("getCartCheckedList/{userId}")
     public List<CartInfo> getCartCheckedList(@PathVariable(value = "userId") String userId) {
         return cartInfoService.getCartCheckedList(userId);
     }
-    //  根据userId 查询最新价格
+    // Query the latest price based on userId
     @GetMapping("loadCartCache/{userId}")
     public Result loadCartCache(@PathVariable("userId") String userId) {
         cartInfoService.loadCartCache(userId);

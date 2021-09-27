@@ -5,13 +5,13 @@ package com.atguigu.gmall.ware.enums;
  * @return
  */
 public enum TaskStatus {
-     PAID("已付款"),
-     DEDUCTED("已减库存"),
-     OUT_OF_STOCK("已付款，库存超卖"),
-     DELEVERED("已出库"),
-     SPLIT("已拆分");
+    PAID("paid"),
+    DEDUCTED("Deduced Inventory"),
+    OUT_OF_STOCK("paid, inventory is oversold"),
+    DELEVERED("Out of the library"),
+    SPLIT("Split");
 
-    private  String comment;
+    private String comment;
 
     TaskStatus(String comment) {
         this.comment=comment;

@@ -1,36 +1,36 @@
 var cart = {
 
-    api_name: '/api/cart',
+  api_name:'/api/cart',
 
-  // 添加购物车
+  // add shopping cart
   addToCart(skuId, skuNum) {
     return request({
-      url: this.api_name + '/addToCart/' + skuId + '/' + skuNum,
-      method: 'post'
+      url: this.api_name +'/addToCart/' + skuId +'/' + skuNum,
+      method:'post'
     })
   },
 
-  // 我的购物车
+  // my shopping cart
   cartList() {
     return request({
-      url: this.api_name + '/cartList',
-      method: 'get'
+      url: this.api_name +'/cartList',
+      method:'get'
     })
   },
 
-  // 更新选中状态
+  // Update the selected state
   checkCart(skuId, isChecked) {
     return request({
-      url: this.api_name + '/checkCart/' + skuId + '/' + isChecked,
-      method: 'get'
+      url: this.api_name +'/checkCart/' + skuId +'/' + isChecked,
+      method:'get'
     })
   },
 
-// 刪除
+// delete
   deleteCart(skuId) {
     return request({
-      url: this.api_name + '/deleteCart/' + skuId,
-      method: 'delete'
+      url: this.api_name +'/deleteCart/' + skuId,
+      method:'delete'
     })
   }
 }

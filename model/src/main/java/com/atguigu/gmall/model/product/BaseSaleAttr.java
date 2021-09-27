@@ -14,15 +14,14 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "销售属性")
+@ApiModel(description = "Sales attribute")
 @TableName("base_sale_attr")
 public class BaseSaleAttr extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "销售属性名称")
+
+	@ApiModelProperty(value = "Sales Property Name")
 	@TableField("name")
 	private String name;
 
 }
-

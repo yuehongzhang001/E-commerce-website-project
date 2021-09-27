@@ -5,7 +5,7 @@ import com.atguigu.gmall.payment.client.PaymentFeignClient;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class PaymentFeignClientImpl implements PaymentFeignClient {

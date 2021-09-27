@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class PaymentReceiver {
@@ -28,9 +28,9 @@ public class PaymentReceiver {
             key = {MqConst.ROUTING_PAYMENT_CLOSE}
     ))
     public void closePaymentInfo(Long orderId, Message message, Channel channel) {
-        //  判断orderId
+        // Determine orderId
         if (orderId!=null){
-            //  关闭交易记录方法
+            // Close transaction record method
             paymentService.closePayment(orderId);
         }
         channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);

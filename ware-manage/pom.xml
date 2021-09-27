@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.atguigu.gmalls</groupId>
@@ -33,31 +33,31 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
-		<!-- 服务注册 -->
+		<!-- Service registration -->
 		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+		<!--<groupId>org.springframework.cloud</groupId>-->
+		<!--<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
 		<!--</dependency>-->
 
-		<!-- 服务配置 -->
+		<!-- Service configuration -->
 		<!--<dependency>-->
 		<!--<groupId>org.springframework.cloud</groupId>-->
 		<!--<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
 		<!--</dependency>-->
 
-		<!-- 服务调用feign -->
+		<!-- Service call feign -->
 		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-openfeign</artifactId>-->
+		<!--<groupId>org.springframework.cloud</groupId>-->
+		<!--<artifactId>spring-cloud-starter-openfeign</artifactId>-->
 		<!--</dependency>-->
 
-		<!--&lt;!&ndash; 流量控制 &ndash;&gt;-->
+		<!--&lt;!&ndash; Flow control &ndash;&gt;-->
 		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
+		<!--<groupId>org.springframework.cloud</groupId>-->
+		<!--<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
 		<!--</dependency>-->
 
-		<!--开发者工具-->
+		<!--Developer Tools-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -70,7 +70,7 @@
 			<version>1.2.29</version>
 		</dependency>
 
-		<!--rabbitmq消息队列-->
+		<!--rabbitmq message queue-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>

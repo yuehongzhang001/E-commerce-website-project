@@ -3,22 +3,22 @@ package com.atguigu.gmall.cart.service;
 import com.atguigu.gmall.model.cart.CartInfo;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface CartAsyncService {
 
-    //  新增
+    // add
     void saveCartInfo(CartInfo cartInfo);
-    //  更新
+    //  renew
     void updateCartInfo(CartInfo cartInfo);
-    //  删除
+    //  delete
     void deleteCartInfo(CartInfo cartInfo);
-    //  删除
+    //  delete
     void deleteCartInfo(String userId);
-    //  选中状态变更
+    // Selected status change
     void checkCart(String userId, Integer isChecked, Long skuId);
     /**
-     * 删除
+     * delete
      * @param userId
      * @param skuId
      */

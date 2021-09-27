@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-cart",fallback = CartDegradeFeignClient.class)
 public interface CartFeignClient {
 
-    //  数据接口发布到feign 上！ 添加购物车！ 不需要HttpServletRequest ，因为在feign 传递的时候，拦截器中处理了！
+    // Publish the data interface to feign! Add to cart! HttpServletRequest is not needed because it is processed in the interceptor when feign is passed!
     @PostMapping("/api/cart/addToCart/{skuId}/{skuNum}")
     Result addToCart(@PathVariable("skuId") Long skuId, @PathVariable("skuNum") Integer skuNum);
 
     /**
-     * 根据用户Id 查询购物车列表
+     * Query the shopping cart list according to the user Id
      * @param userId
      * @return
      */
     @GetMapping("/api/cart/getCartCheckedList/{userId}")
     List<CartInfo> getCartCheckedList(@PathVariable("userId") String userId);
 
-    //  根据userId 查询购物车最新价格
+    // Query the latest price of the shopping cart based on userId
     @GetMapping("/api/cart/loadCartCache/{userId}")
     Result loadCartCache(@PathVariable("userId") String userId);
 }

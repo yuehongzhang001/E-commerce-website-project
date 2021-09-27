@@ -11,30 +11,30 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Configuration
 public class OrderCanelMqConfig {
 
-    //  创建队列
+    // Create a queue
     @Bean
     public Queue delayQeue(){
-        //  使用插件的时候：不需要在队列中进行设置！ 这个延迟时间在哪设置?
+        // When using the plug-in: no need to set in the queue! Where is this delay time set?
         return new Queue(MqConst.QUEUE_ORDER_CANCEL,true,false,false);
 
     }
-    //  创建交换机
+    // Create a switch
     @Bean
     public CustomExchange delayExchange(){
-        //  需要在这个交换机上进行配置！
+        // Need to be configured on this switch!
         HashMap<String, Object> map = new HashMap<>();
         map.put("x-delayed-type","direct");
         return new CustomExchange(MqConst.EXCHANGE_DIRECT_ORDER_CANCEL,"x-delayed-message",true,false,map);
     }
-    //  配置绑定关系！
+    // Configure the binding relationship!
     @Bean
     public Binding delaybinding(){
-        //   return BindingBuilder.bind(queue1()).to(exchange()).with(routing_dead_1);
+        // return BindingBuilder.bind(queue1()).to(exchange()).with(routing_dead_1);
         return BindingBuilder.bind(delayQeue()).to(delayExchange()).with(MqConst.ROUTING_ORDER_CANCEL).noargs();
     }
 }

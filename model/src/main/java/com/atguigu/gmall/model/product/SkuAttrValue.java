@@ -14,17 +14,17 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "Sku平台属性值")
+@ApiModel(description = "Sku platform attribute value")
 @TableName("sku_attr_value")
 public class SkuAttrValue extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "属性id（冗余)")
+
+	@ApiModelProperty(value = "Property id (redundant)")
 	@TableField("attr_id")
 	private Long attrId;
 
-	@ApiModelProperty(value = "属性值id")
+	@ApiModelProperty(value = "Property value id")
 	@TableField("value_id")
 	private Long valueId;
 
@@ -33,4 +33,3 @@ public class SkuAttrValue extends BaseEntity {
 	private Long skuId;
 
 }
-

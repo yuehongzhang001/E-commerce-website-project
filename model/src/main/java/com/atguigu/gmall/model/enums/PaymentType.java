@@ -1,10 +1,10 @@
 package com.atguigu.gmall.model.enums;
 
 public enum PaymentType {
-    ALIPAY("支付宝"),
-    WEIXIN("微信" );
+    ALIPAY("Alipay"),
+    WEIXIN("WeChat" );
 
-    private String comment ;
+    private String comment;
 
 
     PaymentType(String comment ){

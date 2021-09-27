@@ -14,72 +14,72 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@ApiModel(description = "订单信息")
+@ApiModel(description = "Order Information")
 @TableName("order_info")
 public class OrderInfo extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "收货人")
+    @ApiModelProperty(value = "Consignee")
     @TableField("consignee")
     private String consignee;
 
-    @ApiModelProperty(value = "收件人电话")
+    @ApiModelProperty(value = "recipient phone")
     @TableField("consignee_tel")
     private String consigneeTel;
 
-    @ApiModelProperty(value = "总金额")
+    @ApiModelProperty(value = "Total Amount")
     @TableField("total_amount")
     private BigDecimal totalAmount;
 
-    @ApiModelProperty(value = "订单状态")
+    @ApiModelProperty(value = "Order Status")
     @TableField("order_status")
     private String orderStatus;
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "user id")
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "付款方式")
+    @ApiModelProperty(value = "payment method")
     @TableField("payment_way")
     private String paymentWay;
 
-    @ApiModelProperty(value = "送货地址")
+    @ApiModelProperty(value = "shipping address")
     @TableField("delivery_address")
     private String deliveryAddress;
 
-    @ApiModelProperty(value = "订单备注")
+    @ApiModelProperty(value = "Order Remarks")
     @TableField("order_comment")
     private String orderComment;
 
-    @ApiModelProperty(value = "订单交易编号（第三方支付用)")
+    @ApiModelProperty(value = "Order transaction number (for third-party payment)")
     @TableField("out_trade_no")
     private String outTradeNo;
 
-    @ApiModelProperty(value = "订单描述(第三方支付用)")
+    @ApiModelProperty(value = "Order description (for third-party payment)")
     @TableField("trade_body")
     private String tradeBody;
 
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "Creation Time")
     @TableField("create_time")
     private Date createTime;
 
-    @ApiModelProperty(value = "失效时间")
+    @ApiModelProperty(value = "expiration time")
     @TableField("expire_time")
     private Date expireTime;
 
-    @ApiModelProperty(value = "进度状态")
+    @ApiModelProperty(value = "Progress Status")
     @TableField("process_status")
     private String processStatus;
 
-    @ApiModelProperty(value = "物流单编号")
+    @ApiModelProperty(value = "Logistics Order Number")
     @TableField("tracking_no")
     private String trackingNo;
 
-    @ApiModelProperty(value = "父订单编号")
+    @ApiModelProperty(value = "parent order number")
     @TableField("parent_order_id")
     private Long parentOrderId;
 
-    @ApiModelProperty(value = "图片路径")
+    @ApiModelProperty(value = "Picture Path")
     @TableField("img_url")
     private String imgUrl;
 
@@ -89,59 +89,59 @@ public class OrderInfo extends BaseEntity {
     @TableField(exist = false)
     private String wareId;
 
-    @ApiModelProperty(value = "地区")
+    @ApiModelProperty(value = "Area")
     @TableField("province_id")
     private Long provinceId;
 
-    @ApiModelProperty(value = "促销金额")
+    @ApiModelProperty(value = "Promotional Amount")
     @TableField("activity_reduce_amount")
     private BigDecimal activityReduceAmount;
 
-    @ApiModelProperty(value = "优惠券")
+    @ApiModelProperty(value = "coupon")
     @TableField("coupon_amount")
     private BigDecimal couponAmount;
 
-    @ApiModelProperty(value = "原价金额")
+    @ApiModelProperty(value = "original price amount")
     @TableField("original_total_amount")
     private BigDecimal originalTotalAmount;
 
-    @ApiModelProperty(value = "可退款日期（签收后30天）")
+    @ApiModelProperty(value = "Refundable date (30 days after receipt)")
     @TableField("refundable_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date refundableTime;
 
-    @ApiModelProperty(value = "运费")
+    @ApiModelProperty(value = "Shipping Fee")
     @TableField("feight_fee")
     private BigDecimal feightFee;
 
-    @ApiModelProperty(value = "操作时间")
+    @ApiModelProperty(value = "operation time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("operate_time")
     private Date operateTime;
 
-    //  计算活动或者优惠劵的金额
+    // Calculate the amount of the event or coupon
     @TableField(exist = false)
     private List<OrderDetailVo> orderDetailVoList;
 
     @TableField(exist = false)
     private CouponInfo couponInfo;
 
-    // 计算总价格
+    // Calculate the total price
     public void sumTotalAmount(){
         BigDecimal totalAmount = new BigDecimal("0");
         BigDecimal originalTotalAmount = new BigDecimal("0");
         BigDecimal couponAmount = new BigDecimal("0");
-        //  减去优惠劵
+        // minus coupons
         if(null != couponInfo) {
             couponAmount = couponAmount.add(couponInfo.getReduceAmount());
             totalAmount = totalAmount.subtract(couponInfo.getReduceAmount());
         }
-        //  减去活动
+        // minus activity
         if(null != this.getActivityReduceAmount()) {
             totalAmount = totalAmount.subtract(this.getActivityReduceAmount());
         }
-        //  计算最后 10*2=20
-        for (OrderDetail orderDetail : orderDetailList) {
+        // Calculate the last 10*2=20
+        for (OrderDetail orderDetail: orderDetailList) {
             BigDecimal skuTotalAmount = orderDetail.getOrderPrice().multiply(new BigDecimal(orderDetail.getSkuNum()));
             originalTotalAmount = originalTotalAmount.add(skuTotalAmount);
             totalAmount = totalAmount.add(skuTotalAmount);

@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class CartAsyncServiceImpl implements CartAsyncService {
@@ -22,18 +22,18 @@ public class CartAsyncServiceImpl implements CartAsyncService {
     @Override
     @Async
     public void saveCartInfo(CartInfo cartInfo) {
-            //  int i= 1/0;
-          cartInfoMapper.insert(cartInfo);
+        // int i = 1/0;
+        cartInfoMapper.insert(cartInfo);
 
     }
 
     @Override
     @Async
     public void updateCartInfo(CartInfo cartInfo) {
-        //  代码有问题的！
-        //  update cart_info set sku_num = ? where sku_id = ? and user_id = ?
-        //  cartInfoMapper.updateById(cartInfo);
-        //  构架更新条件
+        // There is a problem with the code!
+        // update cart_info set sku_num =? where sku_id =? and user_id =?
+        // cartInfoMapper.updateById(cartInfo);
+        // Framework update conditions
         QueryWrapper<CartInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("sku_id",cartInfo.getSkuId());
         queryWrapper.eq("user_id",cartInfo.getUserId());
@@ -59,19 +59,19 @@ public class CartAsyncServiceImpl implements CartAsyncService {
     @Override
     @Async
     public void checkCart(String userId, Integer isChecked, Long skuId) {
-        //  update cart_info set is_checked = ? where userId= ? and skuId= ?
+        // update cart_info set is_checked =? where userId=? and skuId=?
         CartInfo cartInfo = new CartInfo();
         cartInfo.setIsChecked(isChecked);
 
-        //        UpdateWrapper<CartInfo> updateWrapper = new UpdateWrapper<>();
-        //        updateWrapper.eq("user_id",userId);
-        //        updateWrapper.eq("sku_id",skuId);
+        // UpdateWrapper<CartInfo> updateWrapper = new UpdateWrapper<>();
+        // updateWrapper.eq("user_id",userId);
+        // updateWrapper.eq("sku_id",skuId);
         QueryWrapper<CartInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id",userId);
         queryWrapper.eq("sku_id",skuId);
 
-        //  updateWrapper.set("is_checked",isChecked);
-        //  第一个参数cartInfo:更新的内容  第二个参数updateWrapper 更新条件！
+        // updateWrapper.set("is_checked",isChecked);
+        // The first parameter cartInfo: updated content The second parameter updateWrapper update conditions!
         cartInfoMapper.update(cartInfo,queryWrapper);
     }
 

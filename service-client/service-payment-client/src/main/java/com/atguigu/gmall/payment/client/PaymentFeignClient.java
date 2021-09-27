@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-payment",fallback = PaymentFeignClientImpl.class)
 public interface PaymentFeignClient {
 
-    //  关闭支付宝交易记录
+    // Close Alipay transaction records
     @GetMapping("api/payment/alipay/closePay/{orderId}")
     Boolean closePay(@PathVariable Long orderId);
-    //  查询支付宝是否有交易记录
+    // Query whether Alipay has transaction records
     @GetMapping("api/payment/alipay/checkPayment/{orderId}")
     Boolean checkPayment(@PathVariable Long orderId);
-    //  查询电商本地是否有交易记录
+    // Query whether there are transaction records in the local e-commerce company
     @GetMapping("api/payment/alipay/getPaymentInfo/{outTradeNo}")
     PaymentInfo getPaymentInfo(@PathVariable String outTradeNo);
 }

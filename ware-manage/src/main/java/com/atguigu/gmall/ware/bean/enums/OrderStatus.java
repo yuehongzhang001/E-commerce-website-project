@@ -5,15 +5,15 @@ package com.atguigu.gmall.ware.bean.enums;
  * @return
  */
 public enum OrderStatus {
-       UNPAID("未支付"),
-       PAID("已支付" ),
-       WAITING_DELEVER("待发货"),
-       DELEVERED("已发货"),
-       CLOSED("已关闭"),
-       FINISHED("已完结") ,
-       SPLIT("订单已拆分");
+    UNPAID("Unpaid"),
+    PAID("paid"),
+    WAITING_DELEVER("Pending Shipment"),
+    DELEVERED("Delivered"),
+    CLOSED("Closed"),
+    FINISHED("finished"),
+    SPLIT("Order has been split");
 
-    private String comment ;
+    private String comment;
 
 
     OrderStatus(String comment ){

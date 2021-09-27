@@ -3,7 +3,7 @@ package com.atguigu.gmall.user.service;
 import com.atguigu.gmall.model.user.UserInfo;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface UserService {
 

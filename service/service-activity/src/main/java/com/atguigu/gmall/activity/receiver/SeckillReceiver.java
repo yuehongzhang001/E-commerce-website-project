@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class SeckillReceiver {
@@ -40,7 +40,7 @@ public class SeckillReceiver {
 
 
 
-    //  监听消息将秒杀商品数据放入缓存！
+    // Listen to the message and put the spike product data into the cache!
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_TASK_1,durable = "true",autoDelete = "false"),
@@ -48,51 +48,51 @@ public class SeckillReceiver {
             key = {MqConst.ROUTING_TASK_1}
     ))
     public void importToRedis(Message message, Channel channel){
-        //  查询当前的秒杀商品数据集合： 当天，审核状态 ，剩余库存数
-        //  当天时间new Date();
+        // Query the current spike product data collection: that day, review status, remaining inventory
+        // Time of day new Date();
         QueryWrapper<SeckillGoods> seckillGoodsQueryWrapper = new QueryWrapper<>();
         seckillGoodsQueryWrapper.eq("status",1).gt("stock_count",0);
-        //  数据库的年月日，与当前系统时间的年月日进行比较！
-        //  如果精确到秒：涉及到商品展示，什么时候开始，什么时候结束！
+        // The year, month, and day of the database are compared with the year, month, and day of the current system time!
+        // If accurate to the second: when it comes to product display, when will it start and when will it end!
         seckillGoodsQueryWrapper.eq("DATE_FORMAT(start_time,'%Y-%m-%d')", DateUtil.formatDate(new Date()));
         List<SeckillGoods> seckillGoodsList = seckillGoodsMapper.selectList(seckillGoodsQueryWrapper);
-        //  将集合数据放入缓存
+        // Put the collection data into the cache
         if (!CollectionUtils.isEmpty(seckillGoodsList)){
-            for (SeckillGoods seckillGoods : seckillGoodsList) {
-                //  将数据放入缓存！ 数据类型， key ！
+            for (SeckillGoods seckillGoods: seckillGoodsList) {
+                // Put the data in the cache! Data type, key!
                 String seckillKey = RedisConst.SECKILL_GOODS;
-                //  判断当前秒杀商品在缓存中是否存在！
-                //  判断当前field ，在这个key 中是否存在！ field  = skuId
+                // Determine whether the current spike product exists in the cache!
+                // Determine whether the current field exists in this key! field = skuId
                 Boolean flag = redisTemplate.boundHashOps(seckillKey).hasKey(seckillGoods.getSkuId().toString());
-                //  flag = true 表示有数据，不要插入数据了。
+                // flag = true means there is data, do not insert data.
                 if (flag){
                     continue;
                 }
-                //  第一种放入方式！
-                //  redisTemplate.opsForHash().put(seckillKey,seckillGoods.getSkuId().toString(),seckillGoods);
-                //  第二种放入方式：
+                // The first way to put it!
+                // redisTemplate.opsForHash().put(seckillKey,seckillGoods.getSkuId().toString(),seckillGoods);
+                // The second way to put it in:
                 redisTemplate.boundHashOps(seckillKey).put(seckillGoods.getSkuId().toString(),seckillGoods);
-                //  如何控制库存超买? 将商品的库存数量放入缓存！num = 10;
-                for (Integer i = 0; i < seckillGoods.getStockCount(); i++) {
-                    //  定义key ，value！
+                // How to control inventory overbought? Put the inventory quantity of the goods into the cache! num = 10;
+                for (Integer i = 0; i <seckillGoods.getStockCount(); i++) {
+                    // Define key, value!
                     String key = RedisConst.SECKILL_STOCK_PREFIX+seckillGoods.getSkuId();
-                    //  key = seckill:stock:skuId
-                    //  value = skuId  seckillGoods.getSkuId().toString()
-                    //  redisTemplate.opsForList().leftPush(key,seckillGoods.getSkuId().toString());
+                    // key = seckill:stock:skuId
+                    // value = skuId seckillGoods.getSkuId().toString()
+                    // redisTemplate.opsForList().leftPush(key,seckillGoods.getSkuId().toString());
                     redisTemplate.boundListOps(key).leftPush(seckillGoods.getSkuId().toString());
 
                 }
 
-                //  状态位初始化：skuId:1  |  46:1
+                // Status bit initialization: skuId:1 | 46:1
                 redisTemplate.convertAndSend("seckillpush",seckillGoods.getSkuId()+":1");
 
             }
         }
-        //  手动确认
+        // manual confirmation
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 
-    //  监听秒杀队列中的数据！
+    // Listen to the data in the spike queue!
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_SECKILL_USER,durable = "true",autoDelete = "false"),
@@ -100,17 +100,17 @@ public class SeckillReceiver {
             key = {MqConst.ROUTING_SECKILL_USER}
     ))
     public void seckill(UserRecode userRecode, Message message, Channel channel){
-        //  判断当前的对象是否为空
+        // Determine whether the current object is empty
         if(userRecode!=null){
-            //  调用方法！ 预下单
+            // Call the method! Pre-order
             seckillGoodsService.seckillOrder(userRecode.getSkuId(),userRecode.getUserId());
         }
-        //  手动确认！
+        // Manually confirm!
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 
     }
 
-    //  监听事件：
+    // Listen for events:
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_TASK_18,durable = "true",autoDelete = "false"),
@@ -118,37 +118,37 @@ public class SeckillReceiver {
             key = {MqConst.ROUTING_TASK_18}
     ))
     public void clearRedis( Message message, Channel channel){
-        //  查询秒杀结束的商品！
-        //活动结束清空缓存
+        // Query the products that the spike has ended!
+        //Clear the cache at the end of the event
         QueryWrapper<SeckillGoods> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("status", 1);
         queryWrapper.le("end_time", new Date());
-        //  查到的是当天结束的秒杀商品！
+        // What I found was the spike product at the end of the day!
         List<SeckillGoods> seckillGoodsList = seckillGoodsMapper.selectList(queryWrapper);
 
-        for (SeckillGoods seckillGoods : seckillGoodsList) {
-            //  RedisConst.SECKILL_GOODS seckill:goods
-            //  秒杀商品所有数据： seckill:goods  field = skuId
-            //  如果有多个秒杀商品则使用以下删除方式！
-            //  redisTemplate.boundHashOps(RedisConst.SECKILL_GOODS).delete(seckillGoods.getSkuId().toString());
-            //  删除库存！ seckill:stock:skuId  seckill:stock:46
+        for (SeckillGoods seckillGoods: seckillGoodsList) {
+            // RedisConst.SECKILL_GOODS seckill:goods
+            // All data of seckill goods: seckill:goods field = skuId
+            // If there are multiple spike products, use the following deletion method!
+            // redisTemplate.boundHashOps(RedisConst.SECKILL_GOODS).delete(seckillGoods.getSkuId().toString());
+            // Delete inventory! seckill:stock:skuId seckill:stock:46
             redisTemplate.delete(RedisConst.SECKILL_STOCK_PREFIX+seckillGoods.getSkuId());
         }
 
-        //  如果秒杀商品只有一个！
+        // If there is only one spike product!
         redisTemplate.delete(RedisConst.SECKILL_GOODS);
-        //  seckill:orders 为啥要删除它！
+        // seckill:orders why delete it!
         redisTemplate.delete(RedisConst.SECKILL_ORDERS);
-        //  删除真正的订单
+        // delete the real order
         redisTemplate.delete(RedisConst.SECKILL_ORDERS_USERS);
 
-        //  修改一下数据库
-        //  将秒杀结束商品的状态变为 2
+        // Modify the database
+        // Change the status of the seckill end product to 2
         SeckillGoods seckillGoods = new SeckillGoods();
         seckillGoods.setStatus("2");
         seckillGoodsMapper.update(seckillGoods,queryWrapper);
 
-        //  手动确认！
+        // Manually confirm!
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 
     }

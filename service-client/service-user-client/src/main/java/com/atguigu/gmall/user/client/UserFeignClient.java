@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-user",fallback = UserDegradeFeignClient.class)
 public interface UserFeignClient {
 
-    //  发布数据接口
+    // Publish data interface
     @GetMapping("/api/user/inner/findUserAddressListByUserId/{userId}")
     List<UserAddress> findUserAddressListByUserId(@PathVariable Long userId);
 }

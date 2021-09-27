@@ -14,19 +14,18 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "商标品牌")
+@ApiModel(description = "Trademark Brand")
 @TableName("base_trademark")
 public class BaseTrademark extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "属性值")
+
+	@ApiModelProperty(value = "Property value")
 	@TableField("tm_name")
 	private String tmName;
 
-	@ApiModelProperty(value = "品牌logo的图片路径")
+	@ApiModelProperty(value = "The image path of the brand logo")
 	@TableField("logo_url")
 	private String logoUrl;
 
 }
-

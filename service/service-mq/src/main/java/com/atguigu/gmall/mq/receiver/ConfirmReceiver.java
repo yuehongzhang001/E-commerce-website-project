@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class ConfirmReceiver {

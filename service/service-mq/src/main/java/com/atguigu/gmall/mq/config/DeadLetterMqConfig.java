@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Configuration // 配置类！
 public class DeadLetterMqConfig {

@@ -11,13 +11,13 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(description = "活动sku范围")
+@ApiModel(description = "Activity sku range")
 @TableName("activity_sku")
 public class ActivitySku extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "活动id ")
+
+   @ApiModelProperty(value = "activity id")
    @TableField("activity_id")
    private Long activityId;
 
@@ -25,7 +25,7 @@ public class ActivitySku extends BaseEntity {
    @TableField("sku_id")
    private Long skuId;
 
-   @ApiModelProperty(value = "创建时间")
+   @ApiModelProperty(value = "Creation Time")
    @TableField("start_time")
    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
    private Date startTime;

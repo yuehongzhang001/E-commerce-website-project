@@ -8,20 +8,20 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-13 09:43:05
  */
 @Mapper
 public interface SpuSaleAttrMapper extends BaseMapper<SpuSaleAttr> {
     /**
-     * 根据spuId 查询销售属性列表
+     * Query the list of sales attributes according to spuId
      * @param spuId
      * @return
      */
     List<SpuSaleAttr> selectSpuSaleAttrList(Long spuId);
 
     /**
-     * 根据spuId,skuId 查询销售属性+销售属性值
+     * Query sales attribute + sales attribute value according to spuId, skuId
      * @param skuId
      * @param spuId
      * @return

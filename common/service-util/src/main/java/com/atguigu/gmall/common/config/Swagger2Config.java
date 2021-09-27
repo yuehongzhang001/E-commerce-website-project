@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Swagger2配置信息
+ * Swagger2 configuration information
  */
 @Configuration
 @EnableSwagger2
@@ -27,11 +27,11 @@ public class Swagger2Config {
     @Bean
     public Docket webApiConfig(){
 
-        //添加head参数start
+        //Add the head parameter start
         List<Parameter> pars = new ArrayList<>();
         ParameterBuilder tokenPar = new ParameterBuilder();
         tokenPar.name("userId")
-                .description("用户ID")
+                .description("User ID")
                 .defaultValue("1")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
@@ -40,23 +40,23 @@ public class Swagger2Config {
         pars.add(tokenPar.build());
 
         ParameterBuilder tmpPar = new ParameterBuilder();
-                tmpPar.name("userTempId")
-                .description("临时用户ID")
+        tmpPar.name("userTempId")
+                .description("Temporary User ID")
                 .defaultValue("1")
                 .modelRef(new ModelRef("string"))
                 .parameterType("header")
                 .required(false)
                 .build();
         pars.add(tmpPar.build());
-        //添加head参数end
+        //Add head parameter end
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("webApi")
                 .apiInfo(webApiInfo())
                 .select()
-                //过滤掉admin路径下的所有页面
+                //Filter out all pages under the admin path
                 .paths(Predicates.and(PathSelectors.regex("/api/.*")))
-                //过滤掉所有error或error.*页面
+                //Filter out all error or error.* pages
                 //.paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build()
                 .globalOperationParameters(pars);
@@ -70,7 +70,7 @@ public class Swagger2Config {
                 .groupName("adminApi")
                 .apiInfo(adminApiInfo())
                 .select()
-                //只显示admin路径下的页面
+                //Only display pages under the admin path
                 .paths(Predicates.and(PathSelectors.regex("/admin/.*")))
                 .build();
 
@@ -79,20 +79,20 @@ public class Swagger2Config {
     private ApiInfo webApiInfo(){
 
         return new ApiInfoBuilder()
-                .title("网站-API文档")
-                .description("本文档描述了网站微服务接口定义")
+                .title("Website-API Document")
+                .description("This document describes the website microservice interface definition")
                 .version("1.0")
-                .contact(new Contact("Helen", "http://atguigu.com", "55317332@qq.com"))
+                .contact(new Contact("Helen", "http://helen.com", "55317332@qq.com"))
                 .build();
     }
 
     private ApiInfo adminApiInfo(){
 
         return new ApiInfoBuilder()
-                .title("后台管理系统-API文档")
-                .description("本文档描述了后台管理系统微服务接口定义")
+                .title("Backstage management system-API document")
+                .description("This document describes the microservice interface definition of the background management system")
                 .version("1.0")
-                .contact(new Contact("Helen", "http://atguigu.com", "55317332@qq.com"))
+                .contact(new Contact("Helen", "http://helen.com", "55317332@qq.com"))
                 .build();
     }
 

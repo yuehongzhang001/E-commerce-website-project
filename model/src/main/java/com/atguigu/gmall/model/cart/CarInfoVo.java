@@ -9,19 +9,19 @@ import java.util.List;
 
 @Data
 public class CarInfoVo implements Serializable {
-   
+
    private static final long serialVersionUID = 1L;
 
    /**
-    * 购物车中哪些skuId对应同一组活动规则
-    * 如：skuId为1与2的购物项  对应  活动1的规则 （满1000减100 满2000减200）
+    * Which skuId in the shopping cart corresponds to the same set of activity rules
+    * For example: shopping items with skuId of 1 and 2 correspond to the rules of activity 1 (less than 1,000 minus 100, minus 2,000 minus 200)
     */
-   // 不同的skuId 对应相同的活动
+   // Different skuId corresponds to the same activity
    @ApiModelProperty(value = "cartInfoList")
    private List<CartInfo> cartInfoList;
 
-   // activityRuleList 存储的是同一个活动
-   @ApiModelProperty(value = "活动规则列表")
+   // activityRuleList stores the same activity
+   @ApiModelProperty(value = "active rule list")
    private List<ActivityRule> activityRuleList;
 
 }

@@ -11,31 +11,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 14:11:58
  */
 @Service
 public class BaseTrademarkServiceImpl extends ServiceImpl<BaseTrademarkMapper,BaseTrademark> implements BaseTrademarkService {
 
-    //  服务层调用mapper 层
+    // The service layer calls the mapper layer
     @Autowired
     private BaseTrademarkMapper baseTrademarkMapper;
 
     @Override
     public IPage getBaseTradeMarkList(Page<BaseTrademark> baseTrademarkPage) {
 
-        //  select * from base_trademark order by id
-        //  添加一个排序规则
+        // select * from base_trademark order by id
+        // Add a sorting rule
         QueryWrapper<BaseTrademark> baseTrademarkQueryWrapper = new QueryWrapper<>();
         baseTrademarkQueryWrapper.orderByDesc("id");
-        //  调用查询方法
+        // call query method
         return baseTrademarkMapper.selectPage(baseTrademarkPage,baseTrademarkQueryWrapper);
     }
 
-    //    @Override
-    //    public void save(BaseTrademark baseTrademark) {
+    // @Override
+    // public void save(BaseTrademark baseTrademark) {
     //
-    //        baseTrademarkMapper.insert(baseTrademark);
+    // baseTrademarkMapper.insert(baseTrademark);
     //
-    //    }
+    //}
 }

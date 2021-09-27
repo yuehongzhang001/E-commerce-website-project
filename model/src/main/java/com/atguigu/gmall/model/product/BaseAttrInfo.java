@@ -16,27 +16,26 @@ import java.util.List;
  *
  */
 @Data
-@ApiModel(description = "平台属性")
+@ApiModel(description = "Platform Properties")
 @TableName("base_attr_info")
 public class BaseAttrInfo extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "属性名称")
+
+	@ApiModelProperty(value = "Property name")
 	@TableField("attr_name")
 	private String attrName;
 
-	@ApiModelProperty(value = "分类id")
+	@ApiModelProperty(value = "category id")
 	@TableField("category_id")
 	private Long categoryId;
 
-	@ApiModelProperty(value = "分类层级")
+	@ApiModelProperty(value = "Classification level")
 	@TableField("category_level")
 	private Integer categoryLevel;
 
-	//	平台属性值集合
+	// Platform attribute value collection
 	@TableField(exist = false)
 	private List<BaseAttrValue> attrValueList;
 
 }
-

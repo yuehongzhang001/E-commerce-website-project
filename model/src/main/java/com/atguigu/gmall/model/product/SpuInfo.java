@@ -19,32 +19,31 @@ import java.util.List;
 @ApiModel(description = "SpuInfo")
 @TableName("spu_info")
 public class SpuInfo extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "商品名称")
+
+	@ApiModelProperty(value = "product name")
 	@TableField("spu_name")
 	private String spuName;
 
-	@ApiModelProperty(value = "商品描述(后台简述）")
+	@ApiModelProperty(value = "Product description (Background brief description)")
 	@TableField("description")
 	private String description;
 
-	@ApiModelProperty(value = "三级分类id")
+	@ApiModelProperty(value = "three-level classification id")
 	@TableField("category3_id")
 	private Long category3Id;
 
-	@ApiModelProperty(value = "品牌id")
+	@ApiModelProperty(value = "brand id")
 	@TableField("tm_id")
 	private Long tmId;
 
-	// 销售属性集合
+	// Collection of sales attributes
 	@TableField(exist = false)
 	private List<SpuSaleAttr> spuSaleAttrList;
 
-	// 商品的图片集合
+	// Collection of pictures of products
 	@TableField(exist = false)
 	private List<SpuImage> spuImageList;
 
 }
-

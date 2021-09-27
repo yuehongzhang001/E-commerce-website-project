@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 14:05:51
  */
 @RestController
@@ -18,66 +18,66 @@ public class BaseTrademarkController {
 
     @Autowired
     private BaseTrademarkService baseTrademarkService;
-    //  http://api.gmall.com/admin/product/baseTrademark/{page}/{limit}
+    // http://api.gmall.com/admin/product/baseTrademark/{page}/{limit}
     @GetMapping("{page}/{limit}")
     public Result getBaseTradeMarkList(@PathVariable Long page,
                                        @PathVariable Long limit){
-        //  声明一个Page 对象
+        // Declare a Page object
         Page<BaseTrademark> baseTrademarkPage = new Page<>(page, limit);
-        //  控制器调用服务层
+        // The controller calls the service layer
         IPage iPage = baseTrademarkService.getBaseTradeMarkList(baseTrademarkPage);
-        //  IPage 下有List<T> getRecords();
-        return  Result.ok(iPage);
+        // List<T> getRecords(); under IPage
+        return Result.ok(iPage);
 
     }
 
-    //  通过api 接口得知传递过来的是Json 格式的数据！ 将Json ---> JavaObject
+    // Through the api interface, it is known that the data passed is in Json format! Json ---> JavaObject
     @PostMapping("save")
     public Result save(@RequestBody BaseTrademark baseTrademark){
-        //  调用服务层方法
+        // Call the service layer method
         baseTrademarkService.save(baseTrademark);
-        //  返回null
+        // return null
         return Result.ok();
     }
 
-    //  http://api.gmall.com/admin/product/baseTrademark/remove/{id}
+    // http://api.gmall.com/admin/product/baseTrademark/remove/{id}
     @PutMapping("update")
     public Result update(@RequestBody BaseTrademark baseTrademark){
-        //  调用服务层方法
+        // Call the service layer method
         baseTrademarkService.updateById(baseTrademark);
-        //  返回null
+        // return null
         return Result.ok();
     }
 
-    //  http://api.gmall.com/admin/product/baseTrademark/remove/{id}
+    // http://api.gmall.com/admin/product/baseTrademark/remove/{id}
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id){
-        //  调用服务层方法
+        // Call the service layer method
         baseTrademarkService.removeById(id);
-        //  返回null
+        // return null
         return Result.ok();
     }
 
-    //  http://api.gmall.com/admin/product/baseTrademark/get/{id}
+    // http://api.gmall.com/admin/product/baseTrademark/get/{id}
     @GetMapping("get/{id}")
     public Result getBaseTradeMarkList(@PathVariable Long id){
-        //  根据Id 获取数据
+        // Get data according to Id
         BaseTrademark baseTrademark = baseTrademarkService.getById(id);
-        //  获取到的数据返回给页面进行渲染
-        return  Result.ok(baseTrademark);
+        // The obtained data is returned to the page for rendering
+        return Result.ok(baseTrademark);
     }
 
-    //  http://api.gmall.com/admin/product/baseTrademark/getTrademarkList
+    // http://api.gmall.com/admin/product/baseTrademark/getTrademarkList
     @GetMapping("getTrademarkList")
     public Result getTrademarkList(){
 
         return Result.ok(baseTrademarkService.list(null));
     }
 
-    //  根据品牌Id 获取到对应品牌数据
-    //    @GetMapping("inner/getTrademark/{tmId}")
-    //    public BaseTrademark getTrademark(@PathVariable Long tmId){
-    //        return baseTrademarkService.getById(tmId);
-    //    }
+    // Obtain the corresponding brand data according to the brand Id
+    // @GetMapping("inner/getTrademark/{tmId}")
+    // public BaseTrademark getTrademark(@PathVariable Long tmId){
+    // return baseTrademarkService.getById(tmId);
+    //}
 
 }

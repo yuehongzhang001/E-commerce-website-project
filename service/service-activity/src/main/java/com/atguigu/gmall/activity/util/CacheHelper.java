@@ -5,17 +5,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 系统缓存类
+ * System cache
  */
 public class CacheHelper {
 
     /**
-     * 缓存容器
+     * Cache container
      */
     private final static Map<String, Object> cacheMap = new ConcurrentHashMap<String, Object>();
 
     /**
-     * 加入缓存
+     * Join the cache
      *
      * @param key
      * @param cacheObject
@@ -25,7 +25,7 @@ public class CacheHelper {
     }
 
     /**
-     * 获取缓存
+     * Get cache
      *
      * @param key
      * @return
@@ -35,7 +35,7 @@ public class CacheHelper {
     }
 
     /**
-     * 清除缓存
+     * clear cache
      *
      * @param key
      * @return

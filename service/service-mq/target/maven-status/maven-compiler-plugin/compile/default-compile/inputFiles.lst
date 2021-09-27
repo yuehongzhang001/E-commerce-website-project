@@ -1,0 +1,5 @@
+D:\project\gmallparent1021\service\service-mq\src\main\java\com\atguigu\gmall\mq\receiver\ConfirmReceiver.java
+D:\project\gmallparent1021\service\service-mq\src\main\java\com\atguigu\gmall\mq\controller\MqController.java
+D:\project\gmallparent1021\service\service-mq\src\main\java\com\atguigu\gmall\mq\config\DelayedMqConfig.java
+D:\project\gmallparent1021\service\service-mq\src\main\java\com\atguigu\gmall\mq\config\DeadLetterMqConfig.java
+D:\project\gmallparent1021\service\service-mq\src\main\java\com\atguigu\gmall\mq\ServiceMqApplication.java

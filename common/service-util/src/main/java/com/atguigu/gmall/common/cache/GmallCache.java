@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GmallCache {
 
-    //  是否需要定义属性: 锁的前缀！
+    // Do you need to define attributes: the prefix of the lock!
     String prefix() default "cache";
 
 }

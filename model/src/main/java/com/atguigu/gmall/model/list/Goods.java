@@ -9,8 +9,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.util.Date;
 import java.util.List;
 
-// Index = goods , Type = info
-//  7.0 以后就没有type！
+// Index = goods, Type = info
+// There is no type after 7.0!
 @Data
 @Document(indexName = "goods" ,type = "info",shards = 3,replicas = 2)
 public class Goods {
@@ -22,7 +22,7 @@ public class Goods {
     @Field(type = FieldType.Keyword, index = false)
     private String defaultImg;
 
-    //  es 中能分词的字段，这个字段数据类型必须是 text！keyword 不分词！
+    // The field that can be segmented in es, the data type of this field must be text! keyword no participle!
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title;
 
@@ -30,7 +30,7 @@ public class Goods {
     private Double price;
 
     @Field(type = FieldType.Date)
-    private Date createTime; // 新品
+    private Date createTime; // new product
 
     @Field(type = FieldType.Long)
     private Long tmId;
@@ -59,12 +59,12 @@ public class Goods {
     @Field(type = FieldType.Keyword)
     private String category3Name;
 
-    //  商品的热度！
+    // The popularity of the product!
     @Field(type = FieldType.Long)
     private Long hotScore = 0L;
 
-    // 平台属性集合对象
-    // Nested 支持嵌套查询
+    // Platform attribute collection object
+    // Nested supports nested queries
     @Field(type = FieldType.Nested)
     private List<SearchAttr> attrs;
 

@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum CouponType {
-    FULL_REDUCTION("满减"),
-    FULL_DISCOUNT("满量打折" ),
-    CASH("现金卷"),
-    DISCOUNT("折扣卷" );
+    FULL_REDUCTION("full reduction"),
+    FULL_DISCOUNT("Full amount discount"),
+    CASH("Cash Roll"),
+    DISCOUNT("Discount Coupon" );
 
-    private String comment ;
+    private String comment;
 
     CouponType(String comment ){
         this.comment=comment;
@@ -17,7 +17,7 @@ public enum CouponType {
 
     public static String getNameByType(String type) {
         CouponType arrObj[] = CouponType.values();
-        for (CouponType obj : arrObj) {
+        for (CouponType obj: arrObj) {
             if (obj.name().equals(type)) {
                 return obj.getComment();
             }

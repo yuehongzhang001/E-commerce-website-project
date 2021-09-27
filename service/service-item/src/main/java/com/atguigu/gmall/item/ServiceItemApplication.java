@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)//取消数据源自动配置
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)//Cancel data source automatic configuration
 @ComponentScan({"com.atguigu.gmall"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages= {"com.atguigu.gmall"})

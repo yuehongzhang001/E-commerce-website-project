@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<title>订单提交成功</title>
+	<title>Order submitted successfully</title>
 	<link rel="icon" href="/img/favicon.ico">
 
 
@@ -16,57 +16,57 @@
 
 <body>
 <!--head-->
-<!-- 头部栏位 -->
-<!--页面顶部-->
+<!-- Header field -->
+<!--Top of the page-->
 <div th:include="common/header :: header"></div>
 
 <div class="cart py-container" id="item">
 
 
-	<!--主内容-->
-	<div class="checkout py-container  pay">
+	<!--Main content-->
+	<div class="checkout py-container pay">
 		<div class="checkout-tit">
-			<h4 class="tit-txt"><span class="success-icon"></span><span  class="success-info">订单提交成功，请您及时付款，以便尽快为您发货~~</span></h4>
+			<h4 class="tit-txt"><span class="success-icon"></span><span class="success-info">The order is submitted successfully, please pay in time so that we can ship to you as soon as possible~ ~</span></h4>
 			<div class="paymark">
-				<span class="fl">请您在提交订单<em class="orange time">4小时</em>之内完成支付，超时订单会自动取消。订单号：<em th:text="${orderInfo.id}">00</em></span>
-				<span class="fr"><em class="sui-lead">应付金额：</em><em  class="orange money" th:text="'￥'+${orderInfo.totalAmount}">￥1</em></span>
+				<span class="fl">Please complete the payment within <em class="orange time">4 hours</em> of submitting the order, and the overtime order will be automatically cancelled. Order number: <em th:text="${orderInfo.id}">00</em></span>
+				<span class="fr"><em class="sui-lead">Amount payable:</em><em class="orange money" th:text="'￥'+${orderInfo.totalAmount}"> ￥1</em></span>
 			</div>
 		</div>
 
 		<div class="check-info">
-			<h4>重要说明：</h4>
+			<h4>Important note:</h4>
 			<ol>
-				<li>商城支付平台目前支持<span class="zfb">支付宝</span>支付方式。</li>
-				<li>其它支付渠道正在调试中，敬请期待。</li>
-				<li>为了保证您的购物支付流程顺利完成，请保存以下支付宝信息。</li>
+				<li>Mall payment platform currently supports <span class="zfb">Alipay</span> payment method. </li>
+				<li>Other payment channels are under debugging, so stay tuned. </li>
+				<li>In order to ensure the smooth completion of your shopping payment process, please save the following Alipay information. </li>
 			</ol>
-			<h4>支付宝账户信息：（很重要，<span class="save">请保存！！！</span>）</h4>
+			<h4>Alipay account information: (very important, <span class="save">please save!!!</span>)</h4>
 			<ul>
-				<li>支付帐号：1111111</li>
-				<li>密码：111111</li>
-				<li>支付密码：111111</li>
+				<li>Payment account number: 1111111</li>
+				<li>Password: 111111</li>
+				<li>Payment password: 111111</li>
 			</ul>
 		</div>
 
 
 		<div class="checkout-steps">
-			<!--收件人信息-->
+			<!--Recipient Information-->
 			<div class="step-tit">
-				<h5>支付平台</h5>
+				<h5>Payment platform</h5>
 			</div>
 			<div class="step-cont">
 				<ul class="payType">
-					<a th:href="@{http://api.gmall.com/api/payment/alipay/submit/{orderId}(orderId=${orderInfo.id})}" target="_blank"><li><img src="./img/_/pay1.jpg"></li></a>
-					<a th:href="@{http://payment.gmall.com/weixin.html?orderId={orderId}(orderId=${orderInfo.id})}" target="_blank"><li><img src="./img/_/pay3.jpg"></li></a>
+					<a th:href="@{http://api.gmall.com/api/payment/alipay/submit/{orderId}(orderId=${orderInfo.id})}" target="_blank"><li ><img src="./img/_/pay1.jpg"></li></a>
+					<a th:href="@{http://payment.gmall.com/weixin.html?orderId={orderId}(orderId=${orderInfo.id})}" target="_blank"><li>< img src="./img/_/pay3.jpg"></li></a>
 				</ul>
 
 			</div>
 			<div class="hr"></div>
 
-			<!--支付和送货-->
+			<!--Payment and Delivery-->
 			<div class="payshipInfo">
 				<div class="step-tit">
-					<h5>支付网银</h5>
+					<h5>Pay online banking</h5>
 				</div>
 				<div class="step-cont">
 					<ul class="payType">
@@ -90,106 +90,106 @@
 			</div>
 
 			<!--<div class="submit sui-text-center">-->
-			<!--<a class="sui-btn btn-danger btn-xlarge" href="paysuccess.html" target="_blank">立即支付</a>-->
+			<!--<a class="sui-btn btn-danger btn-xlarge" href="paysuccess.html" target="_blank">Pay now</a>-->
 			<!--</div>-->
 			<div class="otherpay">
 				<div class="step-tit">
-					<h5>其他支付方式</h5>
+					<h5>Other payment methods</h5>
 				</div>
 				<div class="step-cont">
-					<span><a href="weixinpay.html" target="_blank">微信支付</a></span>
-					<span>中国银联</span>
+					<span><a href="weixinpay.html" target="_blank">WeChat Pay</a></span>
+					<span>China UnionPay</span>
 				</div>
 			</div>
 		</div>
 	</div>
 
 </div>
-<!-- 底部栏位 -->
-<!--页面底部-->
+<!-- Bottom column -->
+<!--Bottom of the page-->
 <div class="clearfix footer">
 	<div class="py-container">
 		<div class="footlink">
 			<div class="clearfix Mod-list">
 				<div class="yui3-g">
 					<div class="yui3-u-1-6">
-						<h4>购物指南</h4>
+						<h4>Shopping Guide</h4>
 						<ul class="unstyled">
-							<li>购物流程</li>
-							<li>会员介绍</li>
-							<li>生活旅行/团购</li>
-							<li>常见问题</li>
-							<li>购物指南</li>
+							<li>Shopping process</li>
+							<li>Member Introduction</li>
+							<li>Life travel/group purchase</li>
+							<li>Frequently asked questions</li>
+							<li>Shopping guide</li>
 						</ul>
 
 					</div>
 					<div class="yui3-u-1-6">
-						<h4>配送方式</h4>
+						<h4>Delivery method</h4>
 						<ul class="unstyled">
-							<li>上门自提</li>
-							<li>211限时达</li>
-							<li>配送服务查询</li>
-							<li>配送费收取标准</li>
-							<li>海外配送</li>
+							<li>Home pick up</li>
+							<li>211 Limited Time Up</li>
+							<li>Distribution service inquiry</li>
+							<li>Delivery fee charging standard</li>
+							<li>Overseas delivery</li>
 						</ul>
 					</div>
 					<div class="yui3-u-1-6">
-						<h4>支付方式</h4>
+						<h4>Payment method</h4>
 						<ul class="unstyled">
-							<li>货到付款</li>
-							<li>在线支付</li>
-							<li>分期付款</li>
-							<li>邮局汇款</li>
-							<li>公司转账</li>
+							<li>Cash on delivery</li>
+							<li>Online payment</li>
+							<li>Instalment payment</li>
+							<li>Post office remittance</li>
+							<li>Company transfer</li>
 						</ul>
 					</div>
 					<div class="yui3-u-1-6">
-						<h4>售后服务</h4>
+						<h4>After-sales service</h4>
 						<ul class="unstyled">
-							<li>售后政策</li>
-							<li>价格保护</li>
-							<li>退款说明</li>
-							<li>返修/退换货</li>
-							<li>取消订单</li>
+							<li>After-sales policy</li>
+							<li>Price protection</li>
+							<li>Refund instructions</li>
+							<li>Repair/return/exchange</li>
+							<li>Cancel order</li>
 						</ul>
 					</div>
 					<div class="yui3-u-1-6">
-						<h4>特色服务</h4>
+						<h4>Special Services</h4>
 						<ul class="unstyled">
-							<li>夺宝岛</li>
-							<li>DIY装机</li>
-							<li>延保服务</li>
-							<li>尚品汇E卡</li>
-							<li>尚品汇通信</li>
+							<li>Treasure Island</li>
+							<li>DIY installation</li>
+							<li>Extended Warranty Service</li>
+							<li>Shangpinhui E Card</li>
+							<li>Shangpinhui Communication</li>
 						</ul>
 					</div>
 					<div class="yui3-u-1-6">
-						<h4>帮助中心</h4>
+						<h4>Help Center</h4>
 						<img src="./img/wx_cz.jpg">
 					</div>
 				</div>
 			</div>
 			<div class="Mod-copyright">
 				<ul class="helpLink">
-					<li>关于我们<span class="space"></span></li>
-					<li>联系我们<span class="space"></span></li>
-					<li>关于我们<span class="space"></span></li>
-					<li>商家入驻<span class="space"></span></li>
-					<li>营销中心<span class="space"></span></li>
-					<li>友情链接<span class="space"></span></li>
-					<li>关于我们<span class="space"></span></li>
-					<li>营销中心<span class="space"></span></li>
-					<li>友情链接<span class="space"></span></li>
-					<li>关于我们</li>
+					<li>About us<span class="space"></span></li>
+					<li>Contact us<span class="space"></span></li>
+					<li>About us<span class="space"></span></li>
+					<li>Businesses settled in<span class="space"></span></li>
+					<li>Marketing Center<span class="space"></span></li>
+					<li>Friendly link<span class="space"></span></li>
+					<li>About us<span class="space"></span></li>
+					<li>Marketing Center<span class="space"></span></li>
+					<li>Friendly link<span class="space"></span></li>
+					<li>About us</li>
 				</ul>
-				<p>地址：北京市昌平区宏福科技园综合楼6层</p>
-				<p>京ICP备19006430号</p>
+				<p>Address: 6th Floor, Comprehensive Building, Hongfu Science Park, Changping District, Beijing</p>
+				<p>Beijing ICP No. 19006430</p>
 			</div>
 		</div>
 	</div>
 </div>
-<!--页面底部END-->
-<!--页面底部END-->
+<!--The bottom of the pageEND-->
+<!--The bottom of the pageEND-->
 
 </body>
 

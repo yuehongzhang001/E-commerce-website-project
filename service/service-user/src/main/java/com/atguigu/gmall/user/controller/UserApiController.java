@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("/api/user")
@@ -19,10 +19,10 @@ public class UserApiController {
 
     @Autowired
     private UserAddressService userAddressService;
-    //  定义远程调用地址
+    // Define the remote call address
     @GetMapping("inner/findUserAddressListByUserId/{userId}")
     public List<UserAddress> findUserAddressListByUserId(@PathVariable Long userId){
-        //  调用服务层方法
+        // Call the service layer method
         return userAddressService.findUserAddressListByUserId(userId);
     }
 }

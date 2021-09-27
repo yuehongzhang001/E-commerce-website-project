@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-order",fallback = OrderDegradeFeignClient.class)
 public interface OrderFeignClient {
 
-    //  发布数据接口到feign 上！
+    // Publish the data interface to feign!
     @GetMapping("/api/order/auth/trade")
     Result<Map<String, Object>> trade();
 
-    //  发布数据接口
+    // Publish data interface
     @GetMapping("/api/order/inner/getOrderInfo/{orderId}")
     OrderInfo getOrderInfo(@PathVariable(value = "orderId") Long orderId);
 

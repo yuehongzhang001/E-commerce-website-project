@@ -22,50 +22,50 @@ import java.util.List;
 public class SkuInfo extends BaseEntity {
 
 
-//    public SkuInfo(){}
-//	public SkuInfo(Long skuId){
-//		setId(skuId);
-//	}
-//	//	判断去重的话，自动调用equals 方法。
-//	public boolean equals(SkuInfo skuInfo){
-//		return getId().equals(skuInfo.getId());
-//	}
+// public SkuInfo(){}
+// public SkuInfo(Long skuId){
+// setId(skuId);
+//}
+// // The equals method is automatically called if it is judged to remove duplicates.
+// public boolean equals(SkuInfo skuInfo){
+// return getId().equals(skuInfo.getId());
+//}
 
 	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "商品id")
+
+	@ApiModelProperty(value = "product id")
 	@TableField("spu_id")
 	private Long spuId;
 
-	@ApiModelProperty(value = "价格")
+	@ApiModelProperty(value = "price")
 	@TableField("price")
 	private BigDecimal price;
 
-	@ApiModelProperty(value = "sku名称")
+	@ApiModelProperty(value = "sku name")
 	@TableField("sku_name")
 	private String skuName;
 
-	@ApiModelProperty(value = "商品规格描述")
+	@ApiModelProperty(value = "Product Specification Description")
 	@TableField("sku_desc")
 	private String skuDesc;
 
-	@ApiModelProperty(value = "重量")
+	@ApiModelProperty(value = "weight")
 	@TableField("weight")
 	private String weight;
 
-	@ApiModelProperty(value = "品牌(冗余)")
+	@ApiModelProperty(value = "Brand (redundant)")
 	@TableField("tm_id")
 	private Long tmId;
 
-	@ApiModelProperty(value = "三级分类id（冗余)")
+	@ApiModelProperty(value = "Three-level classification id (redundant)")
 	@TableField("category3_id")
 	private Long category3Id;
 
-	@ApiModelProperty(value = "默认显示图片(冗余)")
+	@ApiModelProperty(value = "Display pictures by default (redundant)")
 	@TableField("sku_default_img")
 	private String skuDefaultImg;
 
-	@ApiModelProperty(value = "是否销售（1：是 0：否）")
+	@ApiModelProperty(value = "Whether to sell (1: yes 0: no)")
 	@TableField("is_sale")
 	private Integer isSale;
 
@@ -78,4 +78,3 @@ public class SkuInfo extends BaseEntity {
 	@TableField(exist = false)
 	List<SkuSaleAttrValue> skuSaleAttrValueList;
 }
-

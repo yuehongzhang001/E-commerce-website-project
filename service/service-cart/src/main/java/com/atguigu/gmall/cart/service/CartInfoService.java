@@ -5,12 +5,12 @@ import com.atguigu.gmall.model.cart.CartInfo;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface CartInfoService {
 
     /**
-     *  添加购物车的方法！
+     * How to add a shopping cart!
      * @param skuId
      * @param userId
      * @param skuNum
@@ -18,7 +18,7 @@ public interface CartInfoService {
     void addToCart(Long skuId, String userId, Integer skuNum);
 
     /**
-     *  根据用户Id，临时用户Id 获取购物车列表
+     * According to user Id, temporary user Id get the shopping cart list
      * @param userId
      * @param userTempId
      * @return
@@ -26,7 +26,7 @@ public interface CartInfoService {
     List<CartInfo> getCartList(String userId, String userTempId);
 
     /**
-     *  更新选中状态！
+     * Update the selected status!
      * @param userId
      * @param isChecked
      * @param skuId
@@ -34,21 +34,21 @@ public interface CartInfoService {
     void checkCart(String userId, Integer isChecked, Long skuId);
 
     /**
-     * 删除购物项
+     * Delete shopping item
      * @param skuId
      * @param userId
      */
     void deleteCart(Long skuId, String userId);
 
     /**
-     * 根据用户Id 获取购物车{选中}列表
+     * Get the shopping cart {selected} list according to the user Id
      * @param userId
      * @return
      */
     List<CartInfo> getCartCheckedList(String userId);
 
     /**
-     * 根据userId 查询购物车最新数据
+     * Query the latest data of the shopping cart based on userId
      * @param userId
      * @return
      */

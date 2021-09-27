@@ -1,12 +1,12 @@
 package com.atguigu.gmall.model.enums;
 
 public enum PaymentStatus {
-    UNPAID("支付中"),
-    PAID("已支付"),
-    PAY_FAIL("支付失败"),
-    CLOSED("已关闭");
+    UNPAID("Paying"),
+    PAID("paid"),
+    PAY_FAIL("payment failed"),
+    CLOSED("Closed");
 
-    private String name ;
+    private String name;
 
     PaymentStatus(String name) {
         this.name=name;

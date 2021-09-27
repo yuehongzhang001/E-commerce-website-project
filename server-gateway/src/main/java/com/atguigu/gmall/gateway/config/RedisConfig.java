@@ -21,14 +21,14 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 
 /**
- * Redis配置类
+ * Redis configuration class
  *
  */
 @Configuration
 @EnableCaching
 public class RedisConfig {
 
-    // 使用默认标签做缓存
+    // Use the default label for caching
     @Bean
     public KeyGenerator wiselyKeyGenerator() {
         return new KeyGenerator() {
@@ -37,7 +37,7 @@ public class RedisConfig {
                 StringBuilder sb = new StringBuilder();
                 sb.append(target.getClass().getName());
                 sb.append(method.getName());
-                for (Object obj : params) {
+                for (Object obj: params) {
                     sb.append(obj.toString());
                 }
                 return sb.toString();
@@ -45,11 +45,11 @@ public class RedisConfig {
         };
     }
 
-    // 声明模板
+    // Declaration template
     /*
-    ref = 表示引用
-    value = 具体的值
-    <bean class="org.springframework.data.redis.core.RedisTemplate" >
+    ref = means reference
+    value = specific value
+    <bean class="org.springframework.data.redis.core.RedisTemplate">
         <property name="defaultSerializer" ref = "">
     </bean>
      */
@@ -57,13 +57,13 @@ public class RedisConfig {
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-        //  设置序列化对象
+        // Set the serialization object
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        //  将Redis 中 string ，hash 数据类型，自动序列化！ set(key,value)  set name zhangsan  set s1 存储一个对象user.toString();
+        // Automatically serialize string and hash data types in Redis! set(key,value) set name zhangsan set s1 stores an object user.toString();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
@@ -78,13 +78,13 @@ public class RedisConfig {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
 
-        //解决查询缓存转换异常的问题
+        //Solve the problem of query cache conversion exception
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
-        // 配置序列化（解决乱码的问题）,过期时间600秒
+        // Configure serialization (solve the problem of garbled characters), with an expiration time of 600 seconds
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofSeconds(600))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))

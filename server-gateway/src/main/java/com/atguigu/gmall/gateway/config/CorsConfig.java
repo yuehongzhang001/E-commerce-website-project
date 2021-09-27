@@ -8,30 +8,30 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 10:29:09
  */
-@Configuration // 将当前的类变为XXX.xml 配置类
+@Configuration // Change the current class to XXX.xml configuration class
 public class CorsConfig {
 
-    //  @Bean 创建一个bean 对象交个spring 容器管理
-    //  <bean class = "org.springframework.web.cors.reactive.CorsWebFilter" />
+    // @Bean creates a bean object and submits it to the spring container for management
+    // <bean class = "org.springframework.web.cors.reactive.CorsWebFilter" />
     @Bean
     public CorsWebFilter corsWebFilter(){
 
-        //  创建CorsConfiguration
+        // Create CorsConfiguration
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedHeader("*"); // 任意请求头
-        corsConfiguration.addAllowedOrigin("*"); // 允许任意域名
-        corsConfiguration.addAllowedMethod("*"); // GET, POST, PUT 表示任意
-        corsConfiguration.setAllowCredentials(true);// 允许携带cookie
+        corsConfiguration.addAllowedHeader("*"); // any request header
+        corsConfiguration.addAllowedOrigin("*"); // Allow any domain name
+        corsConfiguration.addAllowedMethod("*"); // GET, POST, PUT means any
+        corsConfiguration.setAllowCredentials(true);// Allow cookies
 
-        //  需要CorsConfigurationSource 这个对象 是一个接口，所以我们需要当前接口的实现类 UrlBasedCorsConfigurationSource
+        // Need CorsConfigurationSource This object is an interface, so we need the implementation class of the current interface UrlBasedCorsConfigurationSource
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        //  第一个参数表示路径，第二个参数表示设置跨域的方式等信息 CorsConfiguration
+        // The first parameter represents the path, and the second parameter represents information such as the way to set up cross-domain CorsConfiguration
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
-        //  返回当前对象
+        // return the current object
         return new CorsWebFilter(urlBasedCorsConfigurationSource);
     }
 }

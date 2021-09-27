@@ -5,25 +5,25 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 全局统一返回结果类
+ * Global unified return result class
  *
  */
 @Data
-@ApiModel(value = "全局统一返回结果")
+@ApiModel(value = "Global unified return result")
 public class Result<T> {
 
-    @ApiModelProperty(value = "返回码")
+    @ApiModelProperty(value = "Return Code")
     private Integer code;
 
-    @ApiModelProperty(value = "返回消息")
+    @ApiModelProperty(value = "Return message")
     private String message;
 
-    @ApiModelProperty(value = "返回数据")
+    @ApiModelProperty(value = "Return data")
     private T data;
 
     public Result(){}
 
-    // 返回数据
+    // return data
     protected static <T> Result<T> build(T data) {
         Result<T> result = new Result<T>();
         if (data != null)
@@ -43,7 +43,7 @@ public class Result<T> {
     }
 
     /**
-     * 操作成功
+     * Successful operation
      * @param data
      * @param <T>
      * @return
@@ -58,7 +58,7 @@ public class Result<T> {
     }
 
     /**
-     * 操作失败
+     * operation failed
      * @param data
      * @param <T>
      * @return

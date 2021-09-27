@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @FeignClient(value = "service-list",fallback = ListDegradeFeignClient.class)
 public interface ListFeignClient {
 
     /**
-     * 更新商品incrHotScore
+     * Update product incrHotScore
      * @param skuId
      * @return
      */
@@ -25,7 +25,7 @@ public interface ListFeignClient {
     Result incrHotScore(@PathVariable("skuId") Long skuId);
 
     /**
-     * 搜索商品
+     * Search products
      * @param listParam
      * @return
      */
@@ -33,7 +33,7 @@ public interface ListFeignClient {
     Result list(@RequestBody SearchParam listParam);
 
     /**
-     * 上架商品
+     * Products on the shelves
      * @param skuId
      * @return
      */
@@ -41,7 +41,7 @@ public interface ListFeignClient {
     Result upperGoods(@PathVariable("skuId") Long skuId);
 
     /**
-     * 下架商品
+     * Commodities off the shelf
      * @param skuId
      * @return
      */

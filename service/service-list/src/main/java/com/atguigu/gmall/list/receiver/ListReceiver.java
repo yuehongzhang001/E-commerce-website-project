@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class ListReceiver {
@@ -21,7 +21,7 @@ public class ListReceiver {
     @Autowired
     private SearchService searchService;
 
-    //  监听消息 实现商品上架 发送的消息主体：skuId
+    // Listen to the message to realize the product on the shelf. The message body sent: skuId
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_GOODS_UPPER,durable = "true",autoDelete = "false"),
@@ -29,16 +29,16 @@ public class ListReceiver {
             key = {MqConst.ROUTING_GOODS_UPPER}
     ))
     public void upperGoods(Long skuId, Message message, Channel channel){
-        //  有消息
+        //  You got news
         if (skuId!=null){
-            //  实现上架
+            // Achieve listing
             searchService.upperGoods(skuId);
         }
-        //  消息确认：
+        // Message confirmation:
         channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
     }
 
-    //  监听消息 实现商品上架 发送的消息主体：skuId
+    // Listen to the message to realize the product on the shelf. The message body sent: skuId
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_GOODS_LOWER,durable = "true",autoDelete = "false"),
@@ -46,12 +46,12 @@ public class ListReceiver {
             key = {MqConst.ROUTING_GOODS_LOWER}
     ))
     public void lowerGoods(Long skuId, Message message, Channel channel){
-        //  有消息
+        //  You got news
         if (skuId!=null){
-            //  实现上架
+            // Achieve listing
             searchService.lowerGoods(skuId);
         }
-        //  消息确认：
+        // Message confirmation:
         channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
     }
 }

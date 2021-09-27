@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 @EnableScheduling
@@ -17,18 +17,18 @@ public class ScheduledTask {
     @Autowired
     private RabbitService rabbitService;
 
-    //  定义每天凌晨1点钟！0 0 1 * * ?
-    //  编写一个定时任务！
+    // Define 1 o'clock in the morning every day! 0 0 1 * *?
+    // Write a timed task!
     @Scheduled(cron = "0/10 * * * * ?")
     public void sendMsg(){
-        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_TASK,MqConst.ROUTING_TASK_1,"寂寞.....");
-        //System.out.println("寂寞.....");
+        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_TASK,MqConst.ROUTING_TASK_1,"Lonely...");
+        //System.out.println("Lonely.....");
     }
 
-    //  编写一个定时任务！
+    // Write a timed task!
     @Scheduled(cron = "0 0 18 * * ?")
     public void clearReids(){
         rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_TASK,MqConst.ROUTING_TASK_18,"delete....");
-        //System.out.println("寂寞.....");
+        //System.out.println("Lonely.....");
     }
 }

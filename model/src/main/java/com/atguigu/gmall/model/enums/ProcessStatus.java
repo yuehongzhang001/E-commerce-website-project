@@ -1,18 +1,18 @@
 package com.atguigu.gmall.model.enums;
 
 public enum ProcessStatus {
-    UNPAID("未支付", OrderStatus.UNPAID),
-    PAID("已支付", OrderStatus.PAID),
-    NOTIFIED_WARE("已通知仓储", OrderStatus.PAID),
-    WAITING_DELEVER("待发货", OrderStatus.WAITING_DELEVER),
-    STOCK_EXCEPTION("库存异常", OrderStatus.PAID),
-    DELEVERED("已发货", OrderStatus.DELEVERED),
-    CLOSED("已关闭", OrderStatus.CLOSED),
-    FINISHED("已完结", OrderStatus.FINISHED) ,
-    PAY_FAIL("支付失败", OrderStatus.UNPAID),
-    SPLIT("订单已拆分", OrderStatus.SPLIT);
+    UNPAID("Unpaid", OrderStatus.UNPAID),
+    PAID("paid", OrderStatus.PAID),
+    NOTIFIED_WARE("Warehouse notified", OrderStatus.PAID),
+    WAITING_DELEVER("Pending Shipment", OrderStatus.WAITING_DELEVER),
+    STOCK_EXCEPTION("Inventory exception", OrderStatus.PAID),
+    DELEVERED("Delivered", OrderStatus.DELEVERED),
+    CLOSED("Closed", OrderStatus.CLOSED),
+    FINISHED("Finished", OrderStatus.FINISHED),
+    PAY_FAIL("payment failed", OrderStatus.UNPAID),
+    SPLIT("Order has been split", OrderStatus.SPLIT);
 
-    private String comment ;
+    private String comment;
     private OrderStatus orderStatus;
 
     ProcessStatus(String comment, OrderStatus orderStatus){

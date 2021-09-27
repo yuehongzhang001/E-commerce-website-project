@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Component
 public class AuthGlobalFilter implements GlobalFilter {
@@ -35,11 +35,11 @@ public class AuthGlobalFilter implements GlobalFilter {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //  从配置文件中获取控制器都有谁！
+    // Who gets the controller from the configuration file!
     @Value("${authUrls.url}")
     private String authUrlsUrl; // authUrlsUrl=trade.html,myOrder.html,list.html
 
-    //  引个对象
+    // quote an object
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     /**
@@ -50,81 +50,81 @@ public class AuthGlobalFilter implements GlobalFilter {
      */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        //  需要知道用户访问的URL 是谁！
+        // Need to know who the user is visiting the URL!
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
-        //  判断当前的path 是属于哪一种? /**/inner/** 属于内部数据接口！需要做出响应！
+        // Determine which kind of path does the current path belong to? /**/inner/** belongs to the internal data interface! Need to respond!
         if (antPathMatcher.match("/**/inner/**",path)){
-            //  获取到响应对象
+            // Get the response object
             ServerHttpResponse response = exchange.getResponse();
-            //  不能继续走了！
+            // Can't go anymore!
             return out(response, ResultCodeEnum.PERMISSION);
         }
 
-        //  获取到用户Id 那么就是登录了,如果没有就没有登录！
+        // If the user ID is obtained, then it is logged in, if not, there is no login!
         String userId = this.getUserId(request);
         String userTempId = this.getUserTempId(request);
-        //  盗用呢！
+        // Misappropriation!
         if ("-1".equals(userId)){
             ServerHttpResponse response = exchange.getResponse();
             return out(response,ResultCodeEnum.PERMISSION);
         }
-        //  判断用户是否访问了 trade.html,myOrder.html 这样的控制器时，必须要登录！
-        //  authUrlsUrl= trade.html,myOrder.html,list.html
-        //  校验的规则：http://www.gmall.com/index.html 不需要  http://list.gmall.com/list.html?category3Id=61 需要！
+        // When judging whether the user has visited a controller like trade.html, myOrder.html, you must log in!
+        // authUrlsUrl = trade.html,myOrder.html,list.html
+        // Rule of verification: http://www.gmall.com/index.html not required http://list.gmall.com/list.html?category3Id=61 required!
         String[] split = authUrlsUrl.split(",");
-        //  循环遍历
-        for (String url : split) {
-            //  path.indexOf(url)!=-1 表示当前path 包含 上述的控制器地址
-            //  用户未登录！并且访问的控制器是需要登录的！
+        // loop traversal
+        for (String url: split) {
+            // path.indexOf(url)!=-1 means that the current path contains the above controller address
+            // The user is not logged in! And the access controller needs to log in!
             if (path.indexOf(url)!=-1 && StringUtils.isEmpty(userId)){
-                //  需要跳转到登录页面！
+                // Need to jump to the login page!
                 ServerHttpResponse response = exchange.getResponse();
-                //  做一些设置
-                // 303状态码表示由于请求对应的资源存在着另一个URI，应使用重定向获取请求的资源
+                // make some settings
+                // The 303 status code indicates that because there is another URI for the resource corresponding to the request, redirection should be used to obtain the requested resource
                 response.setStatusCode(HttpStatus.SEE_OTHER);
-                //  http://passport.gmall.com/login.html?originUrl=http://list.gmall.com/list.html?category3Id=61
-                //  request.getURI() = http://list.gmall.com/list.html?category3Id=61
+                // http://passport.gmall.com/login.html?originUrl=http://list.gmall.com/list.html?category3Id=61
+                // request.getURI() = http://list.gmall.com/list.html?category3Id=61
                 response.getHeaders().set(HttpHeaders.LOCATION,"http://www.gmall.com/login.html?originUrl="+request.getURI());
-                //  重定向！
+                // Redirect!
                 return response.setComplete();
             }
         }
 
-        //  /api/**/auth/**  需要登录！
+        // /api/**/auth/** Login required!
         if (antPathMatcher.match("/api/**/auth/**",path)){
-            //  判断当前是否登录
+            // Determine whether you are currently logged in
             if (StringUtils.isEmpty(userId)){
-                //  做出响应！
+                // Respond!
                 ServerHttpResponse response = exchange.getResponse();
-                //  不能继续走了！
+                // Can't go anymore!
                 return out(response, ResultCodeEnum.LOGIN_AUTH);
             }
         }
 
-        //  验证通过之后：将用户的Id 传递给后台微服务！
+        // After verification: Pass the user's Id to the background microservice!
         if (!StringUtils.isEmpty(userId) || !StringUtils.isEmpty(userTempId)){
 
             if (!StringUtils.isEmpty(userId) ){
-                //  需要将用户Id 放入请求头中!
+                // Need to put the user ID in the request header!
                 request.mutate().header("userId", userId).build();
             }
             if(!StringUtils.isEmpty(userTempId)){
-                //  需要将用户Id 放入请求头中!
+                // Need to put the user ID in the request header!
                 request.mutate().header("userTempId", userTempId).build();
             }
-            //  request.getHeaders().set("userId",userId);
-            //  ServerWebExchange build = exchange.mutate().request().build();
+            // request.getHeaders().set("userId",userId);
+            // ServerWebExchange build = exchange.mutate().request().build();
             return chain.filter(exchange.mutate().request(request).build());
         }
-        //  默认返回
+        // default return
         return chain.filter(exchange);
     }
 
-    //  获取临时用户Id
+    // Get temporary user Id
     private String getUserTempId(ServerHttpRequest request) {
         String userTempId = "";
-        //  存储到cookie 中
+        // Store in cookie
         HttpCookie httpCookie = request.getCookies().getFirst("userTempId");
         if (httpCookie!=null){
             userTempId = httpCookie.getValue();
@@ -138,54 +138,54 @@ public class AuthGlobalFilter implements GlobalFilter {
     }
 
     /**
-     * 响应方法
+     * Response method
      * @param response
      * @param resultCodeEnum
      * @return
      */
     private Mono<Void> out(ServerHttpResponse response, ResultCodeEnum resultCodeEnum) {
-        //  提示的数据：resultCodeEnum 中 resultCodeEnum.getMessage()的数据
-        //  Result 这个类
+        // Prompt data: the data of resultCodeEnum.getMessage() in resultCodeEnum
+        // Result this class
         Result result = Result.build(null,resultCodeEnum);
-        //  需要将result 输入到页面！
-        //  将result 变成json 字符串！ 如果出现字符集的问题！
+        // Need to enter result into the page!
+        // Turn result into a json string! If there is a problem with the character set!
         String strJson = JSON.toJSONString(result);
-        //  想办法输入strJson
+        // Find a way to enter strJson
         DataBuffer wrap = response.bufferFactory().wrap(strJson.getBytes());
-        //  使用响应对象设置响应头
+        // Use the response object to set the response header
         response.getHeaders().add("Content-Type","application/json;charset=UTF-8");
-        //  wrap 要输入出去
+        // wrap needs to be entered
         return response.writeWith(Mono.just(wrap));
     }
 
     /**
-     * 获取用户Id
+     * Get user ID
      * @param request
      * @return
      */
     private String getUserId(ServerHttpRequest request) {
         String token = "";
-        //  用户Id 存储在缓存中！ userKey = user:login:token
-        //  token 放在cookie ，header 中！
+        // The user ID is stored in the cache! userKey = user:login:token
+        // The token is placed in the cookie and header!
         List<String> stringList = request.getHeaders().get("token");
         if (!CollectionUtils.isEmpty(stringList)){
             token=stringList.get(0);
         }else {
-            //  如果header 中 cookie 中！
+            // If the cookie in the header!
             HttpCookie httpCookie = request.getCookies().getFirst("token");
             if (httpCookie!=null){
                 token = httpCookie.getValue();
             }
         }
-        //  组成缓存的key
+        // The key that composes the cache
         String userKey = "user:login:"+token;
-        //  get userKey  "{\"ip\":\"192.168.200.1\",\"userId\":\"2\"}"
+        // get userKey "{\"ip\":\"192.168.200.1\",\"userId\":\"2\"}"
         String object = (String) redisTemplate.opsForValue().get(userKey);
-        //  判断
+        //  judge
         if (!StringUtils.isEmpty(object)){
-            //  本质：JSONObject
+            // Essence: JSONObject
             JSONObject jsonObject = JSON.parseObject(object, JSONObject.class);
-            //  校验： 先获取到当前客户端的ip
+            // Verification: First get the ip of the current client
             String currIp = IpUtil.getGatwayIpAddress(request);
             String ip = (String) jsonObject.get("ip");
             if (currIp.equals(ip)){

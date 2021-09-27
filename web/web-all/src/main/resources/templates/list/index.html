@@ -26,29 +26,29 @@
     })
 </script>
 <body>
-<!-- 头部栏位 -->
+<!-- Header field -->
 <div th:include="common/header :: header"></div>
 
-<!-- 商品分类导航 -->
+<!-- Product classification navigation -->
 <div class="typeNav">
     <div class="py-container">
         <div class="yui3-g NavList">
             <div class="all-sorts-list">
                 <div class="yui3-u Left all-sort">
-                    <h4>全部商品分类</h4>
+                    <h4>All product categories</h4>
                 </div>
 
             </div>
             <div class="yui3-u Center navArea">
                 <ul class="nav">
-                    <li class="f-item">服装城</li>
-                    <li class="f-item">美妆馆</li>
-                    <li class="f-item">尚品汇超市</li>
-                    <li class="f-item">全球购</li>
-                    <li class="f-item">闪购</li>
-                    <li class="f-item">团购</li>
-                    <li class="f-item">有趣</li>
-                    <li class="f-item"><a href="http://activity.gmall.com/seckill.html" target="_blank">秒杀</a></li>
+                    <li class="f-item">Clothing City</li>
+                    <li class="f-item">Beauty salon</li>
+                    <li class="f-item">Shangpinhui Supermarket</li>
+                    <li class="f-item">Global purchase</li>
+                    <li class="f-item">Flash sale</li>
+                    <li class="f-item">Group purchase</li>
+                    <li class="f-item">Interesting</li>
+                    <li class="f-item"><a href="http://activity.gmall.com/seckill.html" target="_blank">seckill</a></li>
                 </ul>
             </div>
             <div class="yui3-u Right"></div>
@@ -62,22 +62,22 @@
         <div class="bread">
             <ul class="fl sui-breadcrumb">
                 <li>
-                    <a href="#">全部结果</a>
+                    <a href="#">All results</a>
                 </li>
-                <li  class="active">
+                <li class="active">
                     <span th:text="${searchParam.keyword}"></span>
                 </li>
             </ul>
             <ul class="fl sui-tag">
-                <!--品牌的面包屑-->
+                <!--Brand bread crumbs-->
                 <li th:if="${searchParam.trademark != null}" class="with-x">
                     <span th:text="${trademarkParam}"></span>
                     <a th:href="@{${#strings.replace(urlParam+'&order='+searchParam.order,'trademark='+searchParam.trademark,'')}}">×</a>
                 </li>
-                <!--平台属性面包屑-->
-                <li th:if="${searchParam.props != null}" th:each="prop : ${propsParamList}" class="with-x">
-                    <span th:text="${prop.attrName}+'：'+${prop.attrValue}"></span>
-                    <a th:href="@{${#strings.replace(urlParam+'&order='+searchParam.order,'props='+prop.attrId+':'+prop.attrValue+':'+prop.attrName,'')}}">×</a>
+                <!--Platform attribute breadcrumbs-->
+                <li th:if="${searchParam.props != null}" th:each="prop: ${propsParamList}" class="with-x">
+                    <span th:text="${prop.attrName}+':'+${prop.attrValue}"></span>
+                    <a th:href="@{${#strings.replace(urlParam+'&order='+searchParam.order,'props='+prop.attrId+':'+prop.attrValue+':'+prop.attrName,' ')}}">×</a>
                 </li>
             </ul>
         </div>
@@ -85,12 +85,12 @@
         <!--selector-->
         <div class="clearfix selector">
             <div class="type-wrap logo" th:if="${searchParam.trademark == null}">
-                <div class="fl key brand">品牌</div>
+                <div class="fl key brand">Brand</div>
                 <div class="value logos">
                     <ul class="logo-list">
                         <li th:each="trademark:${trademarkList}">
                             <!--th:text="${trademark.tmName}"-->
-                            <a class="trademark" style="text-decoration: none;color: red" th:href="${urlParam}+'&trademark='+${trademark.tmId}+':'+${trademark.tmName}+'&order='+${searchParam.order}" th:title="${trademark.tmName}" >
+                            <a class="trademark" style="text-decoration: none;color: red" th:href="${urlParam}+'&trademark='+${trademark.tmId}+':'+${trademark. tmName}+'&order='+${searchParam.order}" th:title="${trademark.tmName}">
                                 <img th:src="${trademark.tmLogoUrl}">
                                 <div th:text="${trademark.tmName}" style="display: none"></div>
                             </a>
@@ -99,15 +99,15 @@
                 </div>
             </div>
 
-            <div class="type-wrap" th:each="baseAttrInfo:${attrsList}" th:unless="${#strings.contains(urlParam, 'props='+baseAttrInfo.attrId)}">
-                <!--平台属性名称-->
-                <div class="fl key" th:text="${baseAttrInfo.attrName}">网络制式</div>
+            <div class="type-wrap" th:each="baseAttrInfo:${attrsList}" th:unless="${#strings.contains(urlParam,'props='+baseAttrInfo.attrId)}">
+                <!--Platform attribute name-->
+                <div class="fl key" th:text="${baseAttrInfo.attrName}">Network standard</div>
                 <div class="fl value">
                     <ul class="type-list">
-                        <!--获取到平台属性值集合-->
+                        <!--Get the platform attribute value collection-->
                         <li th:each="attrValue:${baseAttrInfo.attrValueList}">
                             <!--list.html?category3Id=61&props=-->
-                            <a th:href="${urlParam}+'&props='+${baseAttrInfo.attrId}+':'+${attrValue}+':'+${baseAttrInfo.attrName}+'&order='+${searchParam.order}" th:text="${attrValue}" >属性值111</a>
+                            <a th:href="${urlParam}+'&props='+${baseAttrInfo.attrId}+':'+${attrValue}+':'+${baseAttrInfo.attrName}+'&order='+$ {searchParam.order}" th:text="${attrValue}" >Attribute value 111</a>
                         </li>
                     </ul>
                 </div>
@@ -122,30 +122,29 @@
                 <div class="navbar-inner filter">
                     <ul class="sui-nav">
                         <!--skuInfo ${skuInfo.skuName}}
-                            map 与 实体类对象 功能一样！ type sort
+                            Map has the same function as an entity class object! type sort
                         -->
-                        <li th:class="${orderMap.type == '1' ? 'active': ''}">
-                            <a th:href="${urlParam}+'&order=1:'+${orderMap.sort == 'asc' ? 'desc' : 'asc'}">
-                                综合<span th:if="${orderMap.type == '1'}" th:text="${orderMap.sort == 'asc' ? '↑' : '↓'}"></span>
+                        <li th:class="${orderMap.type == '1'?'active':''}">
+                            <a th:href="${urlParam}+'&order=1:'+${orderMap.sort =='asc'?'desc':'asc'}">
+                                Comprehensive <span th:if="${orderMap.type == '1'}" th:text="${orderMap.sort =='asc'?'↑':'↓'}"></span>
                             </a>
                         </li>
-                        <li th:class="${orderMap.type == '2' ? 'active': ''}">
-                            <a th:href="${urlParam}+'&order=2:'+${orderMap.sort == 'asc' ? 'desc' : 'asc'}">
-                                价格<span th:if="${orderMap.type == '2'}" th:text="${orderMap.sort == 'asc' ? '↑' : '↓'}"></span>
+                        <li th:class="${orderMap.type == '2'?'active':''}">
+                            <a th:href="${urlParam}+'&order=2:'+${orderMap.sort =='asc'?'desc':'asc'}">
+                                Price<span th:if="${orderMap.type == '2'}" th:text="${orderMap.sort =='asc'?'↑':'↓'}"></span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">新品</a>
+                            <a href="#">New products</a>
                         </li>
                         <li>
-                            <a href="#">评价</a>
+                            <a href="#">Review</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="goods-list">
                 <ul class="yui3-g">
-
 
                     <li class="yui3-u-1-5" th:each="goods: ${goodsList}">
                         <div class="list-wrap">
@@ -162,11 +161,11 @@
                                 <a th:href="@{http://item.gmall.com/{id}.html(id=${goods.id})}" target="_blank" th:utext="${goods.title}">Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s (A1699)</a>
                             </div>
                             <div class="commit">
-                                <i class="command">已有<span>2000</span>人评价</i>
+                                <i class="command">Already <span>2000</span> people commented</i>
                             </div>
                             <div class="operate">
-                                <a href="javascript:void(0);" class="sui-btn btn-bordered btn-danger">自营</a>
-                                <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
+                                <a href="javascript:void(0);" class="sui-btn btn-bordered btn-danger">self-employed</a>
+                                <a href="javascript:void(0);" class="sui-btn btn-bordered">Favorites</a>
                             </div>
                         </div>
                     </li>
@@ -177,30 +176,30 @@
                 <div class="sui-pagination pagination-large">
                     <ul>
                         <li class="prev" th:if="${pageNo != 1}">
-                            <a th:href="${urlParam}+'&pageNo='+${pageNo - 1}+'&order='+${searchParam.order}">上一页</a>
+                            <a th:href="${urlParam}+'&pageNo='+${pageNo-1}+'&order='+${searchParam.order}">Previous page</a>
                         </li>
                         <li class="prev disabled" th:if="${pageNo == 1}">
-                            <a href="javascript:">上一页</a>
+                            <a href="javascript:">Previous page</a>
                         </li>
 
-                        <li th:each="i : ${#numbers.sequence(1,totalPages)}" th:class="${i == pageNo } ? 'active' : ''">
-                            <a th:href="${urlParam}+'&pageNo='+${i}+'&order='+${searchParam.order}"><span th:text="${i}"></span></a>
+                        <li th:each="i: ${#numbers.sequence(1,totalPages)}" th:class="${i == pageNo}?'active':''">
+                            <a th:href="${urlParam}+'&pageNo='+${i}+'&order='+${searchParam.order}"><span th:text="${i}"></ span></a>
                         </li>
 
-                        <li class="next" th:if="${pageNo < totalPages}">
-                            <a th:href="${urlParam}+'&pageNo='+${pageNo + 1}+'&order='+${searchParam.order}">下一页</a>
+                        <li class="next" th:if="${pageNo <totalPages}">
+                            <a th:href="${urlParam}+'&pageNo='+${pageNo + 1}+'&order='+${searchParam.order}">Next page</a>
                         </li>
                         <li class="next disabled" th:if="${pageNo == totalPages}">
-                            <a href="javascript:">下一页</a>
+                            <a href="javascript:">Next page</a>
                         </li>
                     </ul>
-                    <div><span>共<span th:text="${totalPages }"></span>页&nbsp;</span><span></div>
+                    <div><span>Total<span th:text="${totalPages }"></span>pages&nbsp;</span><span></div>
                 </div>
             </div>
         </div>
         <!--hotsale-->
         <div class="clearfix hot-sale">
-            <h4 class="title">热卖商品</h4>
+            <h4 class="title">Hot Products</h4>
             <div class="hot-list">
                 <ul class="yui3-g">
                     <li class="yui3-u-1-4">
@@ -209,7 +208,7 @@
                                 <img src="./img/like_01.png" />
                             </div>
                             <div class="attr">
-                                <em>Apple苹果iPhone 6s (A1699)</em>
+                                <em>Apple iPhone 6s (A1699)</em>
                             </div>
                             <div class="price">
                                 <strong>
@@ -218,7 +217,7 @@
                                 </strong>
                             </div>
                             <div class="commit">
-                                <i class="command">已有700人评价</i>
+                                <i class="command">700 people commented</i>
                             </div>
                         </div>
                     </li>
@@ -228,7 +227,7 @@
                                 <img src="./img/like_03.png" />
                             </div>
                             <div class="attr">
-                                <em>金属A面，360°翻转，APP下单省300！</em>
+                                <em>Metal A side, 360° flip, save 300 on APP orders! </em>
                             </div>
                             <div class="price">
                                 <strong>
@@ -237,7 +236,7 @@
                                 </strong>
                             </div>
                             <div class="commit">
-                                <i class="command">已有700人评价</i>
+                                <i class="command">700 people commented</i>
                             </div>
                         </div>
                     </li>
@@ -247,7 +246,7 @@
                                 <img src="./img/like_04.png" />
                             </div>
                             <div class="attr">
-                                <em>256SSD商务大咖，完爆职场，APP下单立减200</em>
+                                <em>256SSD business big coffee, after exploding in the workplace, 200 off orders placed in APP</em>
                             </div>
                             <div class="price">
                                 <strong>
@@ -256,7 +255,7 @@
                                 </strong>
                             </div>
                             <div class="commit">
-                                <i class="command">已有20人评价</i>
+                                <i class="command">20 people have reviewed it</i>
                             </div>
                         </div>
                     </li>
@@ -266,7 +265,7 @@
                                 <img src="./img/like_02.png" />
                             </div>
                             <div class="attr">
-                                <em>Apple苹果iPhone 6s (A1699)</em>
+                                <em>Apple iPhone 6s (A1699)</em>
                             </div>
                             <div class="price">
                                 <strong>
@@ -275,7 +274,7 @@
                                 </strong>
                             </div>
                             <div class="commit">
-                                <i class="command">已有700人评价</i>
+                                <i class="command">700 people commented</i>
                             </div>
                         </div>
                     </li>
@@ -284,134 +283,134 @@
         </div>
     </div>
 </div>
-<!-- 底部栏位 -->
-<!--页面底部-->
+<!-- Bottom column -->
+<!--Bottom of the page-->
 <div class="clearfix footer">
     <div class="py-container">
         <div class="footlink">
             <div class="clearfix Mod-list">
                 <div class="yui3-g">
                     <div class="yui3-u-1-6">
-                        <h4>购物指南</h4>
+                        <h4>Shopping Guide</h4>
                         <ul class="unstyled">
-                            <li>购物流程</li>
-                            <li>会员介绍</li>
-                            <li>生活旅行/团购</li>
-                            <li>常见问题</li>
-                            <li>购物指南</li>
+                            <li>Shopping process</li>
+                            <li>Member Introduction</li>
+                            <li>Life travel/group purchase</li>
+                            <li>Frequently asked questions</li>
+                            <li>Shopping guide</li>
                         </ul>
 
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>配送方式</h4>
+                        <h4>Delivery method</h4>
                         <ul class="unstyled">
-                            <li>上门自提</li>
-                            <li>211限时达</li>
-                            <li>配送服务查询</li>
-                            <li>配送费收取标准</li>
-                            <li>海外配送</li>
+                            <li>Home pick up</li>
+                            <li>211 Limited Time Up</li>
+                            <li>Distribution service inquiry</li>
+                            <li>Delivery fee charging standard</li>
+                            <li>Overseas delivery</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>支付方式</h4>
+                        <h4>Payment method</h4>
                         <ul class="unstyled">
-                            <li>货到付款</li>
-                            <li>在线支付</li>
-                            <li>分期付款</li>
-                            <li>邮局汇款</li>
-                            <li>公司转账</li>
+                            <li>Cash on delivery</li>
+                            <li>Online payment</li>
+                            <li>Instalment payment</li>
+                            <li>Post office remittance</li>
+                            <li>Company transfer</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>售后服务</h4>
+                        <h4>After-sales service</h4>
                         <ul class="unstyled">
-                            <li>售后政策</li>
-                            <li>价格保护</li>
-                            <li>退款说明</li>
-                            <li>返修/退换货</li>
-                            <li>取消订单</li>
+                            <li>After-sales policy</li>
+                            <li>Price protection</li>
+                            <li>Refund instructions</li>
+                            <li>Repair/return/exchange</li>
+                            <li>Cancel order</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>特色服务</h4>
+                        <h4>Special Services</h4>
                         <ul class="unstyled">
-                            <li>夺宝岛</li>
-                            <li>DIY装机</li>
-                            <li>延保服务</li>
-                            <li>尚品汇E卡</li>
-                            <li>尚品汇通信</li>
+                            <li>Treasure Island</li>
+                            <li>DIY installation</li>
+                            <li>Extended Warranty Service</li>
+                            <li>Shangpinhui E Card</li>
+                            <li>Shangpinhui Communication</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>帮助中心</h4>
+                        <h4>Help Center</h4>
                         <img src="./img/wx_cz.jpg">
                     </div>
                 </div>
             </div>
             <div class="Mod-copyright">
                 <ul class="helpLink">
-                    <li>关于我们<span class="space"></span></li>
-                    <li>联系我们<span class="space"></span></li>
-                    <li>关于我们<span class="space"></span></li>
-                    <li>商家入驻<span class="space"></span></li>
-                    <li>营销中心<span class="space"></span></li>
-                    <li>友情链接<span class="space"></span></li>
-                    <li>关于我们<span class="space"></span></li>
-                    <li>营销中心<span class="space"></span></li>
-                    <li>友情链接<span class="space"></span></li>
-                    <li>关于我们</li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Contact us<span class="space"></span></li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Businesses settled in<span class="space"></span></li>
+                    <li>Marketing Center<span class="space"></span></li>
+                    <li>Friendly link<span class="space"></span></li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Marketing Center<span class="space"></span></li>
+                    <li>Friendly link<span class="space"></span></li>
+                    <li>About us</li>
                 </ul>
-                <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-                <p>京ICP备19006430号</p>
+                <p>Address: 6th Floor, Comprehensive Building, Hongfu Science Park, Changping District, Beijing</p>
+                <p>Beijing ICP No. 19006430</p>
             </div>
         </div>
     </div>
 </div>
-<!--页面底部END-->
+<!--Bottom of the pageEND-->
 
-<!-- 基础js库 -->
+<!-- Basic js library -->
 
-<!--侧栏面板开始-->
+<!--Start of sidebar panel-->
 <div class="J-global-toolbar">
     <div class="toolbar-wrap J-wrap">
         <div class="toolbar">
             <div class="toolbar-panels J-panel">
 
-                <!-- 购物车 -->
+                <!-- Shopping cart -->
                 <div style="visibility: hidden;" class="J-content toolbar-panel tbar-panel-cart toolbar-animate-out">
                     <h3 class="tbar-panel-header J-panel-header">
-                        <a href="" class="title"><i></i><em class="title">购物车</em></a>
+                        <a href="" class="title"><i></i><em class="title">Shopping cart</em></a>
                         <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('cart');" ></span>
                     </h3>
                     <div class="tbar-panel-main">
                         <div class="tbar-panel-content J-panel-content">
                             <div id="J-cart-tips" class="tbar-tipbox hide">
                                 <div class="tip-inner">
-                                    <span class="tip-text">还没有登录，登录后商品将被保存</span>
-                                    <a href="#none" class="tip-btn J-login">登录</a>
+                                    <span class="tip-text">have not logged in yet, the product will be saved after logging in</span>
+                                    <a href="#none" class="tip-btn J-login">Log in</a>
                                 </div>
                             </div>
                             <div id="J-cart-render">
-                                <!-- 列表 -->
+                                <!-- List -->
                                 <div id="cart-list" class="tbar-cart-list">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- 小计 -->
+                    <!-- Subtotal -->
                     <div id="cart-footer" class="tbar-panel-footer J-panel-footer">
                         <div class="tbar-checkout">
-                            <div class="jtc-number"> <strong class="J-count" id="cart-number">0</strong>件商品 </div>
-                            <div class="jtc-sum"> 共计：<strong class="J-total" id="cart-sum">¥0</strong> </div>
-                            <a class="jtc-btn J-btn" href="#none" target="_blank">去购物车结算</a>
+                            <div class="jtc-number"> <strong class="J-count" id="cart-number">0</strong> items </div>
+                            <div class="jtc-sum"> Total: <strong class="J-total" id="cart-sum">¥0</strong> </div>
+                            <a class="jtc-btn J-btn" href="#none" target="_blank">Go to the shopping cart for settlement</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- 我的关注 -->
+                <!-- My attention -->
                 <div style="visibility: hidden;" data-name="follow" class="J-content toolbar-panel tbar-panel-follow">
                     <h3 class="tbar-panel-header J-panel-header">
-                        <a href="#" target="_blank" class="title"> <i></i> <em class="title">我的关注</em> </a>
+                        <a href="#" target="_blank" class="title"> <i></i> <em class="title">My following</em> </a>
                         <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('follow');"></span>
                     </h3>
                     <div class="tbar-panel-main">
@@ -423,11 +422,10 @@
                     </div>
                     <div class="tbar-panel-footer J-panel-footer"></div>
                 </div>
-
-                <!-- 我的足迹 -->
+                <!-- My footprint -->
                 <div style="visibility: hidden;" class="J-content toolbar-panel tbar-panel-history toolbar-animate-in">
                     <h3 class="tbar-panel-header J-panel-header">
-                        <a href="#" target="_blank" class="title"> <i></i> <em class="title">我的足迹</em> </a>
+                        <a href="#" target="_blank" class="title"> <i></i> <em class="title">My tracks</em> </a>
                         <span class="close-panel J-close" onclick="cartPanelView.tbar_panel_close('history');"></span>
                     </h3>
                     <div class="tbar-panel-main">
@@ -436,16 +434,16 @@
                                 <ul>
                                     <!--<li class="jth-item">
                                         <a href="#" class="img-wrap"> <img src="../../.../portal/img/like_03.png" height="100" width="100" /> </a>
-                                        <a class="add-cart-button" href="#" target="_blank">加入购物车</a>
+                                        <a class="add-cart-button" href="#" target="_blank">Add to cart</a>
                                         <a href="#" target="_blank" class="price">￥498.00</a>
                                     </li>
                                     <li class="jth-item">
-                                        <a href="#" class="img-wrap"> <img src="../../../portal/img/like_02.png" height="100" width="100" /></a>
-                                        <a class="add-cart-button" href="#" target="_blank">加入购物车</a>
+                                        <a href="#" class="img-wrap"> <img src="../../../portal/img/like_02.png" height="100" width="100" />< /a>
+                                        <a class="add-cart-button" href="#" target="_blank">Add to cart</a>
                                         <a href="#" target="_blank" class="price">￥498.00</a>
                                     </li>-->
                                 </ul>
-                                <a href="#" class="history-bottom-more" target="_blank">查看更多足迹商品 &gt;&gt;</a>
+                                <a href="#" class="history-bottom-more" target="_blank">View more footprint products &gt;&gt;</a>
                             </div>
                         </div>
                     </div>
@@ -456,14 +454,14 @@
 
             <div class="toolbar-header"></div>
 
-            <!-- 侧栏按钮 -->
+            <!-- Sidebar button -->
             <div class="toolbar-tabs J-tab">
-                <div onclick="cartPanelView.tabItemClick('cart')" class="toolbar-tab tbar-tab-cart" data="购物车" tag="cart" >
+                <div onclick="cartPanelView.tabItemClick('cart')" class="toolbar-tab tbar-tab-cart" data="shopping cart" tag="cart">
                     <i class="tab-ico"></i>
                     <em class="tab-text"></em>
-                    <span class="tab-sub J-count " id="tab-sub-cart-count">0</span>
+                    <span class="tab-sub J-count "id="tab-sub-cart-count">0</span>
                 </div>
-                <div onclick="cartPanelView.tabItemClick('follow')" class="toolbar-tab tbar-tab-follow" data="我的关注" tag="follow" >
+                <div onclick="cartPanelView.tabItemClick('follow')" class="toolbar-tab tbar-tab-follow" data="my attention" tag="follow">
                     <i class="tab-ico"></i>
                     <em class="tab-text"></em>
                     <span class="tab-sub J-count hide">0</span>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Controller
 public class PaymentController {
@@ -17,23 +17,23 @@ public class PaymentController {
     @Autowired
     private OrderFeignClient orderFeignClient;
 
-    //  http://payment.gmall.com/pay.html?orderId=192
+
     @GetMapping("pay.html")
     public String pay(HttpServletRequest request){
-        //  获取orderId
+        // Get orderId
         String orderId = request.getParameter("orderId");
 
-        //  ${orderInfo} 存储orderInfo
+        // ${orderInfo} stores orderInfo
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(Long.parseLong(orderId));
-        //  保存对象！
+        // Save the object!
         request.setAttribute("orderInfo",orderInfo);
         return "payment/pay";
     }
 
-    //  返回支付成功页面！
+    // Return to the successful payment page!
     @GetMapping("pay/success.html")
     public String paySuccess(){
-        //  返回支付成功页面！
+        // Return to the successful payment page!
         return "payment/success";
     }
 }

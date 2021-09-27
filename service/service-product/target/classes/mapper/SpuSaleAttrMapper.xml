@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--非必要属性！namespace 接口全路径！-->
+<mapper namespace="com.atguigu.gmall.product.mapper.SpuSaleAttrMapper">
+    <!--返回结果集的映射-->
+    <resultMap id="SpuSaleAttrMap" type="com.atguigu.gmall.model.product.SpuSaleAttr" autoMapping="true">
+        <id property="id" column="id"></id>
+        <!--配置1：n-->
+        <collection property="spuSaleAttrValueList" ofType="com.atguigu.gmall.model.product.SpuSaleAttrValue" autoMapping="true">
+            <id property="id" column="sale_attr_value_id"></id>
+        </collection>
+    </resultMap>
+
+    <!--mybatis 中有个sql 片段的标签 -->
+    <sql id="spuSaleAttrSql">
+         ssa.id,
+           ssa.spu_id,
+           ssa.base_sale_attr_id,
+           ssa.sale_attr_name,
+           ssav.id sale_attr_value_id,
+           ssav.sale_attr_value_name
+    </sql>
+
+    <select id="selectSpuSaleAttrList" resultMap="SpuSaleAttrMap">
+        select
+            <include refid="spuSaleAttrSql"></include>
+        from spu_sale_attr ssa inner  join  spu_sale_attr_value ssav
+            on ssa.spu_id = ssav.spu_id and ssa.base_sale_attr_id = ssav.base_sale_attr_id
+            where ssa.spu_id=#{spuId};
+    </select>
+
+    <select id="selectSpuSaleAttrListCheckBySku" resultMap="SpuSaleAttrMap">
+        select
+            ssa.id,
+            ssa.spu_id,
+            ssa.base_sale_attr_id,
+            ssa.sale_attr_name,
+            ssav.id sale_attr_value_id,
+            ssav.sale_attr_value_name,
+            ssav2.sku_id,
+            if(ssav2.sku_id is null ,0 ,1) is_checked
+        from spu_sale_attr ssa inner join  spu_sale_attr_value ssav
+             on ssa.spu_id = ssav.spu_id and ssa.base_sale_attr_id = ssav.base_sale_attr_id
+            left join sku_sale_attr_value ssav2 on ssav2.sale_attr_value_id = ssav.id and ssav2.sku_id = #{skuId}
+        where ssa.spu_id=#{spuId}
+        order by ssav.base_sale_attr_id,ssav.id
+    </select>
+</mapper>

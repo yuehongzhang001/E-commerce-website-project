@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class AlipayServiceImpl implements AlipayService {
@@ -43,36 +43,36 @@ public class AlipayServiceImpl implements AlipayService {
     public String createaliPay(Long orderId) throws AlipayApiException {
 
 
-        //  获取到orderInfo 或者是paymentInfo
+        // Get orderInfo or paymentInfo
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderId);
-        //  生产二维码的同时，保存交易记录
-        //  默认支付宝支付
+        // Save the transaction record while producing the QR code
+        // Default Alipay payment
         paymentService.savePaymentInfo(orderInfo, PaymentType.ALIPAY.name());
 
         /*
-        1.  生产二维码！  取消订单： 5秒钟;
-        2.  取消订单了，则不能生产二维码！
+        1. Produce QR code! Cancel order: 5 seconds;
+        2. If the order is cancelled, the QR code cannot be produced!
          */
         if("CLOSED".equals(orderInfo.getOrderStatus())){
-            return "该订单已经取消！";
+            return "The order has been cancelled!";
         }
 
-        //  AlipayClient alipayClient =  new DefaultAlipayClient( "https://openapi.alipay.com/gateway.do" , APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE);  //获得初始化的AlipayClient
-        AlipayTradePagePayRequest alipayRequest =  new  AlipayTradePagePayRequest(); //创建API对应的request
-        //  同步回调
+        // AlipayClient alipayClient = new DefaultAlipayClient( "https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //Get initialized AlipayClient
+        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest(); //Create the request corresponding to the API
+        // Synchronous callback
         alipayRequest.setReturnUrl(AlipayConfig.return_payment_url);
-        //  异步回调
-        alipayRequest.setNotifyUrl(AlipayConfig.notify_payment_url); //在公共参数中设置回跳和通知地址
+        // Asynchronous callback
+        alipayRequest.setNotifyUrl(AlipayConfig.notify_payment_url); //Set the return jump and notification address in the public parameters
 
-        //  需要json 字符串
+        // Need json string
         HashMap<String, Object> map = new HashMap<>();
         map.put("out_trade_no",orderInfo.getOutTradeNo());
         map.put("product_code","FAST_INSTANT_TRADE_PAY");
-        //  map.put("total_amount",orderInfo.getTotalAmount());
+        // map.put("total_amount",orderInfo.getTotalAmount());
         map.put("total_amount","0.01");
         map.put("subject",orderInfo.getTradeBody());
         map.put("timeout_express","5m");
-        //  map 转换为Json
+        // map is converted to Json
         String jsonStr = JSON.toJSONString(map);
         alipayRequest.setBizContent(jsonStr);
 
@@ -86,15 +86,15 @@ public class AlipayServiceImpl implements AlipayService {
 
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderId);
 
-        //  声明退款请求对象
+        // Declare the refund request object
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
 
-        //  构建Json 字符串
+        // Construct Json string
         HashMap<String, Object> map = new HashMap<>();
         map.put("out_trade_no",orderInfo.getOutTradeNo());
-        //  退款金额 < 支付金额
+        // refund amount <payment amount
         map.put("refund_amount","0.01");
-        map.put("refund_reason","不好使！");
+        map.put("refund_reason","Not good!");
 
         request.setBizContent(JSON.toJSONString(map));
         AlipayTradeRefundResponse response = null;
@@ -104,16 +104,16 @@ public class AlipayServiceImpl implements AlipayService {
             e.printStackTrace();
         }
         if(response.isSuccess()){
-            System.out.println("调用成功");
-            //  电商平台订单关闭！
+            System.out.println("Call successful");
+            // E-commerce platform orders are closed!
             PaymentInfo updPaymentInfo = new PaymentInfo();
             updPaymentInfo.setPaymentStatus(PaymentStatus.CLOSED.name());
             this.paymentService.updatePaymentInfo(orderInfo.getOutTradeNo(),PaymentType.ALIPAY.name(),updPaymentInfo);
-            //  订单状态关闭！
+            // Order status is closed!
 
             return true;
         } else {
-            System.out.println("调用失败");
+            System.out.println("Call failed");
             return false;
         }
 
@@ -121,9 +121,9 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public boolean closePay(Long orderId) {
-        //  根据orderId 获取orderInfo
+        // Get orderInfo according to orderId
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderId);
-        //  创建关闭对象
+        // Create a close object
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         HashMap<String, Object> map = new HashMap<>();
         map.put("out_trade_no",orderInfo.getOutTradeNo());
@@ -136,20 +136,20 @@ public class AlipayServiceImpl implements AlipayService {
             e.printStackTrace();
         }
         if(response.isSuccess()){
-            System.out.println("调用成功");
+            System.out.println("Call successful");
             return true;
         } else {
-            System.out.println("调用失败");
+            System.out.println("Call failed");
             return false;
         }
     }
 
     @Override
     public boolean checkPayment(Long orderId) {
-        //  根据orderId 获取orderInfo
+        // Get orderInfo according to orderId
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderId);
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
-        //  构建参数
+        // Build parameters
         HashMap<String, Object> map = new HashMap<>();
         map.put("out_trade_no",orderInfo.getOutTradeNo());
         request.setBizContent(JSON.toJSONString(map));
@@ -161,10 +161,10 @@ public class AlipayServiceImpl implements AlipayService {
             e.printStackTrace();
         }
         if(response.isSuccess()){
-            System.out.println("调用成功");
+            System.out.println("Call successful");
             return true;
         } else {
-            System.out.println("调用失败");
+            System.out.println("Call failed");
             return false;
         }
     }

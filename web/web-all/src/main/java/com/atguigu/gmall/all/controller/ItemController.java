@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 11:50:47
  */
-//@RestController   不能使用！
+//@RestController cannot be used!
 @Controller
 public class ItemController {
 
@@ -26,13 +26,13 @@ public class ItemController {
 
     @RequestMapping("{skuId}.html")
     public String skuItem(@PathVariable Long skuId, Model model){
-        //  返回数据
+        // return data
         Result<Map> result = itemFeignClient.getItemById(skuId);
-        // 获取 map=result.getData();
-        //  存储map 数据
-        //  request.setAttribute("name",result.getData()); // ${name}
+        // Get map=result.getData();
+        // Store map data
+        // request.setAttribute("name",result.getData()); // ${name}
         model.addAllAttributes(result.getData());
-        //  返回item目录下的视图名称
+        // Return the name of the view in the item directory
         return "item/index";
     }
 }

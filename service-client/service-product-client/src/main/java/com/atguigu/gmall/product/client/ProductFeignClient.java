@@ -12,18 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 10:48:25
  */
 @FeignClient(value = "service-product",fallback = ProductDegradeFeignClient.class)
 public interface ProductFeignClient {
 
-    //  需要将ProductApiController 控制器中的URL 地址写在这个位置！
+    // Need to write the URL address in the ProductApiController controller in this location!
     @GetMapping("api/product/inner/getSkuInfo/{skuId}")
     SkuInfo getSkuInfo(@PathVariable Long skuId);
 
     /**
-     * 通过三级分类id查询分类信息
+     * Query classification information through the three-level classification id
      * @param category3Id
      * @return
      */
@@ -31,7 +31,7 @@ public interface ProductFeignClient {
     BaseCategoryView getCategoryView(@PathVariable Long category3Id);
 
     /**
-     * 获取sku最新价格
+     * Get the latest price of sku
      *
      * @param skuId
      * @return
@@ -40,7 +40,7 @@ public interface ProductFeignClient {
     BigDecimal getSkuPrice(@PathVariable Long skuId);
 
     /**
-     * 根据spuId，skuId 查询销售属性集合
+     * Query the sales attribute collection according to spuId and skuId
      *
      * @param skuId
      * @param spuId
@@ -50,7 +50,7 @@ public interface ProductFeignClient {
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable("skuId") Long skuId, @PathVariable("spuId") Long spuId);
 
     /**
-     * 根据spuId 查询map 集合属性
+     * Query map collection properties according to spuId
      * @param spuId
      * @return
      */
@@ -58,21 +58,21 @@ public interface ProductFeignClient {
     Map getSkuValueIdsMap(@PathVariable("spuId") Long spuId);
 
     /**
-     * 获取全部分类信息
+     * Get all classification information
      * @return
      */
     @GetMapping("/api/product/getBaseCategoryList")
     Result getBaseCategoryList();
 
     /**
-     * 通过品牌Id 集合来查询数据
+     * Query data through brand Id collection
      * @param tmId
      * @return
      */
     @GetMapping("/api/product/inner/getTrademark/{tmId}")
     BaseTrademark getTrademark(@PathVariable("tmId")Long tmId);
     /**
-     * 通过skuId 集合来查询数据
+     * Query data through the skuId collection
      * @param skuId
      * @return
      */

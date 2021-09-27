@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum CouponRangeType {
-    SPU("单品(spu)"),
-    CATAGORY("品类券" ),
-    TRADEMARK("品牌券");
+    SPU("single product (spu)"),
+    CATAGORY("Category Ticket"),
+    TRADEMARK("Brand Voucher");
 
-    private String comment ;
+    private String comment;
 
     CouponRangeType(String comment ){
         this.comment=comment;
@@ -16,7 +16,7 @@ public enum CouponRangeType {
 
     public static String getNameByType(String type) {
         CouponRangeType arrObj[] = CouponRangeType.values();
-        for (CouponRangeType obj : arrObj) {
+        for (CouponRangeType obj: arrObj) {
             if (obj.name().equals(type)) {
                 return obj.getComment();
             }

@@ -17,7 +17,7 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- 服务调用feign -->
+        <!-- service uses feign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>

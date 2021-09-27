@@ -8,29 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Service
 public class RabbitService {
 
-    //  编写发送消息的方法
+    // Write a method to send a message
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    //  表示成功发送消息
+    // Indicates that the message was successfully sent
     public boolean sendMessage(String exchange, String routingKey, Object message){
-        //  发送消息！
+        //  send messages!
         rabbitTemplate.convertAndSend(exchange,routingKey,message);
         return true;
     }
 
-    //  发送延迟消息
+    // send delayed message
     public boolean sendDelayMessage(String exchange, String routingKey, Object message,int delayTime){
-        //  发送消息！
+        //  send messages!
         rabbitTemplate.convertAndSend(exchange, routingKey, message, new MessagePostProcessor() {
             @Override
             public Message postProcessMessage(Message message) throws AmqpException {
-                //  设置延迟时间
+                // Set the delay time
                 message.getMessageProperties().setDelay(delayTime*1000);
                 return message;
             }

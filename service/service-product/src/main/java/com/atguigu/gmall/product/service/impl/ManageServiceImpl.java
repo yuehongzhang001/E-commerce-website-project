@@ -26,12 +26,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-10 10:30:46
  */
 @Service
 public class ManageServiceImpl implements ManageService {
-    //  服务层调用mapper 层
+
     @Autowired
     private BaseCategory1Mapper baseCategory1Mapper;
 
@@ -110,39 +110,39 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public List<BaseAttrInfo> getBaseAttrInfoList(Long category1Id, Long category2Id, Long category3Id) {
-        //  根据分类Id 查询平台属性列表！
-        //  后续有可能需要查询平台属性+ 平台属性值，因此在这个方法中。一次性将所有数据全部查询即可！
-        //  多表关联查询！ 配置*Mapper.xml
+        // Query the platform attribute list according to the category Id!
+        // You may need to query platform attributes + platform attribute values ​​later, so in this method. Query all the data at once!
+        // Multi-table related query! Configure *Mapper.xml
         return baseAttrInfoMapper.selectBaseAttrInfoList(category1Id,category2Id,category3Id);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class) //    如果有异常会回滚，如果当前代码块中出现了非运行时异常，则照样回滚！
+    @Transactional(rollbackFor = Exception.class) // If there is an exception, it will be rolled back. If there is a non-runtime exception in the current code block, it will still be rolled back!
     public void saveAttrInfo(BaseAttrInfo baseAttrInfo) {
 
-        //  实现类 base_attr_info，base_attr_value DML 语句 需要注意事务！
-        //  判断baseAttrInfo.id 是否为空！
+        // Implementation class base_attr_info, base_attr_value DML statement, need to pay attention to affairs!
+        // Determine whether baseAttrInfo.id is empty!
         if (baseAttrInfo.getId()!=null){
             baseAttrInfoMapper.updateById(baseAttrInfo);
         }else {
-            //  调用mapper
+            // call mapper
             baseAttrInfoMapper.insert(baseAttrInfo);
         }
 
-        //  什么时候新增，什么时候修改?
-        //  不知道什么时候！因此：先删除！再新增！
+        // When will it be added and when will it be modified?
+        //  do not know when! Therefore: delete first! Add again!
         QueryWrapper<BaseAttrValue> queryWrapper = new QueryWrapper<BaseAttrValue>().eq("attr_id", baseAttrInfo.getId());
-        //  delete from base_attr_value where attr_id = baseAttrInfo.getId();
+        // delete from base_attr_value where attr_id = baseAttrInfo.getId();
         baseAttrValueMapper.delete(queryWrapper);
 
-        //  int i = 1/0;
-        //  先获取到平台属性值集合
+        // int i = 1/0;
+        // Get the platform attribute value collection first
         List<BaseAttrValue> attrValueList = baseAttrInfo.getAttrValueList();
-        //  判断集合不为空
+        // Determine if the collection is not empty
         if (!CollectionUtils.isEmpty(attrValueList)){
-            //  循环遍历当前集合，插入到平台属性表中
-            for (BaseAttrValue baseAttrValue : attrValueList) {
-                //  attr_id 这个字段需要处理, base_attr_value.attr_id = base_attr_info.id
+            // Loop through the current collection and insert it into the platform attribute table
+            for (BaseAttrValue baseAttrValue: attrValueList) {
+                // attr_id this field needs to be processed, base_attr_value.attr_id = base_attr_info.id
                 baseAttrValue.setAttrId(baseAttrInfo.getId());
                 baseAttrValueMapper.insert(baseAttrValue);
             }
@@ -151,41 +151,41 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public List<BaseAttrValue> getAttrValueList(Long attrId) {
-        //  select * from base_attr_value where attr_id = attrId;
+        // select * from base_attr_value where attr_id = attrId;
         return baseAttrValueMapper.selectList(new QueryWrapper<BaseAttrValue>().eq("attr_id",attrId));
 
     }
 
     @Override
     public BaseAttrInfo getBaseAttrInfo(Long attrId) {
-        //  select * from base_attr_info where id  =  attrId;
+        // select * from base_attr_info where id = attrId;
         BaseAttrInfo baseAttrInfo = baseAttrInfoMapper.selectById(attrId);
         if (baseAttrInfo!=null){
-            //  获取平台属性值集合数据
+            // Get platform attribute value collection data
             List<BaseAttrValue> attrValueList = getAttrValueList(attrId);
             if (!CollectionUtils.isEmpty(attrValueList)){
                 baseAttrInfo.setAttrValueList(attrValueList);
             }
         }
-        //  返回数据
+        // return data
         return baseAttrInfo;
     }
 
     @Override
     public IPage<SpuInfo> getSpuInfoList(Page<SpuInfo> spuInfoPage, SpuInfo spuInfo) {
-        //  设置查询条件
+        // Set query conditions
         QueryWrapper<SpuInfo> spuInfoQueryWrapper = new QueryWrapper<>();
         spuInfoQueryWrapper.eq("category3_id",spuInfo.getCategory3Id());
-        //  设置一个排序
+        // set a sort
         spuInfoQueryWrapper.orderByDesc("id");
-        //  调用mapper
+        // call mapper
         return spuInfoMapper.selectPage(spuInfoPage,spuInfoQueryWrapper);
 
     }
 
     @Override
     public List<BaseSaleAttr> getBaseSaleAttrList() {
-        //  服务层调用mapper层对象获取
+        // The service layer calls the mapper layer object to obtain
         List<BaseSaleAttr> baseSaleAttrList = baseSaleAttrMapper.selectList(null);
         return baseSaleAttrList;
     }
@@ -194,40 +194,40 @@ public class ManageServiceImpl implements ManageService {
     @Transactional(rollbackFor = Exception.class)
     public void saveSpuInfo(SpuInfo spuInfo) {
         /*
-        1.  spu_info
-        2.  spu_image
-        3.  spu_sale_attr
-        4.  spu_sale_attr_value
+        1. spu_info
+        2. spu_image
+        3. spu_sale_attr
+        4. spu_sale_attr_value
          */
         spuInfoMapper.insert(spuInfo);
-        //  先获取到spuImageList 集合数据
+        // Get the spuImageList collection data first
         List<SpuImage> spuImageList = spuInfo.getSpuImageList();
         if (!CollectionUtils.isEmpty(spuImageList)){
-            //  循环遍历
-            for (SpuImage spuImage : spuImageList) {
-                //  将spuId 进行赋值
+            // loop traversal
+            for (SpuImage spuImage: spuImageList) {
+                // Assign spuId
                 spuImage.setSpuId(spuInfo.getId());
                 spuImageMapper.insert(spuImage);
             }
         }
-        //  获取当前的销售属性集合
+        // Get the current collection of sales attributes
         List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
-        //  判断
+        //  judge
         if (!CollectionUtils.isEmpty(spuSaleAttrList)){
-            //  循环遍历
-            for (SpuSaleAttr spuSaleAttr : spuSaleAttrList) {
-                //  将spuId 进行赋值
+            // loop traversal
+            for (SpuSaleAttr spuSaleAttr: spuSaleAttrList) {
+                // Assign spuId
                 spuSaleAttr.setSpuId(spuInfo.getId());
                 spuSaleAttrMapper.insert(spuSaleAttr);
 
-                //  获取当前的销售属性值集合
+                // Get the current collection of sales attribute values
                 List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
                 if (!CollectionUtils.isEmpty(spuSaleAttrValueList)){
-                    //  循环遍历
-                    for (SpuSaleAttrValue spuSaleAttrValue : spuSaleAttrValueList) {
-                        //  将spuId 进行赋值
+                    // loop traversal
+                    for (SpuSaleAttrValue spuSaleAttrValue: spuSaleAttrValueList) {
+                        // Assign spuId
                         spuSaleAttrValue.setSpuId(spuInfo.getId());
-                        //  赋值销售属性名称
+                        // Assign the sales attribute name
                         spuSaleAttrValue.setSaleAttrName(spuSaleAttr.getSaleAttrName());
                         spuSaleAttrValueMapper.insert(spuSaleAttrValue);
                     }
@@ -238,14 +238,14 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public List<SpuImage> getSpuImageList(Long spuId) {
-        //  select * from spu_image where spu_id = spuId;
+        // select * from spu_image where spu_id = spuId;
         return spuImageMapper.selectList(new QueryWrapper<SpuImage>().eq("spu_id",spuId));
     }
 
     @Override
     public List<SpuSaleAttr> getSpuSaleAttrList(Long spuId) {
-        //  服务层调用mapper层方法
-        List<SpuSaleAttr>  spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrList(spuId);
+        // The service layer calls the mapper layer method
+        List<SpuSaleAttr> spuSaleAttrList = spuSaleAttrMapper.selectSpuSaleAttrList(spuId);
         return spuSaleAttrList;
     }
 
@@ -253,40 +253,40 @@ public class ManageServiceImpl implements ManageService {
     @Transactional(rollbackFor = Exception.class)
     public void saveSkuInfo(SkuInfo skuInfo) {
         /*
-        1.  sku_info
-        2.  sku_attr_value
-        3.  sku_sale_attr_value
-        4.  sku_image
+        1. sku_info
+        2. sku_attr_value
+        3. sku_sale_attr_value
+        4. sku_image
          */
         skuInfoMapper.insert(skuInfo);
-        //  获取sku_attr_value 表对应的数据
+        // Get the data corresponding to the sku_attr_value table
         List<SkuAttrValue> skuAttrValueList = skuInfo.getSkuAttrValueList();
-        //  判断
+        //  judge
         if(!CollectionUtils.isEmpty(skuAttrValueList)){
-            //  循环遍历
-            for (SkuAttrValue skuAttrValue : skuAttrValueList) {
-                //  赋值skuId
+            // loop traversal
+            for (SkuAttrValue skuAttrValue: skuAttrValueList) {
+                // Assign skuId
                 skuAttrValue.setSkuId(skuInfo.getId());
                 skuAttrValueMapper.insert(skuAttrValue);
             }
         }
-        //  获取sku_sale_attr_value数据
+        // Get sku_sale_attr_value data
         List<SkuSaleAttrValue> skuSaleAttrValueList = skuInfo.getSkuSaleAttrValueList();
         if (!CollectionUtils.isEmpty(skuSaleAttrValueList)){
-            for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
-                //  赋值spuId,skuId
+            for (SkuSaleAttrValue skuSaleAttrValue: skuSaleAttrValueList) {
+                // Assign spuId, skuId
                 skuSaleAttrValue.setSpuId(skuInfo.getSpuId());
                 skuSaleAttrValue.setSkuId(skuInfo.getId());
                 skuSaleAttrValueMapper.insert(skuSaleAttrValue);
             }
         }
 
-        //  获取sku_image 数据
+        // Get sku_image data
         List<SkuImage> skuImageList = skuInfo.getSkuImageList();
         if (!CollectionUtils.isEmpty(skuImageList)){
-            //  循环遍历
-            for (SkuImage skuImage : skuImageList) {
-                //  赋值skuId
+            // loop traversal
+            for (SkuImage skuImage: skuImageList) {
+                // Assign skuId
                 skuImage.setSkuId(skuInfo.getId());
                 skuImageMapper.insert(skuImage);
             }
@@ -295,7 +295,7 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public IPage getSkuInfoList(Page<SkuInfo> skuInfoPage) {
-        //  select * from sku_info order by id limit 0, 10;
+        // select * from sku_info order by id limit 0, 10;
         QueryWrapper<SkuInfo> skuInfoQueryWrapper = new QueryWrapper<>();
         skuInfoQueryWrapper.orderByDesc("id");
         return skuInfoMapper.selectPage(skuInfoPage,skuInfoQueryWrapper);
@@ -303,179 +303,179 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public void onSale(Long skuId) {
-        //  更新状态
-        //  update  sku_info set is_sale = 1 where id = 45;
+        //  update status
+        // update sku_info set is_sale = 1 where id = 45;
         SkuInfo skuInfo = new SkuInfo();
         skuInfo.setId(skuId);
         skuInfo.setIsSale(1);
         skuInfoMapper.updateById(skuInfo);
 
-        //  发送一个消息！
-        //  发送消息主体： skuId
+        // Send a message!
+        // Send message body: skuId
         rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS,MqConst.ROUTING_GOODS_UPPER,skuId);
 
     }
 
     @Override
     public void cancelSale(Long skuId) {
-        //  更新状态
-        //  update  sku_info set is_sale = 0 where id = 45;
+        //  update status
+        // update sku_info set is_sale = 0 where id = 45;
         SkuInfo skuInfo = new SkuInfo();
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
 
-        //  发送一个消息！
-        //  发送消息主体： skuId
+        // Send a message!
+        // Send message body: skuId
         rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS,MqConst.ROUTING_GOODS_LOWER,skuId);
 
     }
 
     /**
-     * 根据skuId 查询skuInfo 以及 skuImageList
+     * Query skuInfo and skuImageList according to skuId
      * @param skuId
      * @return
      */
     @Override
-    //  加个注解就能代替 分布式锁的业务逻辑 : 锁 getSkuInfo sku:skuId:lock;
+    // Add a comment to replace the business logic of distributed locks: lock getSkuInfo sku:skuId:lock;
     @GmallCache(prefix = "sku:")
     public SkuInfo getSkuInfo(Long skuId) {
-        //  调用redisson
-        //  return getSkuInfoRedisson(skuId);
+        // call redisson
+        // return getSkuInfoRedisson(skuId);
         return getSkuInfoDB(skuId);
     }
 
     private SkuInfo getSkuInfoRedisson(Long skuId) {
-        //  声明对象
+        // Declare the object
         SkuInfo skuInfo = new SkuInfo();
         try {
-            //  skuKey = sku:skuId:info;
+            // skuKey = sku:skuId:info;
             String skuKey = RedisConst.SKUKEY_PREFIX+skuId+RedisConst.SKUKEY_SUFFIX;
-            //  因为配置类中已经将 String ，Hash 做了序列号处理！
+            // Because String and Hash have been processed for serial numbers in the configuration class!
             skuInfo = (SkuInfo) redisTemplate.opsForValue().get(skuKey);
-            //  判断
+            //  judge
             if (skuInfo==null){
 
-                //  定义锁的key
+                // Define the key of the lock
                 String skuLockKey = RedisConst.SKUKEY_PREFIX+skuId+RedisConst.SKULOCK_SUFFIX;
                 RLock lock = redissonClient.getLock(skuLockKey);
-//---------------------------------------------------------------------------------------------------------------------
-                //  上锁
+//------------------------------------------------ -------------------------------------------------- -------------------
+                // locked
                 boolean flag = lock.tryLock(RedisConst.SKULOCK_EXPIRE_PX1, RedisConst.SKULOCK_EXPIRE_PX2, TimeUnit.SECONDS);
-                //  判断
+                //  judge
                 if (flag){
-                    //  上锁成功！ 执行业务逻辑
+                    // Successfully locked! Execute business logic
                     try {
-                        //  查询数据库，并放入缓存
-                        //  要查询数据库，防止缓存穿透
+                        // Query the database and put it in the cache
+                        // To query the database to prevent cache penetration
                         skuInfo = getSkuInfoDB(skuId);
                         if (skuInfo==null){
-                            //  放入一个空对象
+                            // put in an empty object
                             SkuInfo skuInfo1 = new SkuInfo();
                             redisTemplate.opsForValue().set(skuKey,skuInfo1,RedisConst.SKUKEY_TEMPORARY_TIMEOUT,TimeUnit.SECONDS);
                             return skuInfo1;
                         }
-                        //  skuInfo 不为空
+                        // skuInfo is not empty
                         redisTemplate.opsForValue().set(skuKey,skuInfo,RedisConst.SKUKEY_TIMEOUT,TimeUnit.SECONDS);
-                        //  返回数据！
+                        // Return data!
                         return skuInfo;
                     } finally {
                         lock.unlock();
                     }
                 }else {
-                    //  这些人没获取到锁！
+                    // These people didn't get the lock!
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    //  自旋
+                    // spin
                     return getSkuInfo(skuId);
                 }
 
             }else {
-                //  缓存有数据
+                // Cached data
                 return skuInfo;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //  数据库兜底
+        // The bottom of the database
         return getSkuInfoDB(skuId);
     }
 
     /**
-     * 根据skuId 获取skuInfo  --- redis 做分布式锁！
+     * Obtain skuInfo according to skuId --- redis does distributed lock!
      * @param skuId
      * @return
      */
     private SkuInfo getSkuInfoRedis(Long skuId) {
         SkuInfo skuInfo = new SkuInfo();
         try {
-            //  获取缓存数据 如何获取数据? String List Set Hash ZSet
-            //  redisTemplate.opsForHash() 能！ hset(key,field,value)  field = 实体类的属性名！ 便于修改！ hget(field,value);
-            //  但是：直接存储String！
-            //  skuKey = sku:skuId:info;
+            // Get cached data How to get data? String List Set Hash ZSet
+            // redisTemplate.opsForHash() Yes! hset(key,field,value) field = the attribute name of the entity class! Easy to modify! hget(field,value);
+            // But: Store String directly!
+            // skuKey = sku:skuId:info;
             String skuKey = RedisConst.SKUKEY_PREFIX+skuId+RedisConst.SKUKEY_SUFFIX;
-            //  因为配置类中已经将 String ，Hash 做了序列号处理！
+            // Because String and Hash have been processed for serial numbers in the configuration class!
             skuInfo = (SkuInfo) redisTemplate.opsForValue().get(skuKey);
-            //        //  因为
-            //        redisTemplate.opsForValue().set(skuKey,skuInfo);
-            //  防止缓存击穿
+            //        //  Because
+            // redisTemplate.opsForValue().set(skuKey,skuInfo);
+            // Prevent cache breakdown
             if(skuInfo==null){
-                //  上锁！
-                //  定义一个锁的key=sku:skuId:lock
+                // Locked!
+                // Define a lock key=sku:skuId:lock
                 String skuLockKey = RedisConst.SKUKEY_PREFIX+skuId+RedisConst.SKULOCK_SUFFIX;
                 String uuid = UUID.randomUUID().toString();
-                //  开始上锁
+                // start to lock
                 Boolean flag = redisTemplate.opsForValue().setIfAbsent(skuLockKey, uuid, RedisConst.SKULOCK_EXPIRE_PX1, TimeUnit.SECONDS);
                 if (flag){
-                    //  上锁成功！
-                    //  要查询数据库，防止缓存穿透
+                    // Successfully locked!
+                    // To query the database to prevent cache penetration
                     skuInfo = getSkuInfoDB(skuId);
                     if (skuInfo==null){
-                        //  放入一个空对象
+                        // put in an empty object
                         SkuInfo skuInfo1 = new SkuInfo();
                         redisTemplate.opsForValue().set(skuKey,skuInfo1,RedisConst.SKUKEY_TEMPORARY_TIMEOUT,TimeUnit.SECONDS);
                         return skuInfo1;
                     }
-                    //  将数据放入缓存，并返回！
+                    // Put the data in the cache and return!
                     redisTemplate.opsForValue().set(skuKey,skuInfo,RedisConst.SKUKEY_TIMEOUT,TimeUnit.SECONDS);
                     String script= "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 
-                    //  释放锁 使用lua 脚本！
+                    // Release the lock Use lua script!
                     DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
                     redisScript.setScriptText(script);
                     redisScript.setResultType(Long.class);
                     redisTemplate.execute(redisScript, Arrays.asList(skuLockKey),uuid);
-                    //  返回数据！
+                    // Return data!
                     return skuInfo;
                 }
             }else {
-                //  说明缓存中有数据！
+                // Indicates that there is data in the cache!
                 return skuInfo;
             }
         } catch (Exception e) {
-            //  sout("redis --- 宕机了")
-            //  调用发短信方法： 工程师！
+            // sout("redis --- down")
+            // Call the method of sending text messages: Engineer!
             e.printStackTrace();
         }
-        //  数据库兜底！
+        // The bottom of the database!
         return getSkuInfoDB(skuId);
     }
 
-    //  根据skuId查询数据库！ctrl+alt+m
+    // Query the database based on skuId! ctrl+alt+m
     private SkuInfo getSkuInfoDB(Long skuId) {
-        //  select * from sku_info where id = skuId;
+        // select * from sku_info where id = skuId;
         SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
 
-        //  select * from sku_image where sku_id = skuId;
-        //  构造查询条件
+        // select * from sku_image where sku_id = skuId;
+        // Construct query conditions
         QueryWrapper<SkuImage> skuImageQueryWrapper = new QueryWrapper<>();
         skuImageQueryWrapper.eq("sku_id",skuId);
         List<SkuImage> skuImageList = skuImageMapper.selectList(skuImageQueryWrapper);
-        //  将 skuImageList 集合赋值给skuInfo对象；
-        //  解决空指针异常！
+        // Assign the skuImageList collection to the skuInfo object;
+        // Solve the null pointer exception!
         if (skuInfo!=null){
             skuInfo.setSkuImageList(skuImageList);
         }
@@ -487,138 +487,138 @@ public class ManageServiceImpl implements ManageService {
     @GmallCache(prefix = "categoryViewByCategory3Id:")
     public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
 
-        //  select * from base_category_view where id = 61;
+        // select * from base_category_view where id = 61;
         return baseCategoryViewMapper.selectById(category3Id);
     }
 
     @Override
-    @GmallCache(prefix= "skuPrice:")  // 锁的key 是谁 ? skuPrice:skuId
+    @GmallCache(prefix= "skuPrice:") // Who is the key of the lock? skuPrice:skuId
     public BigDecimal getSkuPrice(Long skuId) {
-        //  select price from sku_info where id = skuId;
+        // select price from sku_info where id = skuId;
         SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
         if (skuInfo!=null){
             return skuInfo.getPrice();
         }
-        //  给默认值
+        // give default value
         return new BigDecimal(0);
     }
 
     @Override
     @GmallCache(prefix = "spuSaleAttrListCheckBySku:")
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
-        //  多表关联查询
+        // Multi-table related query
         return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
     }
 
     @Override
     @GmallCache(prefix = "skuValueIdsMap:")
     public Map getSkuValueIdsMap(Long spuId) {
-        //  声明一个返回值对象
+        // Declare a return value object
         Map map = new HashMap();
-        //  执行 sql 语句获取数据结果集： 编写xml ? 应该写在哪个mapper.xml 中?
+        // Execute sql statement to get data result set: write xml? Which mapper.xml should be written in?
         List<Map> mapList = skuSaleAttrValueMapper.selectSaleAttrValuesBySpu(spuId);
-        //  判断当前集合不为空
+        // Determine that the current collection is not empty
         if (!CollectionUtils.isEmpty(mapList)){
-            //  循环遍历当前sql 的执行结果
-            for (Map maps : mapList) {
-                //  将循环获取到的数据放入外层map中
-                //  通过 Map 转换为Json {"126|124":"46","126|125":"47"}  value_ids = 126|124  skuId = 46;
-                //  map.put("126|124","46") ;  map.put("126|125","47") ;
+            // Loop through the execution results of the current sql
+            for (Map maps: mapList) {
+                // Put the data obtained in the loop into the outer map
+                // Convert to Json via Map {"126|124":"46","126|125":"47"} value_ids = 126|124 skuId = 46;
+                // map.put("126|124","46"); map.put("126|125","47");
                 map.put(maps.get("value_ids"),maps.get("sku_id"));
             }
         }
-        //  返回
+        //  return
         return map;
     }
 
     @Override
     @GmallCache(prefix = "baseCategoryList:")
     public List<JSONObject> getBaseCategoryList() {
-        //  声明一个集合
+        // Declare a collection
         List<JSONObject> list = new ArrayList<>();
-        //  查询所有的分类数据！
-        //  select * from base_category_view;
+        // Query all classified data!
+        // select * from base_category_view;
         List<BaseCategoryView> baseCategoryViewList = baseCategoryViewMapper.selectList(null);
 
-        //  声明一个index
+        // Declare an index
         int index = 1;
-        //  按照一级分类Id 进行分组
-        //  key = category1Id   value = List<BaseCategoryView>
+        // Group according to the first-level classification Id
+        // key = category1Id value = List<BaseCategoryView>
         Map<Long, List<BaseCategoryView>> category1Map = baseCategoryViewList.stream().collect(Collectors.groupingBy(BaseCategoryView::getCategory1Id));
-        //  循环遍历当前的集合数据
+        // Loop through the current collection data
         Iterator<Map.Entry<Long, List<BaseCategoryView>>> iterator = category1Map.entrySet().iterator();
-        //  数据从 1 - 60 行！
+        // The data is from 1-60 rows!
         while (iterator.hasNext()){
             Map.Entry<Long, List<BaseCategoryView>> entry = iterator.next();
-            //  获取对应的key ，value
+            // Get the corresponding key, value
             Long category1Id = entry.getKey();
             List<BaseCategoryView> category2List = entry.getValue();
-            //  获取一级分类的名称
+            // Get the name of the first level category
             String categoryName = category2List.get(0).getCategory1Name();
 
-            //  赋值
+            // Assignment
             JSONObject category1 = new JSONObject();
             category1.put("index",index);
             category1.put("categoryName",categoryName);
             category1.put("categoryId",category1Id);
 
-            //  index 迭代
+            // index iteration
             index++;
-            //  获取二级分类数据：
+            // Get secondary classification data:
             Map<Long, List<BaseCategoryView>> category2Map = category2List.stream().collect(Collectors.groupingBy(BaseCategoryView::getCategory2Id));
 
-            //  声明一个二级分类集合数据
+            // Declare a secondary classification collection data
             List<JSONObject> category2Child = new ArrayList<>();
 
-            //  循环遍历
+            // loop traversal
             Iterator<Map.Entry<Long, List<BaseCategoryView>>> iterator1 = category2Map.entrySet().iterator();
             while (iterator1.hasNext()){
-                //  第一次循环：1 - 4行数据  第二次：5-7
+                // The first loop: 1-4 rows of data The second time: 5-7
                 Map.Entry<Long, List<BaseCategoryView>> entry1 = iterator1.next();
-                //  获取key ，value
+                // Get key, value
                 Long category2Id = entry1.getKey();
                 List<BaseCategoryView> category3List = entry1.getValue();
-                //  获取二级分类名称
+                // Get the name of the secondary category
                 String category2Name = category3List.get(0).getCategory2Name();
-                //  赋值
+                // Assignment
                 JSONObject category2 = new JSONObject();
                 category2.put("categoryName",category2Name);
                 category2.put("categoryId",category2Id);
 
 
-                //  声明一个集合来存储所有的二级分类数据！
+                // Declare a set to store all the secondary classification data!
                 category2Child.add(category2);
 
-                //  声明一个三级分类集合数据
+                // Declare a three-level classification collection data
                 List<JSONObject> category3Child = new ArrayList<>();
-                //  获取三级分类数据
+                // Get three-level classification data
                 category3List.forEach((baseCategoryView)->{
                     JSONObject category3 = new JSONObject();
                     category3.put("categoryName",baseCategoryView.getCategory3Name());
                     category3.put("categoryId",baseCategoryView.getCategory3Id());
                     category3Child.add(category3);
                 });
-                //  将三级分类数据放入二级对象
+                // Put the three-level classification data into the second-level object
                 category2.put("categoryChild",category3Child);
             }
-            //  将二级分类数据放入一级对象
+            // Put the second-level classification data into the first-level object
             category1.put("categoryChild",category2Child);
-            //  将一级分类数据放入list中
+            // Put the first-level classification data into the list
             list.add(category1);
         }
-        //  返回集合数据
+        // return collection data
         return list;
     }
 
     @Override
     public BaseTrademark getTrademarkByTmId(Long tmId) {
-        //  select * from base_trademark where id = tmId;
-        return baseTrademarkMapper.selectById(tmId) ;
+        // select * from base_trademark where id = tmId;
+        return baseTrademarkMapper.selectById(tmId);
     }
 
     @Override
     public List<BaseAttrInfo> getAttrList(Long skuId) {
-        // 当前这个 skuId 对应的平台属性 ， 平台属性值！
+        // The platform attribute and platform attribute value corresponding to the current skuId!
         return baseAttrInfoMapper.selectBaseAttrInfoListBySkuId(skuId);
     }
 

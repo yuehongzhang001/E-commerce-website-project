@@ -11,50 +11,50 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@ApiModel(description = "活动规则")
+@ApiModel(description = "Activity Rules")
 @TableName("activity_rule")
 public class ActivityRule extends BaseEntity {
-   
+
    private static final long serialVersionUID = 1L;
-   
-   @ApiModelProperty(value = "类型")
+
+   @ApiModelProperty(value = "Type")
    @TableField("activity_id")
    private Long activityId;
 
-   @ApiModelProperty(value = "满减金额")
+   @ApiModelProperty(value = "full reduction amount")
    @TableField("condition_amount")
    private BigDecimal conditionAmount;
 
-   @ApiModelProperty(value = "满减件数")
+   @ApiModelProperty(value = "Number of pieces reduced when full")
    @TableField("condition_num")
    private Long conditionNum;
 
-   @ApiModelProperty(value = "优惠金额")
+   @ApiModelProperty(value = "Preferential Amount")
    @TableField("benefit_amount")
    private BigDecimal benefitAmount;
 
-   @ApiModelProperty(value = "优惠折扣")
+   @ApiModelProperty(value = "Preferential Discount")
    @TableField("benefit_discount")
    private BigDecimal benefitDiscount;
 
-   @ApiModelProperty(value = "优惠级别")
+   @ApiModelProperty(value = "Promotion Level")
    @TableField("benefit_level")
    private Long benefitLevel;
 
-   @ApiModelProperty(value = "活动类型（1：满减，2：折扣）")
+   @ApiModelProperty(value = "Activity type (1: full reduction, 2: discount)")
    @TableField(exist = false)
    private String activityType;
 
-   // 添加一个skuId
-   @ApiModelProperty(value = "活动skuId")
+   // add a skuId
+   @ApiModelProperty(value = "activity skuId")
    @TableField(exist = false)
    private Long skuId;
 
-   @ApiModelProperty(value = "优惠后减少金额")
+   @ApiModelProperty(value = "Amount reduced after discount")
    @TableField(exist = false)
    private BigDecimal reduceAmount;
 
-   @ApiModelProperty(value = "活动对应的skuId列表")
+   @ApiModelProperty(value = "SkuId list corresponding to the activity")
    @TableField(exist = false)
    private List<Long> skuIdList;
 }

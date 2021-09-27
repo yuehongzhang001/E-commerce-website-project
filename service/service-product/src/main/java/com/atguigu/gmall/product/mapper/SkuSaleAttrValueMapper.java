@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-13 14:41:21
  */
 @Mapper
 public interface SkuSaleAttrValueMapper extends BaseMapper<SkuSaleAttrValue> {
     /**
-     * 通过spuId 获取到销售属性值对应的skuId 组合
+     * Obtain the skuId combination corresponding to the sales attribute value through spuId
      * @param spuId
      * @return
      */

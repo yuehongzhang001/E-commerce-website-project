@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 15:15:09
  */
 @RestController

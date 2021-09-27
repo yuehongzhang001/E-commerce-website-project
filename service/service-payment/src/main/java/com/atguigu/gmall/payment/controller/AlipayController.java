@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Controller
 @RequestMapping("/api/payment/alipay")
@@ -29,7 +29,7 @@ public class AlipayController {
     private PaymentService paymentService;
 
     //  http://api.gmall.com/api/payment/alipay/submit/194
-    //  @ResponseBody 第一个：返回数据是Json ，第二个，直接将数据输入到页面！
+    // @ResponseBody The first one: the return data is Json, the second one, directly input the data into the page!
     @RequestMapping("submit/{orderId}")
     @ResponseBody
     public String aliPay(@PathVariable Long orderId){
@@ -39,55 +39,55 @@ public class AlipayController {
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        //  返回数据
+        // return data
         return pageContent;
     }
 
-    //  编写同步回调：http://api.gmall.com/api/payment/alipay/callback/return
+    // Write a synchronous callback: http://api.gmall.com/api/payment/alipay/callback/return
     @GetMapping("callback/return")
     public String callbackReturn(){
-        //  重定向到： return_order_url=http://payment.gmall.com/pay/success.html
+        // Redirect to: return_order_url=http://payment.gmall.com/pay/success.html
         return "redirect:"+ AlipayConfig.return_order_url;
     }
 
-    //  notify_payment_url=http://qgnq4b.natappfree.cc/api/payment/alipay/callback/notify
-    //  启动内网穿透工具：
-    //  https: //商家网站通知地址?voucher_detail_list=[{"amount":"0.20","merchantContribute":"0.00","name":"5折券","otherContribute":"0.20","type":"ALIPAY_DISCOUNT_VOUCHER","voucherId":"2016101200073002586200003BQ4"}]&fund_bill_list=[{"amount":"0.80","fundChannel":"ALIPAYACCOUNT"},{"amount":"0.20","fundChannel":"MDISCOUNT"}]&subject=PC网站支付交易&trade_no=2016101221001004580200203978&gmt_create=2016-10-12 21:36:12&notify_type=trade_status_sync&total_amount=1.00&out_trade_no=mobile_rdm862016-10-12213600&invoice_amount=0.80&seller_id=2088201909970555&notify_time=2016-10-12 21:41:23&trade_status=TRADE_SUCCESS&gmt_payment=2016-10-12 21:37:19&receipt_amount=0.80&passback_params=passback_params123&buyer_id=2088102114562585&app_id=2016092101248425&notify_id=7676a2e1e4e737cff30015c4b7b55e3kh6& sign_type=RSA2&buyer_pay_amount=0.80&sign=***&point_amount=0.00
+    // notify_payment_url=http://qgnq4b.natappfree.cc/api/payment/alipay/callback/notify
+    // Start the intranet penetration tool:
+    // https: //Merchant website notification address?voucher_detail_list=[{"amount":"0.20","merchantContribute":"0.00","name":"50% discount coupon","otherContribute":"0.20"," type":"ALIPAY_DISCOUNT_VOUCHER","voucherId":"2016101200073002586200003BQ4"}]&fund_bill_list=[{"amount":"0.80","fundChannel":"ALIPAYACCOUNT"},{"amount":"0.20","fundChannel": "MDISCOUNT"}]&subject=PC website payment transaction&trade_no=2016101221001004580200203978&gmt_create=2016-10-12 21:36:12&notify_type=trade_status_sync&total_amount=1.00&out_trade_no=mobile_rdm862016-10-12213600&invoice_amount=0.202019-10-1288_timeeller_id=2016-10-1288_09970555&sify :23&trade_status=TRADE_SUCCESS&gmt_payment=2016-10-12 21:37:19&receipt_amount=0.80&passback_params=passback_params123&buyer_id=2088102114562585&app_id=2016092101248425&notify_id=2016092101248425&notify_id=2016092101248425&notify_id=2016092101248425&notify_id=7676a2e1e4e6cff30015csignamounta=0.
     @PostMapping("callback/notify")
     @ResponseBody
     public String callbackNotify(@RequestParam Map<String, String> paramMap) throws AlipayApiException {
 
-        //  通过key 获取到对应的数据
+        // Obtain the corresponding data through the key
         String outTradeNo = paramMap.get("out_trade_no");
-        //  outTradeNo 与 商家的outTradeNo！ 如果通过这个outTradeNo 在交易记录中能够获取到数据，则说明验证成功！
+        // outTradeNo and the merchant's outTradeNo! If the data can be obtained in the transaction record through this outTradeNo, the verification is successful!
         PaymentInfo paymentInfo = paymentService.getPaymentInfo(outTradeNo, PaymentType.ALIPAY.name());
-        //  说明验证失败！outTradeNo
-        //        if (paymentInfo==null){
-        //            return "failure";
-        //        }
-        //        String totalAmount = paramMap.get("total_amount");
-        //        if (paymentInfo.getTotalAmount().compareTo(new BigDecimal(totalAmount))!=0){
-        //            return "failure";
-        //        }
+        // Indicates that the verification failed! outTradeNo
+        // if (paymentInfo==null){
+        // return "failure";
+        //}
+        // String totalAmount = paramMap.get("total_amount");
+        // if (paymentInfo.getTotalAmount().compareTo(new BigDecimal(totalAmount))!=0){
+        // return "failure";
+        //}
         String status = paramMap.get("trade_status");
-        //  验证总金额
-        boolean flag = AlipaySignature.rsaCheckV1(paramMap, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
+        // verify the total amount
+        boolean flag = AlipaySignature.rsaCheckV1(paramMap, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //Call SDK to verify signature
         if(flag){
-            //  TODO 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
-            //  校验各种参数是否正确！
+            // After the TODO verification is successful, follow the description in the asynchronous notification of the payment result to perform a second verification of the business content in the payment result. After the verification is successful, it will return success in the response and continue the merchant's own business processing, and the verification failure will be returned failure
+            // Verify that the various parameters are correct!
             if ("TRADE_SUCCESS".equals(status) || "TRADE_FINISHED".equals(status)){
-                //  细节： 防止万一 {当交易状态是支付完成，或者交易结束时 } 支付状态是CLOSED 或者是PAID 则返回failure！
+                // Details: Prevent in case {when the transaction status is payment completed or the transaction is over} If the payment status is CLOSED or PAID, then return to failure!
                 if ("PAID".equals(paymentInfo.getPaymentStatus()) || "ClOSED".equals(paymentInfo.getPaymentStatus())){
                     return "failure";
                 }
-                //  更新交易记录状态！
+                // Update the status of the transaction record!
                 paymentService.paySuccess(outTradeNo,PaymentType.ALIPAY.name(),paramMap);
 
                 return "success";
             }
 
         }else{
-            // TODO 验签失败则记录异常日志，并在response中返回failure.
+            // Record the exception log when TODO verification fails, and return failure in response.
             return "failure";
         }
 

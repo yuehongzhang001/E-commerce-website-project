@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-    <title>我的订单</title>
+    <title>My order</title>
     <link rel="icon" href="./img/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/css/all.css" />
@@ -16,30 +16,30 @@
 </head>
 
 <body>
-<!-- 头部栏位 -->
-<!--页面顶部-->
+<!-- Header field -->
+<!--Top of the page-->
 <div th:include="common/header :: header"></div>
 
 <!--header-->
-<div id="account" >
+<div id="account">
     <div class="py-container">
         <div class="yui3-g home">
-            <!--左侧列表-->
+            <!--List on the left-->
             <div class="yui3-u-1-6 list">
                 <div th:include="common/left :: left"></div>
             </div>
-            <!--右侧主内容-->
+            <!--Main content on the right-->
             <div class="yui3-u-5-6 order-pay">
                 <div class="body">
                     <div class="table-title">
-                        <table class="sui-table  order-table">
+                        <table class="sui-table order-table">
                             <tr>
                                 <thead>
-                                <th width="10%">优惠券类型</th>
-                                <th width="20%">面额</th>
-                                <th width="43%">描述</th>
-                                <th width="15%">过期时间</th>
-                                <th width="10%">状态</th>
+                                <th width="10%">Coupon type</th>
+                                <th width="20%">Denomination</th>
+                                <th width="43%">Description</th>
+                                <th width="15%">Expiration time</th>
+                                <th width="10%">Status</th>
                                 </thead>
                             </tr>
                         </table>
@@ -53,33 +53,33 @@
                                     <tbody>
                                     <tr>
                                         <td width="10%" class="center">
-                                            <span class="coupon-name" v-if="couponInfo.couponType == 'CASH'">现金券</span>
-                                            <span class="coupon-name" v-if="couponInfo.couponType == 'DISCOUNT'">折扣券</span>
-                                            <span class="coupon-name" v-if="couponInfo.couponType == 'FULL_REDUCTION'">满减卷</span>
-                                            <span class="coupon-name" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">满件打折卷</span>
+                                            <span class="coupon-name" v-if="couponInfo.couponType =='CASH'">Cash coupon</span>
+                                            <span class="coupon-name" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon</span>
+                                            <span class="coupon-name" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full reduction</span>
+                                            <span class="coupon-name" v-if="couponInfo.couponType =='FULL_DISCOUNT'">Full piece discount coupon</span>
                                         </td>
                                         <td width="20%" class="center">
-                                            <span class="condition" v-if="couponInfo.couponType == 'CASH'">现金券{{ couponInfo.benefitAmount }}元</span>
-                                            <span class="condition" v-if="couponInfo.couponType == 'DISCOUNT'">折扣券{{ couponInfo.benefitDiscount }}折</span>
-                                            <span class="condition" v-if="couponInfo.couponType == 'FULL_REDUCTION'">满{{ couponInfo.conditionAmount }}减{{ couponInfo.benefitAmount }}元</span>
-                                            <span class="condition" v-if="couponInfo.couponType == 'FULL_DISCOUNT'">满{{ couponInfo.conditionNum }}件打{{ couponInfo.benefitDiscount }}折</span>
+                                            <span class="condition" v-if="couponInfo.couponType =='CASH'">Cash coupon {{ couponInfo.benefitAmount }} yuan</span>
+                                            <span class="condition" v-if="couponInfo.couponType =='DISCOUNT'">Discount coupon {{ couponInfo.benefitDiscount }} discount</span>
+                                            <span class="condition" v-if="couponInfo.couponType =='FULL_REDUCTION'">Full {{ couponInfo.conditionAmount }} minus {{ couponInfo.benefitAmount }} yuan</span>
+                                            <span class="condition" v-if="couponInfo.couponType =='FULL_DISCOUNT'">Full {{ couponInfo.conditionNum }} discounts for {{ couponInfo.benefitDiscount }}</span>
                                         </td>
                                         <td width="43%" class="center">{{ couponInfo.rangeDesc }}</td>
                                         <td width="15%" class="center">{{ couponInfo.expireTime }}</td>
-                                        <td width="10%" class="center">{{ couponInfo.couponStatus == 'NOT_USED' ? '未使用' : '已使用' }}</td>
+                                        <td width="10%" class="center">{{ couponInfo.couponStatus =='NOT_USED'?'Not used':'Used' }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="choose-order" v-if="data !== undefined && data.length > 0">
+                        <div class="choose-order" v-if="data !== undefined && data.length> 0">
                             <div class="sui-pagination pagination-large top-pages">
                                 <ul>
                                     <li class="prev disabled"
                                         :class="{disabled: pageNo == 1}"
-                                        @click.prevent="fetchData(pageNo - 1)"
+                                        @click.prevent="fetchData(pageNo-1)"
                                     >
-                                        <a href="javascript:">«上一页</a>
+                                        <a href="javascript:">«Previous page</a>
                                     </li>
                                     <li
                                             v-for="page in pages"
@@ -95,11 +95,11 @@
                                         :class="{disabled: pageNo == pages}"
                                         @click.prevent="fetchData(pageNo + 1)"
                                     >
-                                        <a href="javascript:">下一页»</a>
+                                        <a href="javascript:">Next page»</a>
                                     </li>
                                 </ul>
                                 <div>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;共{{pages}}页&nbsp;</span>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;Total {{pages}} pages&nbsp;</span>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
 
                     <div class="like-title">
                         <div class="mt">
-                            <span class="fl"><strong>热卖单品</strong></span>
+                            <span class="fl"><strong>Best selling items</strong></span>
                         </div>
                     </div>
                     <div class="like-list">
@@ -119,7 +119,7 @@
                                         <img src="./img/_/itemlike01.png" />
                                     </div>
                                     <div class="attr">
-                                        <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                        <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -128,7 +128,7 @@
                                         </strong>
                                     </div>
                                     <div class="commit">
-                                        <i class="command">已有6人评价</i>
+                                        <i class="command">Already reviewed by 6 people</i>
                                     </div>
                                 </div>
                             </li>
@@ -138,7 +138,7 @@
                                         <img src="./img/_/itemlike02.png" />
                                     </div>
                                     <div class="attr">
-                                        <em>Apple苹果iPhone 6s/6s Plus 16G 64G 128G</em>
+                                        <em>Apple iPhone 6s/6s Plus 16G 64G 128G</em>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -147,7 +147,7 @@
                                         </strong>
                                     </div>
                                     <div class="commit">
-                                        <i class="command">已有700人评价</i>
+                                        <i class="command">700 people commented</i>
                                     </div>
                                 </div>
                             </li>
@@ -157,7 +157,7 @@
                                         <img src="./img/_/itemlike03.png" />
                                     </div>
                                     <div class="attr">
-                                        <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                        <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -166,7 +166,7 @@
                                         </strong>
                                     </div>
                                     <div class="commit">
-                                        <i class="command">已有700人评价</i>
+                                        <i class="command">700 people commented</i>
                                     </div>
                                 </div>
                             </li>
@@ -176,7 +176,7 @@
                                         <img src="./img/_/itemlike04.png" />
                                     </div>
                                     <div class="attr">
-                                        <em>DELL戴尔Ins 15MR-7528SS 15英寸 银色 笔记本</em>
+                                        <em>DELL Dell Ins 15MR-7528SS 15-inch silver notebook</em>
                                     </div>
                                     <div class="price">
                                         <strong>
@@ -185,7 +185,7 @@
                                         </strong>
                                     </div>
                                     <div class="commit">
-                                        <i class="command">已有700人评价</i>
+                                        <i class="command">700 people commented</i>
                                     </div>
                                 </div>
                             </li>
@@ -229,63 +229,63 @@
                     <div class="yui3-u-1-6">
                         <h4>支付方式</h4>
                         <ul class="unstyled">
-                            <li>货到付款</li>
-                            <li>在线支付</li>
-                            <li>分期付款</li>
-                            <li>邮局汇款</li>
-                            <li>公司转账</li>
+                            <li>Cash on delivery</li>
+                            <li>Online payment</li>
+                            <li>Instalment payment</li>
+                            <li>Post office remittance</li>
+                            <li>Company transfer</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>售后服务</h4>
+                        <h4>After-sales service</h4>
                         <ul class="unstyled">
-                            <li>售后政策</li>
-                            <li>价格保护</li>
-                            <li>退款说明</li>
-                            <li>返修/退换货</li>
-                            <li>取消订单</li>
+                            <li>After-sales policy</li>
+                            <li>Price protection</li>
+                            <li>Refund instructions</li>
+                            <li>Repair/return/exchange</li>
+                            <li>Cancel order</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>特色服务</h4>
+                        <h4>Special Services</h4>
                         <ul class="unstyled">
-                            <li>夺宝岛</li>
-                            <li>DIY装机</li>
-                            <li>延保服务</li>
-                            <li>尚品汇E卡</li>
-                            <li>尚品汇通信</li>
+                            <li>Treasure Island</li>
+                            <li>DIY installation</li>
+                            <li>Extended Warranty Service</li>
+                            <li>Shangpinhui E Card</li>
+                            <li>Shangpinhui Communication</li>
                         </ul>
                     </div>
                     <div class="yui3-u-1-6">
-                        <h4>帮助中心</h4>
+                        <h4>Help Center</h4>
                         <img src="./img/wx_cz.jpg">
                     </div>
                 </div>
             </div>
             <div class="Mod-copyright">
                 <ul class="helpLink">
-                    <li>关于我们<span class="space"></span></li>
-                    <li>联系我们<span class="space"></span></li>
-                    <li>关于我们<span class="space"></span></li>
-                    <li>商家入驻<span class="space"></span></li>
-                    <li>营销中心<span class="space"></span></li>
-                    <li>友情链接<span class="space"></span></li>
-                    <li>关于我们<span class="space"></span></li>
-                    <li>营销中心<span class="space"></span></li>
-                    <li>友情链接<span class="space"></span></li>
-                    <li>关于我们</li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Contact us<span class="space"></span></li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Businesses settled in<span class="space"></span></li>
+                    <li>Marketing Center<span class="space"></span></li>
+                    <li>Friendly link<span class="space"></span></li>
+                    <li>About us<span class="space"></span></li>
+                    <li>Marketing Center<span class="space"></span></li>
+                    <li>Friendly link<span class="space"></span></li>
+                    <li>About us</li>
                 </ul>
-                <p>地址：北京市昌平区宏福科技园综合楼6层</p>
-                <p>京ICP备19006430号</p>
+                <p>Address: 6th Floor, Comprehensive Building, Hongfu Science Park, Changping District, Beijing</p>
+                <p>Beijing ICP No. 19006430</p>
             </div>
         </div>
     </div>
 </div>
-<!--页面底部END-->
+<!--Bottom of the pageEND-->
 <script src="/js/api/activity.js"></script>
 <script th:inline="javascript">
     var item = new Vue({
-        el: '#account',
+        el:'#account',
 
         data: {
             pageNo: 1,
@@ -324,7 +324,7 @@
     // }
     window.page.page_item_type = "";
     window.page.page_item = ""
-    window.page.sourceType = "query"; //页面对象id
+    window.page.sourceType = "query"; //page object id
 </script>
 <script src="/hm.js"></script>
 </body>

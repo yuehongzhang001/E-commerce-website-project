@@ -1,20 +1,20 @@
 // window.onload = function() {
-// 	cartListController.setup();
-// }
+// cartListController.setup();
+//}
 
-/*商品分类*/
+/*Categories*/
 $(function() {
-	$('.all-sort-list2 > .item').hover(function() {
-		//父类分类列表容器的高度
+	$('.all-sort-list2> .item').hover(function() {
+//The height of the parent category list container
 
 		$(this).addClass('hover');
-		$(this).children('.item-list').css('display', 'block');
+		$(this).children('.item-list').css('display','block');
 	}, function() {
 		$(this).removeClass('hover');
-		$(this).children('.item-list').css('display', 'none');
+		$(this).children('.item-list').css('display','none');
 	});
 
-	$('.item > .item-list > .close').click(function() {
+	$('.item> .item-list> .close').click(function() {
 		$(this).parent().parent().removeClass('hover');
 		$(this).parent().hide();
 	});

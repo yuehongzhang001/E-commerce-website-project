@@ -6,21 +6,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// 总的数据
+// total data
 @Data
 public class SearchResponseVo implements Serializable {
 
-    //品牌 此时vo对象中的id字段保留（不用写） name就是“品牌” value: [{id:100,name:华为,logo:xxx},{id:101,name:小米,log:yyy}]
+    //The id field in the vo object of the brand is reserved at this time (no need to write) name is "brand" value: [{id:100,name:Huawei,logo:xxx},{id:101,name:millet,log:yyy }]
     private List<SearchResponseTmVo> trademarkList;
-    //所有商品的顶头显示的筛选属性
+    //Filter attributes displayed at the top of all products
     private List<SearchResponseAttrVo> attrsList = new ArrayList<>();
 
-    //检索出来的商品信息
+    //Retrieved product information
     private List<Goods> goodsList = new ArrayList<>();
 
-    private Long total;//总记录数
-    private Integer pageSize;//每页显示的内容
-    private Integer pageNo;//当前页面
+    private Long total;//Total number of records
+    private Integer pageSize;//The content displayed on each page
+    private Integer pageNo;//Current page
     private Long totalPages;
 
 }

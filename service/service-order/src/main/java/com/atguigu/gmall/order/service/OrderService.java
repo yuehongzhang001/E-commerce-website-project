@@ -8,22 +8,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface OrderService extends IService<OrderInfo> {
 
-    //  保存订单：
+    // Save the order:
     Long saveOrderInfo(OrderInfo orderInfo);
 
     /**
-     * 获取交易号
+     * Get transaction number
      * @param userId
      * @return
      */
     String getTradeNo(String userId);
 
     /**
-     * 比较交易号
+     * Compare transaction number
      * @param tradeNo
      * @param userId
      * @return
@@ -31,13 +31,13 @@ public interface OrderService extends IService<OrderInfo> {
     Boolean checkTradeNo(String tradeNo,String userId);
 
     /**
-     * 删除交易号
+     * Delete transaction number
      * @param userId
      */
     void deleteTradeNo(String userId);
 
     /**
-     * 验证库存
+     * Verify inventory
      * @param skuId
      * @param skuNum
      * @return
@@ -45,40 +45,40 @@ public interface OrderService extends IService<OrderInfo> {
     boolean checkStock(Long skuId, Integer skuNum);
 
     /**
-     * 修改订单状态！
+     * Modify order status!
      * @param orderId
      */
     void execExpiredOrder(Long orderId);
 
     /**
-     * 根据订单Id 更新订单状态，订单进度状态
+     * Update the order status and order progress status according to the order ID
      * @param orderId
      * @param processStatus
      */
     void updateOrderStatus(Long orderId, ProcessStatus processStatus);
 
     /**
-     * 根据订单Id 查询订单信息
+     * Query order information according to order Id
      * @param orderId
      * @return
      */
     OrderInfo getOrderInfo(Long orderId);
 
     /**
-     * 根据订单Id 发送消息给库存，并修改订单状态！
+     * Send a message to the inventory according to the order Id, and modify the order status!
      * @param orderId
      */
     void sendOrderStatus(Long orderId);
 
     /**
-     * 将orderInfo 数据变为Map
+     * Change orderInfo data to Map
      * @param orderInfo
      * @return
      */
     Map initWareOrder(OrderInfo orderInfo);
 
     /**
-     * 拆单方法
+     * Splitting method
      * @param orderId
      * @param wareSkuMap
      * @return
@@ -86,9 +86,9 @@ public interface OrderService extends IService<OrderInfo> {
     List<OrderInfo> orderSplit(String orderId, String wareSkuMap);
 
     /**
-     * 关闭过期订单
+     * Close expired orders
      * @param orderId
-     * @param flag 是否需要关闭paymentInfo
+     * @param flag whether paymentInfo needs to be closed
      */
     void execExpiredOrder(Long orderId, String flag);
 }

@@ -14,18 +14,17 @@ import lombok.Data;
  *
  */
 @Data
-@ApiModel(description = "平台属性值")
+@ApiModel(description = "Platform attribute value")
 @TableName("base_attr_value")
 public class BaseAttrValue extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "属性值名称")
+	@ApiModelProperty(value = "Property value name")
 	@TableField("value_name")
 	private String valueName;
 
-	@ApiModelProperty(value = "属性id")
+	@ApiModelProperty(value = "Property id")
 	@TableField("attr_id")
 	private Long attrId;
 }
-

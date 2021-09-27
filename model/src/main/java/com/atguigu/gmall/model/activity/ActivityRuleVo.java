@@ -8,21 +8,21 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@ApiModel(description = "活动规则")
+@ApiModel(description = "Activity Rules")
 public class ActivityRuleVo implements Serializable {
-   
+
    private static final long serialVersionUID = 1L;
 
-   @ApiModelProperty(value = "活动id")
+   @ApiModelProperty(value = "activity id")
    private Long activityId;
-   
-   @ApiModelProperty(value = "活动规则list")
+
+   @ApiModelProperty(value = "active rule list")
    private List<ActivityRule> activityRuleList;
 
-   @ApiModelProperty(value = "活动参与商品list")
+   @ApiModelProperty(value = "Activity participating product list")
    private List<ActivitySku> activitySkuList;
 
-   @ApiModelProperty(value = "优惠券id列表")
+   @ApiModelProperty(value = "coupon id list")
    private List<Long> couponIdList;
 
 }

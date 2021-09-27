@@ -11,37 +11,37 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("api/list")
 public class ListApiController {
 
-    //  引入客户端
+    // Introduce the client
     @Autowired
     private ElasticsearchRestTemplate restTemplate;
-    //  ElasticsearchRestTemplate 使用RestHighLevelClient
+    // ElasticsearchRestTemplate uses RestHighLevelClient
 
     @Autowired
     private SearchService searchService;
 
     @GetMapping("inner/createIndex")
     public Result createIndex(){
-        //  创建索引库，mapping 映射
+        // Create index library, mapping mapping
         restTemplate.createIndex(Goods.class);
         restTemplate.putMapping(Goods.class);
-        //  返回
+        //  return
         return Result.ok();
     }
 
-    //  商品的上架
+    // Commodity on the shelf
     @GetMapping("inner/upperGoods/{skuId}")
     public Result upperGoods(@PathVariable Long skuId){
         searchService.upperGoods(skuId);
         return Result.ok();
     }
 
-    //  商品的下架
+    // Commodity removal
     @GetMapping("inner/lowerGoods/{skuId}")
     public Result lowerGoods(@PathVariable Long skuId){
         searchService.lowerGoods(skuId);
@@ -50,18 +50,18 @@ public class ListApiController {
 
     @GetMapping("inner/incrHotScore/{skuId}")
     public Result incrHotScore(@PathVariable("skuId") Long skuId) {
-        // 调用服务层
+        // Call the service layer
         searchService.incrHotScore(skuId);
         return Result.ok();
     }
 
-    //  定义检索结果的URL
-    //  @RequestBody：将Json 数据转换为Java 对象！
-    //  用户在访问检索的url: http://list.gmall.com/list.html?category3Id=61
-    //  web-all 如何接收用户传递的数据
+    // Define the URL of the search result
+    // @RequestBody: Convert Json data into Java objects!
+    // The user is visiting the retrieved url: http://list.gmall.com/list.html?category3Id=61
+    // How does web-all receive the data passed by the user
     @PostMapping
     public Result list(@RequestBody SearchParam searchParam){
-        //  调用服务层方法
+        // Call the service layer method
         SearchResponseVo responseVo = searchService.search(searchParam);
         return Result.ok(responseVo);
     }

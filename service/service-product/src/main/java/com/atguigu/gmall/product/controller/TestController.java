@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 15:34:27
  */
 @RestController
@@ -18,7 +18,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    //  控制器对应的方法
+    // The method corresponding to the controller
     @GetMapping("testLock")
     public void testLock(){
         try {
@@ -28,14 +28,14 @@ public class TestController {
         }
     }
 
-    //  读锁
+    // read lock
     @GetMapping("read")
     public Result read(){
         String msg = testService.readLock();
         return Result.ok(msg);
     }
 
-    //  写锁
+    // write lock
     @GetMapping("write")
     public Result write(){
         String msg = testService.writeLock();

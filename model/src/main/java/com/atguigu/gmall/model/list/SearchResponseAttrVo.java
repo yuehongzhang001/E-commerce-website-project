@@ -6,15 +6,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// 平台属性相关对象
+// Platform attribute related objects
 @Data
 public class SearchResponseAttrVo implements Serializable {
 
-    // 平台属性Id
+    // Platform attribute Id
     private Long attrId;//1
-    //当前属性值的集合
+    //The collection of current attribute values
     private List<String> attrValueList = new ArrayList<>();
-    //属性名称
-    private String attrName;//网络制式，分类
+    //Attribute name
+    private String attrName;//Network standard, classification
 }
-

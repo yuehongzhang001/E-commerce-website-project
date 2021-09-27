@@ -31,7 +31,7 @@
             <artifactId>service-payment-client</artifactId>
             <version>1.0</version>
         </dependency>
-        <!--rabbitmq消息队列-->
+        <!--rabbitmq-->
         <dependency>
             <groupId>com.atguigu.gmall</groupId>
             <artifactId>rabbit-util</artifactId>

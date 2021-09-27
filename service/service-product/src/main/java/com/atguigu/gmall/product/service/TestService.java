@@ -1,23 +1,23 @@
 package com.atguigu.gmall.product.service;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 15:35:38
  */
 public interface TestService {
     /**
-     * 测试本地锁
+     * Test local lock
      */
     void testLock() throws InterruptedException;
 
     /**
-     * 读锁
+     * Read lock
      * @return
      */
     String readLock();
 
     /**
-     * 写锁
+     * Write lock
      * @return
      */
     String writeLock();

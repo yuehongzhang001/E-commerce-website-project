@@ -8,12 +8,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Configuration
 public class ThreadPoolConfig {
 
-    //  创建了一个线程池并将注入到spring 容器
+    // Created a thread pool and injected it into the spring container
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(){
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(

@@ -8,13 +8,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(description = "商品一级分类")
+@ApiModel(description = "Product first-level classification")
 @TableName("base_category1")
 public class BaseCategory1 extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "分类名称")
+    @ApiModelProperty(value = "Category Name")
     @TableField("name")
     private String name;
 

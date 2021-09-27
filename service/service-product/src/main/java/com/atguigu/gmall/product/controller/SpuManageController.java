@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-12 11:37:48
  */
 @RestController
@@ -23,52 +23,52 @@ public class SpuManageController {
 
     @Autowired
     private ManageService manageService;
-    //  http://api.gmall.com/admin/product/{page}/{limit}?category3Id=61 {"category3Id":61}
-    //  @GetMapping("{page}/{limit}?category3Id=61")    //  不用！ HttpServletRequest request String category3Id SpuInfo spuInfo
-    //  springmvc 有个知识点，对象方式传值！
-    //  获取三级分类Id 有n种方式！
+    // http://api.gmall.com/admin/product/{page}/{limit}?category3Id=61 {"category3Id":61}
+    // @GetMapping("{page}/{limit}?category3Id=61") // No need! HttpServletRequest request String category3Id SpuInfo spuInfo
+    // springmvc has a point of knowledge, passing values ​​by object!
+    // There are n ways to get the three-level classification Id!
     @GetMapping("{page}/{limit}")
     public Result getSpuInfoList(@PathVariable Long page,
                                  @PathVariable Long limit,
                                  SpuInfo spuInfo){
-        //  分页查询！
+        //  Paging query!
         Page<SpuInfo> spuInfoPage = new Page<>(page,limit);
-        //  调用服务层方法
-        IPage<SpuInfo> iPage =  manageService.getSpuInfoList(spuInfoPage,spuInfo);
+        // Call the service layer method
+        IPage<SpuInfo> iPage = manageService.getSpuInfoList(spuInfoPage,spuInfo);
 
         return Result.ok(iPage);
     }
 
-    //  http://api.gmall.com/admin/product/baseSaleAttrList
+    // http://api.gmall.com/admin/product/baseSaleAttrList
     @GetMapping("baseSaleAttrList")
     public Result baseSaleAttrList(){
-        //  调用服务层方法获取所有的销售属性列表
+        // Call the service layer method to get a list of all sales attributes
         List<BaseSaleAttr> baseSaleAttrList = manageService.getBaseSaleAttrList();
         return Result.ok(baseSaleAttrList);
     }
 
-    //  http://api.gmall.com/admin/product/saveSpuInfo
-    //  获取到前端传递过来的数据 Json ---> JavaObject
+    // http://api.gmall.com/admin/product/saveSpuInfo
+    // Get the data passed to the front end Json ---> JavaObject
     @PostMapping("saveSpuInfo")
     public Result saveSpuInfo(@RequestBody SpuInfo spuInfo){
-        //  调用服务层方法
+        // Call the service layer method
         manageService.saveSpuInfo(spuInfo);
-        //  返回
+        //  return
         return Result.ok();
     }
 
-    //  http://api.gmall.com/admin/product/spuImageList/29
+    // http://api.gmall.com/admin/product/spuImageList/29
     @GetMapping("spuImageList/{spuId}")
     public Result getSpuImageList(@PathVariable Long spuId){
-        //  调用服务层方法
+        // Call the service layer method
         List<SpuImage> spuImageList = manageService.getSpuImageList(spuId);
         return Result.ok(spuImageList);
     }
 
-    //  http://api.gmall.com/admin/product/spuSaleAttrList/29
+    // http://api.gmall.com/admin/product/spuSaleAttrList/29
     @GetMapping("spuSaleAttrList/{spuId}")
     public Result getSpuSaleAttrList(@PathVariable Long spuId){
-        //  调用服务层方法
+        // Call the service layer method
         List<SpuSaleAttr> spuSaleAttrList = manageService.getSpuSaleAttrList(spuId);
         return Result.ok(spuSaleAttrList);
     }

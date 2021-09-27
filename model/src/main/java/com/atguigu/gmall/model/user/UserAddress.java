@@ -8,31 +8,30 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(description = "用户地址")
+@ApiModel(description = "user address")
 @TableName("user_address")
 public class UserAddress extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户地址")
+    @ApiModelProperty(value = "user address")
     @TableField("user_address")
     private String userAddress;
 
-    @ApiModelProperty(value = "用户id")
+    @ApiModelProperty(value = "user id")
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "收件人")
+    @ApiModelProperty(value = "Recipient")
     @TableField("consignee")
     private String consignee;
 
-    @ApiModelProperty(value = "联系方式")
+    @ApiModelProperty(value = "Contact Information")
     @TableField("phone_num")
     private String phoneNum;
 
-    @ApiModelProperty(value = "是否是默认")
+    @ApiModelProperty(value = "Is it the default")
     @TableField("is_default")
     private String isDefault;
 
 }
-

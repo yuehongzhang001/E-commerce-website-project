@@ -1,10 +1,10 @@
 package com.atguigu.gmall.model.enums;
 
 public enum PaymentWay {
-    ONLINE("在线支付"),
-    OUTLINE("货到付款" );
+    ONLINE("Online Payment"),
+    OUTLINE("Cash on delivery" );
 
-    private String comment ;
+    private String comment;
 
 
     PaymentWay(String comment ){

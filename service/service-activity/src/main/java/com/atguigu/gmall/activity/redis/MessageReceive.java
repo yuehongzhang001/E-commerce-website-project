@@ -7,23 +7,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageReceive {
 
-    /**接收消息的方法*/
+    /**Method of receiving messages*/
     public void receiveMessage(String message){
-        System.out.println("----------收到消息了message："+message);
+        System.out.println("----------Receive a message message: "+message);
         if(!StringUtils.isEmpty(message)) {
-            /*
-             消息格式
-                skuId:0 表示没有商品
-                skuId:1 表示有商品
+             /*
+              Message format
+                 skuId:0 means no products
+                 skuId:1 means there is a product
 
-                发送的消息：46:1 实际上是带引号的！""46:1""
-             */
+                 Message sent: 46:1 is actually quoted! ""46:1""
+              */
             message = message.replaceAll("\"","");
             String[] split = StringUtils.split(message, ":");
-//            String[] split = message.split(":");
+// String[] split = message.split(":");
 
             if (split == null || split.length == 2) {
-                //  put(skuId,status);
+                // put(skuId,status);
                 CacheHelper.put(split[0], split[1]);
             }
         }

@@ -17,7 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  * @date 2021-4-16 15:36:08
  */
 @Service
@@ -31,32 +31,32 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public void testLock() throws InterruptedException {
-         /*
-        1.  在缓存中存储一个num 初始值为 0
-        2.  利用缓存的StringRedisTemplate 获取到的当前的num 值
-        3.  如果num 不为空，则需要对当前值 进行 +1 操作,写回缓存
-        4.  如果num 为空，则返回即可！
+       /*
+        1. Store a num in the cache with an initial value of 0
+        2. The current num value obtained by using the cached StringRedisTemplate
+        3. If num is not empty, you need to +1 the current value and write it back to the cache
+        4. If num is empty, just return!
          */
         RLock lock = redissonClient.getLock("lock");
-        //  调用方法
-        //  lock.lock(10,TimeUnit.SECONDS);
-          boolean res = lock.tryLock(100, 10, TimeUnit.SECONDS);
+        // call method
+        // lock.lock(10,TimeUnit.SECONDS);
+        boolean res = lock.tryLock(100, 10, TimeUnit.SECONDS);
         if (res){
             try {
-                //  上锁成功！
-                //  如果flag = true: 表示获取到锁！ 执行业务逻辑！
-                //  利用缓存的StringRedisTemplate 获取到的当前的num 值
+                // Successfully locked!
+                // If flag = true: it means the lock is acquired! Execute business logic!
+                // The current num value obtained by using the cached StringRedisTemplate
                 String num = redisTemplate.opsForValue().get("num");
-                //  判断
+                //  judge
                 if(StringUtils.isEmpty(num)){
                     return;
                 }
-                //  如果num 不为空，则需要对当前值 进行 +1 操作,写回缓存
+                // If num is not empty, you need to +1 the current value and write it back to the cache
                 int numValue = Integer.parseInt(num);
-                //  写回缓存
+                // write back to cache
                 redisTemplate.opsForValue().set("num",String.valueOf(++numValue));
             } finally {
-                //  解锁
+                // unlock
                 lock.unlock();
             }
         }
@@ -64,93 +64,93 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public String readLock() {
-        //  创建对象
+        // Create object
         RReadWriteLock rwlock = redissonClient.getReadWriteLock("anyRWLock");
-        //  上锁： 10 秒钟自动解锁！
+        // Lock: Automatically unlock in 10 seconds!
         rwlock.readLock().lock(10,TimeUnit.SECONDS);
-        //  从缓存中读取数据
+        // Read data from the cache
         String msg = redisTemplate.opsForValue().get("msg");
-        //  返回读取到的数据
+        // Return the data read
         return msg;
     }
 
     @Override
     public String writeLock() {
-        //  创建对象
+        // Create object
         RReadWriteLock rwlock = redissonClient.getReadWriteLock("anyRWLock");
-        //  上锁： 10 秒钟自动解锁！
+        // Lock: Automatically unlock in 10 seconds!
         rwlock.writeLock().lock(10,TimeUnit.SECONDS);
-        //  直接将内容写入缓存
+        // Write the content directly to the cache
         String uuid = UUID.randomUUID().toString();
 
         redisTemplate.opsForValue().set("msg",uuid);
-        //  返回数据
-        return "写入完成"+uuid;
+        // return data
+        return "write complete"+uuid;
     }
 
     /*
-    1.  在缓存中存储一个num 初始值为 0
-    2.  利用缓存的StringRedisTemplate 获取到的当前的num 值
-    3.  如果num 不为空，则需要对当前值 进行 +1 操作,写回缓存
-    4.  如果num 为空，则返回即可！
+    1. Store a num in the cache with an initial value of 0
+    2. The current num value obtained by using the cached StringRedisTemplate
+    3. If num is not empty, you need to +1 the current value and write it back to the cache
+    4. If num is empty, just return!
     http://doc.redisfans.com/
-    String ：
-    List ：
-    Hash：
-    Set ：
-    ZSet ：
+    String:
+    List:
+    Hash:
+    Set:
+    ZSet:
      */
-//    @Override
-//    public void testLock() {
+// @Override
+// public void testLock() {
 //
-//        //  使用setnx 命令： setnx lock ok
-//        //  Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", "ok");
-//        //  使用setex
-//        //  Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", "ok",3L, TimeUnit.SECONDS);
-//        //  使用uuId 防止误删锁！
-//        String uuid = UUID.randomUUID().toString();
-//        Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", uuid,3L, TimeUnit.SECONDS);
+// // Use the setnx command: setnx lock ok
+// // Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", "ok");
+// // use setex
+// // Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", "ok",3L, TimeUnit.SECONDS);
+// // Use uuId to prevent accidental deletion of locks!
+// String uuid = UUID.randomUUID().toString();
+// Boolean flag = redisTemplate.opsForValue().setIfAbsent("lock", uuid,3L, TimeUnit.SECONDS);
 //
-//        //  判断
-//        if(flag){
-//            //  如果flag = true: 表示获取到锁！ 执行业务逻辑！
-//            //  利用缓存的StringRedisTemplate 获取到的当前的num 值
-//            String num = redisTemplate.opsForValue().get("num");
-//            //  判断
-//            if(StringUtils.isEmpty(num)){
-//                return;
-//            }
-//            //  如果num 不为空，则需要对当前值 进行 +1 操作,写回缓存
-//            int numValue = Integer.parseInt(num);
-//            //  写回缓存
-//            redisTemplate.opsForValue().set("num",String.valueOf(++numValue));
+//        //  judge
+// if(flag){
+// // If flag = true: it means the lock is acquired! Execute business logic!
+// // The current num value obtained by using the cached StringRedisTemplate
+// String num = redisTemplate.opsForValue().get("num");
+//            //  judge
+// if(StringUtils.isEmpty(num)){
+// return;
+//}
+// // If num is not empty, you need to +1 the current value and write it back to the cache
+// int numValue = Integer.parseInt(num);
+// // write back to cache
+// redisTemplate.opsForValue().set("num",String.valueOf(++numValue));
 //
-//            //  如果缓存中的uuid 与 当前uuid 一致！则删除，否则不删除！
-//            //            if (redisTemplate.opsForValue().get("lock").equals(uuid)){
-//            //                //  释放锁 del key index1
-//            //                redisTemplate.delete("lock");
-//            //            }
+// // If the uuid in the cache is consistent with the current uuid! Delete it, otherwise don't delete it!
+// // if (redisTemplate.opsForValue().get("lock").equals(uuid)){
+// // // Release the lock del key index1
+// // redisTemplate.delete("lock");
+// //}
 //
-//            //  定义一个LUA 脚本：
-//            String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+// // Define a LUA script:
+// String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 //
-//            //  创建对象
-//            DefaultRedisScript<Long> redisScript = new DefaultRedisScript();
-//            //  设置lua脚本
-//            redisScript.setScriptText(script);
-//            redisScript.setResultType(Long.class);
-//            //  redis 调用LUA 脚本
-//            redisTemplate.execute(redisScript, Arrays.asList("lock"),uuid);
+// // Create object
+// DefaultRedisScript<Long> redisScript = new DefaultRedisScript();
+// // Set up lua script
+// redisScript.setScriptText(script);
+// redisScript.setResultType(Long.class);
+// // redis calls the LUA script
+// redisTemplate.execute(redisScript, Arrays.asList("lock"),uuid);
 //
-//        }else {
-//            //  没有获取到锁！
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            //  自旋：
-//            testLock();
-//        }
-//    }
+// }else {
+// // The lock was not acquired!
+// try {
+// Thread.sleep(500);
+//} catch (InterruptedException e) {
+// e.printStackTrace();
+//}
+// // Spin:
+// testLock();
+//}
+//}
 }

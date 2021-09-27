@@ -7,13 +7,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public class CompletableFutureDemo {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        //  创建线程池
+        // Create thread pool
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
                 2,
                 5,
@@ -22,11 +22,11 @@ public class CompletableFutureDemo {
                 new ArrayBlockingQueue<>(3)
         );
 
-        //  futureA
-        // 线程1执行返回的结果：hello
+        // futureA
+        // Thread 1 execution return result: hello
         CompletableFuture<String> futureA = CompletableFuture.supplyAsync(() -> "hello");
 
-        //  Consumer
+        // Consumer
         // hello futureB
         CompletableFuture<Void> futureB = futureA.thenAcceptAsync((t) -> {
             delaySec(3);
@@ -43,12 +43,12 @@ public class CompletableFutureDemo {
 
 
     }
-    //  打印方法
+    // Printing method
     private static void printCurrTime(String s) {
         System.out.println(s);
     }
 
-    //  睡眠方法
+    // sleep method
     private static void delaySec(int i) {
         try {
             Thread.sleep(i*1000);

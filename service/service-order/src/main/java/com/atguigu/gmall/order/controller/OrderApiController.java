@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @RestController
 @RequestMapping("api/order")
@@ -43,25 +43,25 @@ public class OrderApiController {
     @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
 
-    //  编写一个远程调用地址！ api/order/auth/trade
+    // Write a remote call address! api/order/auth/trade
     @GetMapping("auth/trade")
     public Result trade(HttpServletRequest request){
-        //  获取用户Id
+        // Get user ID
         String userId = AuthContextHolder.getUserId(request);
 
         HashMap<String, Object> map = new HashMap<>();
-        //  远程调用才能获取到收货地址列表
+        // Remote call to get the list of receiving addresses
         List<UserAddress> userAddressList = userFeignClient.findUserAddressListByUserId(Long.parseLong(userId));
-        //  获取送货清单：
+        // Get the shipping list:
         List<CartInfo> cartCheckedList = cartFeignClient.getCartCheckedList(userId);
-        //  声明一个订单明细集合
+        // Declare a collection of order details
         List<OrderDetail> detailArrayList = new ArrayList<>();
         HashSet<Object> objects = new HashSet<>();
         objects.add("a");
 
-        //  int totalNum = 0;
-        //  cartCheckedList 集合数据赋值给订单明细集合
-        for (CartInfo cartInfo : cartCheckedList) {
+        // int totalNum = 0;
+        // The cartCheckedList collection data is assigned to the order detail collection
+        for (CartInfo cartInfo: cartCheckedList) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setSkuId(cartInfo.getSkuId());
             orderDetail.setSkuName(cartInfo.getSkuName());
@@ -70,96 +70,96 @@ public class OrderApiController {
             orderDetail.setOrderPrice(cartInfo.getSkuPrice());
             orderDetail.setCreateTime(new Date());
             detailArrayList.add(orderDetail);
-            //  totalNum+=cartInfo.getSkuNum();
+            // totalNum+=cartInfo.getSkuNum();
         }
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setOrderDetailList(detailArrayList);
         orderInfo.sumTotalAmount();
         map.put("totalAmount",orderInfo.getTotalAmount());
-        //  件数：第一种：就看集合的长度 第二种：计算每个skuId 的总件数
+        // Number of pieces: The first type: It depends on the length of the collection. The second type: Calculate the total number of pieces for each skuId
         map.put("totalNum",detailArrayList.size());
         map.put("detailArrayList",detailArrayList);
         map.put("userAddressList",userAddressList);
 
-        //  获取流水号，并存储！
+        // Get the serial number and store it!
         String tradeNo = orderService.getTradeNo(userId);
         map.put("tradeNo",tradeNo);
         return Result.ok(map);
     }
 
-    //  保存订单的控制器
-    //  前端页面传递的是Json 数据 ，后台使用@RequestBody
-    //  http://api.gmall.com/api/order/auth/submitOrder?tradeNo=tyuiopasdfg32456
+    // The controller that saves the order
+    // The front-end page transmits Json data, and the back-end uses @RequestBody
+    // http://api.gmall.com/api/order/auth/submitOrder?tradeNo=tyuiopasdfg32456
     @PostMapping("auth/submitOrder")
     public Result submitOrder(@RequestBody OrderInfo orderInfo,HttpServletRequest request){
-        //  在实现类中没有设置userId
+        // UserId is not set in the implementation class
         String userId = AuthContextHolder.getUserId(request);
         orderInfo.setUserId(Long.parseLong(userId));
-        //  获取页面传递的交易号
+        // Get the transaction number passed on the page
         String tradeNo = request.getParameter("tradeNo");
-        //  调用比较方法
+        // call the comparison method
         Boolean result = orderService.checkTradeNo(tradeNo, userId);
-        //  判断
-        //        if(result){
-        //            //  比较成功！可以提交
-        //        }else{
-        //            //  不能提交了，return！
-        //        }
-        //  当比较失败时！
+        //  judge
+        // if(result){
+        // // More successful! Can submit
+        // }else{
+        // // Can't submit, return!
+        //}
+        // When the comparison fails!
         if(!result){
-            return Result.fail().message("不能无刷新回退提交订单!");
+            return Result.fail().message("Cannot submit an order without refreshing!");
         }
-        //  删除
+        //  delete
         orderService.deleteTradeNo(userId);
 
-        //  可以使用多线程：
+        // You can use multiple threads:
         List<CompletableFuture> futureList = new ArrayList<>();
-        //  存储错误信息的集合
+        // Store the collection of error messages
         List<String> errorList = new ArrayList<>();
-        //  远程调用
+        // remote call
         List<OrderDetail> orderDetailList = orderInfo.getOrderDetailList();
-        for (OrderDetail orderDetail : orderDetailList) {
-            //  开线程CompletableFuture
+        for (OrderDetail orderDetail: orderDetailList) {
+            // open thread CompletableFuture
             CompletableFuture<Void> stockCompletableFuture = CompletableFuture.runAsync(() -> {
                 boolean flag = orderService.checkStock(orderDetail.getSkuId(), orderDetail.getSkuNum());
                 if (!flag) {
-                    //  库存不足！
-                    //  return Result.fail().message(orderDetail.getSkuName()+"库存不足!");
-                    errorList.add(orderDetail.getSkuName() + "库存不足!");
+                    //  Inventory shortage!
+                    // return Result.fail().message(orderDetail.getSkuName()+"Insufficient inventory!");
+                    errorList.add(orderDetail.getSkuName() + "Insufficient inventory!");
                 }
             },threadPoolExecutor);
 
-            //  添加到这个集合
+            // add to this collection
             futureList.add(stockCompletableFuture);
 
             CompletableFuture<Void> priceCompletableFuture = CompletableFuture.runAsync(() -> {
-                //  订单价格
+                // order price
                 BigDecimal orderPrice = orderDetail.getOrderPrice();
-                //  实时价格：   @GmallCache
+                // Real-time price: @GmallCache
                 BigDecimal skuPrice = productFeignClient.getSkuPrice(orderDetail.getSkuId());
-                //  判断
+                //  judge
                 if (orderPrice.compareTo(skuPrice)!=0){
-                    //  价格有变动，需要更新价格：
+                    // The price has changed, the price needs to be updated:
                     cartFeignClient.loadCartCache(userId);
-                    errorList.add(orderDetail.getSkuName()+"价格有变动!");
+                    errorList.add(orderDetail.getSkuName()+"The price has changed!");
                 }
             },threadPoolExecutor);
-            //  添加到这个集合
+            // add to this collection
             futureList.add(priceCompletableFuture);
         }
 
-        //  所有数据结果：errorList ； futureList 执行异步编排的集合！
-        //  CompletableFuture [] com = new CompletableFuture[30];
-        //  多任务组合
+        // All data results: errorList; futureList executes a collection of asynchronous orchestration!
+        // CompletableFuture [] com = new CompletableFuture[30];
+        // Multi-task combination
         CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()])).join();
-        //  判断errorList 中是否有数据！
+        // Determine whether there is data in errorList!
         if (errorList.size()>0){
-            //  return Result.fail().message(orderDetail.getSkuName()+"价格有变动!",orderDetail.getSkuName()+"库存不走");
+            // return Result.fail().message(orderDetail.getSkuName()+"the price has changed!",orderDetail.getSkuName()+"the inventory is not moving");
             return Result.fail().message(StringUtils.join(errorList,","));
         }
-        //  调用服务层方法
+        // Call the service layer method
         Long orderId = orderService.saveOrderInfo(orderInfo);
-        //  返回订单Id
+        // Return order Id
         return Result.ok(orderId);
     }
 
@@ -168,35 +168,35 @@ public class OrderApiController {
         return orderService.getOrderInfo(orderId);
     }
 
-    //  拆单：
-    //  http://localhost:8204/api/order/orderSplit?orderId=xxx&wareSkuMap=xxx
+    // Split the order:
+    // http://localhost:8204/api/order/orderSplit?orderId=xxx&wareSkuMap=xxx
     @PostMapping("orderSplit")
     public String orderSplit(HttpServletRequest request){
-        //  先获取传递过来的参数
+        // Get the passed parameters first
         String orderId = request.getParameter("orderId");
         String wareSkuMap = request.getParameter("wareSkuMap");
 
-        //  拆单需要根据这个两个参数进行拆单！
+        // Order splitting needs to be split according to these two parameters!
         List<OrderInfo> orderInfoList = orderService.orderSplit(orderId,wareSkuMap);
 
-        //  声明一个map 获取数据
+        // Declare a map to get data
         List<Map> maps = new ArrayList<>();
-        //  需要循环遍历
-        for (OrderInfo orderInfo : orderInfoList) {
-            //  orderInfo 转换为Map
+        // Need to loop through
+        for (OrderInfo orderInfo: orderInfoList) {
+            // orderInfo is converted to Map
             Map map = orderService.initWareOrder(orderInfo);
             maps.add(map);
         }
-        //  返回数据
+        // return data
         return JSON.toJSONString(maps);
 
     }
-    //  秒杀订单数据接口
+    // Spike order data interface
     @PostMapping("inner/seckill/submitOrder")
     public Long submitOrder(@RequestBody OrderInfo orderInfo){
-        //  调用服务层方法：
+        // Call the service layer method:
         Long orderId = orderService.saveOrderInfo(orderInfo);
-        //  返回订单Id
+        // Return order Id
         return orderId;
     }
 

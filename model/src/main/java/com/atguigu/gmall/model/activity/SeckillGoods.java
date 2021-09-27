@@ -14,9 +14,9 @@ import java.util.Date;
 @ApiModel(description = "SeckillGoods")
 @TableName("seckill_goods")
 public class SeckillGoods extends BaseEntity {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@ApiModelProperty(value = "spu ID")
 	@TableField("spu_id")
 	private Long spuId;
@@ -25,53 +25,52 @@ public class SeckillGoods extends BaseEntity {
 	@TableField("sku_id")
 	private Long skuId;
 
-	@ApiModelProperty(value = "标题")
+	@ApiModelProperty(value = "Title")
 	@TableField("sku_name")
 	private String skuName;
 
-	@ApiModelProperty(value = "商品图片")
+	@ApiModelProperty(value = "product image")
 	@TableField("sku_default_img")
 	private String skuDefaultImg;
 
-	@ApiModelProperty(value = "原价格")
+	@ApiModelProperty(value = "original price")
 	@TableField("price")
 	private BigDecimal price;
 
-	@ApiModelProperty(value = "秒杀价格")
+	@ApiModelProperty(value = "seckill price")
 	@TableField("cost_price")
 	private BigDecimal costPrice;
 
-	@ApiModelProperty(value = "添加日期")
+	@ApiModelProperty(value = "Add Date")
 	@TableField("create_time")
 	private Date createTime;
 
-	@ApiModelProperty(value = "审核日期")
+	@ApiModelProperty(value = "review date")
 	@TableField("check_time")
 	private Date checkTime;
 
-	@ApiModelProperty(value = "审核状态")
+	@ApiModelProperty(value = "Audit Status")
 	@TableField("status")
 	private String status;
 
-	@ApiModelProperty(value = "开始时间")
+	@ApiModelProperty(value = "start time")
 	@TableField("start_time")
 	private Date startTime;
 
-	@ApiModelProperty(value = "结束时间")
+	@ApiModelProperty(value = "End Time")
 	@TableField("end_time")
 	private Date endTime;
 
-	@ApiModelProperty(value = "秒杀商品数")
+	@ApiModelProperty(value = "Number of products in seconds")
 	@TableField("num")
 	private Integer num;
 
-	@ApiModelProperty(value = "剩余库存数")
+	@ApiModelProperty(value = "Remaining inventory number")
 	@TableField("stock_count")
 	private Integer stockCount;
 
-	@ApiModelProperty(value = "描述")
+	@ApiModelProperty(value = "Description")
 	@TableField("sku_desc")
 	private String skuDesc;
 
 }
-

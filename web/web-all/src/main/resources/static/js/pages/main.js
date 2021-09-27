@@ -5,9 +5,9 @@ $(function () {
   var $distpicker = $('#distpicker');
 
   $distpicker.distpicker({
-    province: '福建省',
-    city: '厦门市',
-    district: '思明区'
+    province:'Fujian Province',
+    city:'Xiamen City',
+    district:'Siming District'
   });
 
   $('#reset').click(function () {
@@ -25,15 +25,15 @@ $(function () {
   $('#distpicker1').distpicker();
 
   $('#distpicker2').distpicker({
-    province: '---- 所在省 ----',
-    city: '---- 所在市 ----',
-    district: '---- 所在区 ----'
+    province:'---- Province where ----',
+    city:'---- City ----',
+    district:'---- the district ----'
   });
 
   $('#distpicker3').distpicker({
-    province: '浙江省',
-    city: '杭州市',
-    district: '西湖区'
+    province:'Zhejiang Province',
+    city:'Hangzhou City',
+    district:'West Lake District'
   });
 
   $('#distpicker4').distpicker({
@@ -43,5 +43,5 @@ $(function () {
   $('#distpicker5').distpicker({
     autoSelect: false
   });
-  
+
 });

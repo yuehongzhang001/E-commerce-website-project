@@ -4,7 +4,7 @@ import com.atguigu.gmall.model.list.Goods;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 public interface GoodsRepository extends ElasticsearchRepository<Goods,Long> {
 }

@@ -1,243 +1,243 @@
 var rawCitiesData = [
 	{
-        "name":"北京",
+        "name":"Beijing",
         "sub":[
             {
-                "name":"请选择"
+                "name":"Please select"
             },
             {
-                "name":"东城区"
+                "name":"Dongcheng District"
             },
             {
-                "name":"西城区"
+                "name":"Xicheng District"
             },
             {
-                "name":"崇文区"
+                "name":"Chongwen District"
             },
             {
-                "name":"宣武区"
+                "name":"Xuanwu District"
             },
             {
-                "name":"朝阳区"
+                "name":"Chaoyang District"
             },
             {
-                "name":"海淀区"
+                "name":"Haidian District"
             },
             {
-                "name":"丰台区"
+                "name":"Fengtai District"
             },
             {
-                "name":"石景山区"
+                "name":"Shijingshan District"
             },
             {
-                "name":"房山区"
+                "name":"Fangshan District"
             },
             {
-                "name":"通州区"
+                "name":"Tongzhou District"
             },
             {
-                "name":"顺义区"
+                "name":"Shunyi District"
             },
             {
-                "name":"昌平区"
+                "name":"Changping District"
             },
             {
-                "name":"大兴区"
+                "name":"Daxing District"
             },
             {
-                "name":"怀柔区"
+                "name":"Huairou District"
             },
             {
-                "name":"平谷区"
+                "name":"Pinggu District"
             },
             {
-                "name":"门头沟区"
+                "name":"Mentougou District"
             },
             {
-                "name":"密云县"
+                "name":"Miyun County"
             },
             {
-                "name":"延庆县"
+                "name":"Yanqing County"
             },
             {
-                "name":"其他"
+                "name":"Other"
             }
         ],
         "type":0
     },
     {
-        "name":"广东",
+        "name":"Guangdong",
         "sub":[
             {
-                "name":"请选择",
+                "name":"Please select",
                 "sub":[
 
                 ]
             },
             {
-                "name":"广州",
+                "name":"Guangzhou",
                 "sub":[
                     {
-                        "name":"请选择"
+                        "name":"Please select"
                     },
                     {
-                        "name":"越秀区"
+                        "name":"Yuexiu District"
                     },
                     {
-                        "name":"荔湾区"
+                        "name":"Liwan District"
                     },
                     {
-                        "name":"海珠区"
+                        "name":"Haizhu District"
                     },
                     {
-                        "name":"天河区"
+                        "name":"Tianhe District"
                     },
                     {
-                        "name":"白云区"
+                        "name":"Baiyun District"
                     },
                     {
-                        "name":"黄埔区"
+                        "name":"Huangpu District"
                     },
                     {
-                        "name":"番禺区"
+                        "name":"Panyu District"
                     },
                     {
-                        "name":"花都区"
+                        "name":"Huadu District"
                     },
                     {
-                        "name":"南沙区"
+                        "name":"Nansha District"
                     },
                     {
-                        "name":"萝岗区"
+                        "name":"Luogang District"
                     },
                     {
-                        "name":"增城市"
+                        "name":"Zengcheng"
                     },
                     {
-                        "name":"从化市"
+                        "name":"Conghua City"
                     },
                     {
-                        "name":"其他"
+                        "name":"Other"
                     }
                 ],
                 "type":0
             },
             {
-                "name":"深圳",
+                "name":"Shenzhen",
                 "sub":[
                     {
-                        "name":"请选择"
+                        "name":"Please select"
                     },
                     {
-                        "name":"福田区"
+                        "name":"Futian District"
                     },
                     {
-                        "name":"罗湖区"
+                        "name":"Luohu District"
                     },
                     {
-                        "name":"南山区"
+                        "name":"Nanshan District"
                     },
                     {
-                        "name":"宝安区"
+                        "name":"Baoan District"
                     },
                     {
-                        "name":"龙岗区"
+                        "name":"Longgang District"
                     },
                     {
-                        "name":"盐田区"
+                        "name":"Yantian District"
                     },
                     {
-                        "name":"其他"
+                        "name":"Other"
                     }
                 ],
                 "type":0
             },
             {
-                "name":"珠海",
+                "name":"Zhuhai",
                 "sub":[
                     {
-                        "name":"请选择"
+                        "name":"Please select"
                     },
                     {
-                        "name":"香洲区"
+                        "name":"Xiangzhou District"
                     },
                     {
-                        "name":"斗门区"
+                        "name":"Doumen District"
                     },
                     {
-                        "name":"金湾区"
+                        "name":"Jinwan District"
                     },
                     {
-                        "name":"其他"
+                        "name":"Other"
                     }
                 ],
                 "type":0
             },
             {
-                "name":"汕头",
+                "name":"Shantou",
                 "sub":[
                     {
-                        "name":"请选择"
+                        "name":"Please select"
                     },
                     {
-                        "name":"金平区"
+                        "name":"Jinping District"
                     },
                     {
-                        "name":"濠江区"
+                        "name":"Haojiang District"
                     },
                     {
-                        "name":"龙湖区"
+                        "name":"Longhu District"
                     },
                     {
-                        "name":"潮阳区"
+                        "name":"Chaoyang District"
                     },
                     {
-                        "name":"潮南区"
+                        "name":"Chaonan District"
                     },
                     {
-                        "name":"澄海区"
+                        "name":"Chenghai District"
                     },
                     {
-                        "name":"南澳县"
+                        "name":"Nan'ao County"
                     },
                     {
-                        "name":"其他"
+                        "name":"Other"
                     }
                 ],
                 "type":0
             },
             {
-                "name":"韶关",
+                "name":"Shaoguan",
                 "sub":[
                     {
-                        "name":"请选择"
+                        "name":"Please select"
                     },
                     {
-                        "name":"浈江区"
+                        "name":"Zhenjiang District"
                     },
                     {
-                        "name":"武江区"
+                        "name":"Wujiang District"
                     },
                     {
-                        "name":"曲江区"
+                        "name":"Qujiang District"
                     },
                     {
-                        "name":"乐昌市"
+                        "name":"Lechang City"
                     },
                     {
-                        "name":"南雄市"
+                        "name":"Nanxiong City"
                     },
                     {
-                        "name":"始兴县"
+                        "name":"Shixing County"
                     },
                     {
-                        "name":"仁化县"
+                        "name":"Renhua County"
                     },
                     {
-                        "name":"翁源县"
+                        "name":"Wengyuan County"
                     },
                     {
-                        "name":"新丰县"
+                        "name":"Xinfeng County"
                     },
                     {
                         "name":"乳源瑶族自治县"

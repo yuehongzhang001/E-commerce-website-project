@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author mqx
+ * @author Yuehong Zhang
  */
 @Controller
 public class ListController {
@@ -25,28 +25,27 @@ public class ListController {
     @Autowired
     private ListFeignClient listFeignClient;
 
-    //  http://list.gmall.com/list.html?category3Id=61
-    //  http://list.gmall.com/list.html?category3Id=61&trademark=5:小米
+
     @RequestMapping("list.html")
     public String listPage(SearchParam searchParam, Model model){
-        // 远程调用service-list-client;
-        //  远程调用如果只传递一个参数时，那么在远程调用Feign 上 ！ 可以直接用这个参数名去接收！
-        //  远程调用如果传递多个参数，Long category3Id  String trademark; 不能！只能使用Json 传输
+        // call service-list-client remotely;
+        // If only one parameter is passed in the remote call, then call Feign remotely! You can directly use this parameter name to receive!
+        // If multiple parameters are passed in the remote call, Long category3Id String trademark; No! Only use Json transmission
 
         Result<Map> result = listFeignClient.list(searchParam);
-        //        SearchResponseVo lists = listFeignClient.lists(searchParam);
-        //  ${urlParam} 后台应该存储一个变量！
+        // SearchResponseVo lists = listFeignClient.lists(searchParam);
+        // ${urlParam} should store a variable in the background!
         String urlParam = makeUrlParam(searchParam);
-        //  将用户传递的品牌数据传递到方法中
+        // Pass the brand data passed by the user into the method
         String trademarkParam = makeTrademarkParam(searchParam.getTrademark());
 
-        //  ${propsParamList} 这个表示平台属性的面包屑！ 多个平台属性面包屑：可以用集合表示List<>
+        // ${propsParamList} This breadcrumb of platform properties! Multiple platform attribute breadcrumbs: a collection can be used to represent List<>
         List<Map> propsParamList = makeProps(searchParam.getProps());
 
-        //  orderMap 需要后台存储！
+        // orderMap needs back-end storage!
         Map<String,Object> orderMap = this.dealOrder(searchParam.getOrder());
         model.addAttribute("orderMap",orderMap);
-        //  品牌面包屑 trademarkParam  品牌：品牌名 可以看做一个字符串！品牌:小米
+        // Brand breadcrumbs trademarkParam Brand: Brand name can be seen as a string! Brand: Xiaomi
         model.addAttribute("propsParamList",propsParamList);
         model.addAttribute("trademarkParam",trademarkParam);
         model.addAttribute("searchParam",searchParam);
@@ -55,10 +54,10 @@ public class ListController {
         return "list/index";
     }
 
-    //  获取用户排序规则 order=1:asc order=1:desc
+    // Get user sorting rules order=1:asc order=1:desc
     private Map<String, Object> dealOrder(String order) {
         Map<String, Object> map = new HashMap<>();
-        //  判断
+        //  judge
         if (!StringUtils.isEmpty(order)){
             String[] split = order.split(":");
             if (split!=null && split.length==2){
@@ -72,25 +71,25 @@ public class ListController {
         return map;
     }
 
-    //  可以传递多个
-    //  &props=2:6.25-6.34英寸:屏幕尺寸&props=4:64GB:机身存储
+    // can pass multiple
+    // &props=2:6.25-6.34 inches: screen size &props=4:64GB: body storage
     private List<Map> makeProps(String[] props) {
         List<Map> list = new ArrayList<>();
-        //  判断
+        //  judge
         if(props!=null && props.length>0){
-            //  循环遍历
-            for (String prop : props) {
-                //  prop = 2:6.25-6.34英寸:屏幕尺寸
-                //  跟页面需求：创建一个map 对象
-                //  <a th:href="@{${#strings.replace(urlParam+'&order='+searchParam.order,'props='+prop.attrId+':'+prop.attrValue+':'+prop.attrName,'')}}">×</a>
-                //  将prop 进行分割
+            // loop traversal
+            for (String prop: props) {
+                // prop = 2: 6.25-6.34 inches: screen size
+                // Follow the page requirements: create a map object
+                // <a th:href="@{${#strings.replace(urlParam+'&order='+searchParam.order,'props='+prop.attrId+':'+prop.attrValue+':'+prop.attrName ,'')}}">×</a>
+                // Split the prop
                 String[] split = prop.split(":");
                 if (split!=null && split.length==3){
                     HashMap<String, String> hashMap = new HashMap<>();
                     hashMap.put("attrId",split[0]);
                     hashMap.put("attrValue",split[1]);
                     hashMap.put("attrName",split[2]);
-                    //  将用户点击的平台属性，属性值添加到map 中
+                    // Add the platform attributes and attribute values ​​clicked by the user to the map
                     list.add(hashMap);
                 }
             }
@@ -99,71 +98,71 @@ public class ListController {
     }
 
     /**
-     * 获取品牌面包屑
+     * Get branded breadcrumbs
      * @param trademark
      * @return
      */
     private String makeTrademarkParam(String trademark) {
-        //  判断
+        //  judge
         if (!StringUtils.isEmpty(trademark)){
-            //  trademark=2:华为 最终获取到品牌名称
+            // trademark=2: Huawei finally obtains the brand name
             String[] split = trademark.split(":");
             if (split!=null && split.length==2){
-                 return "品牌:" + split[1];
+                return "Brand:" + split[1];
             }
         }
         return null;
     }
 
     /**
-     * 获取到请求路径中的请求参数
+     * Get the request parameters in the request path
      * @param searchParam
      * @return
      */
     private String makeUrlParam(SearchParam searchParam) {
-        //  声明一个对象
+        // Declare an object
         StringBuilder sb = new StringBuilder();
 
-        //  判断用户是否通过关键检索：
-        //  http://list.gmall.com/list.html?keyword=手机
+        // Determine whether the user passed the key search:
+        // http://list.gmall.com/list.html?keyword=Mobile
         if(!StringUtils.isEmpty(searchParam.getKeyword())){
             sb.append("keyword=").append(searchParam.getKeyword());
         }
-        //  http://list.gmall.com/list.html?category3Id=61
+        // http://list.gmall.com/list.html?category3Id=61
         if (!StringUtils.isEmpty(searchParam.getCategory3Id())){
             sb.append("category3Id=").append(searchParam.getCategory3Id());
         }
-        //  http://list.gmall.com/list.html?category2Id=13
+        // http://list.gmall.com/list.html?category2Id=13
         if (!StringUtils.isEmpty(searchParam.getCategory2Id())){
             sb.append("category2Id=").append(searchParam.getCategory2Id());
         }
-        //  http://list.gmall.com/list.html?category1Id=2
+        // http://list.gmall.com/list.html?category1Id=2
         if (!StringUtils.isEmpty(searchParam.getCategory1Id())){
             sb.append("category1Id=").append(searchParam.getCategory1Id());
         }
 
-        //  判断用户是否通过品牌检索
-        //  http://list.gmall.com/list.html?category3Id=61&trademark=4:小米
+        // Determine whether the user has passed the brand search
+        // http://list.gmall.com/list.html?category3Id=61&trademark=4: Xiaomi
         String trademark = searchParam.getTrademark();
         if (!StringUtils.isEmpty(trademark)){
-            //  进行拼接
+            // Make splicing
             if (sb.length()>0){
                 sb.append("&trademark=").append(trademark);
             }
         }
-        //  判断用户是否通过平台属性进行检索：
-        //  http://list.gmall.com/list.html?category3Id=61&trademark=4:小米&props=2342:4.7英寸:屏幕&props=2345:1:1
+        // Determine whether the user is searching through platform attributes:
+        // http://list.gmall.com/list.html?category3Id=61&trademark=4: Xiaomi&props=2342: 4.7 inches: screen&props=2345:1:1
         String[] props = searchParam.getProps();
         if (props!=null && props.length>0){
-            //  循环遍历
-            for (String prop : props) {
+            // loop traversal
+            for (String prop: props) {
                 if (sb.length()>0){
                     sb.append("&props=").append(prop);
                 }
             }
         }
 
-        //  sb list.html 后面的参数列表
+        // sb list.html following parameter list
         return "list.html?"+sb.toString();
     }
 
