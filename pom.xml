@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--引入spring boot 父工程-->
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -22,7 +22,7 @@
         <module>web</module>
     </modules>
     <packaging>pom</packaging>
-    <!--定义jar包的版本号-->
+
     <properties>
         <java.version>1.8</java.version>
         <cloud.version>Hoxton.RELEASE</cloud.version>
@@ -35,7 +35,7 @@
         <lombok.version>1.18.10</lombok.version>
     </properties>
 
-    <!--配置dependencyManagement锁定依赖的版本 并不是实际的依赖。-->
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -54,7 +54,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!--mybatis-plus 持久层-->
+
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -67,13 +67,13 @@
                 <version>${mysql.version}</version>
             </dependency>
 
-            <!--swagger-->
+
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
-            <!--swagger ui-->
+
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
